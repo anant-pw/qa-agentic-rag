@@ -1,0 +1,89 @@
+[
+  {
+    "question": "What is the account lockout duration, and does it match what BUG-1001 says is happening?",
+    "requires_docs": [
+      "BUG-1001",
+      "TC-0142"
+    ],
+    "type": "cross_reference_bug_to_test_case",
+    "notes": "TC-0142 defines a 5-minute cooldown; BUG-1001 describes the correct-password retry still failing. Needs both docs to answer correctly."
+  },
+  {
+    "question": "BUG-1002 says lockout should follow TC-0142 -- what does that test case say should happen after the cooldown period?",
+    "requires_docs": [
+      "BUG-1002",
+      "TC-0142"
+    ],
+    "type": "cross_reference_bug_to_test_case",
+    "notes": "Direct citation; answer must come from TC-0142 Expected Result, not BUG-1002 text."
+  },
+  {
+    "question": "Is BUG-1024 a new issue, or does it relate to any other open tickets?",
+    "requires_docs": [
+      "BUG-1024",
+      "BUG-1001",
+      "BUG-1002"
+    ],
+    "type": "duplicate_resolution",
+    "notes": "BUG-1024 explicitly says \"same lockout/ERR_401_UNAUTH pattern as BUG-1001 and BUG-1002\". Wrong if system returns only BUG-1024 in isolation."
+  },
+  {
+    "question": "BUG-1011 was just filed for duplicate notifications -- has this already been reported?",
+    "requires_docs": [
+      "BUG-1011",
+      "BUG-1006"
+    ],
+    "type": "duplicate_resolution",
+    "notes": "BUG-1011 explicitly duplicates BUG-1006, filed independently by a different QA engineer. Correct answer names BUG-1006 and confirms same root cause suspected (notification queue race condition)."
+  },
+  {
+    "question": "Has the >5000 row admin export crash (BUG-1007) been fixed?",
+    "requires_docs": [
+      "BUG-1007",
+      "BUG-1017"
+    ],
+    "type": "duplicate_resolution",
+    "notes": "Tests related_to (not duplicate_of) -- BUG-1017 is the resolution/follow-up ticket, status Resolved, confirms cursor-based pagination fix verified at 12000 rows."
+  },
+  {
+    "question": "Which open tickets are associated with ERR_401_UNAUTH, and are any of them related to each other?",
+    "requires_docs": [
+      "BUG-1001",
+      "BUG-1015",
+      "BUG-1024"
+    ],
+    "type": "error_code_aggregation",
+    "notes": "BUG-1001/1024 are the same underlying login-lockout issue; BUG-1015 is a different session-expiry issue that happens to surface the same error code. Tests whether the system conflates same-error-code with same-root-cause."
+  },
+  {
+    "question": "Which bug reports mention ERR_403_FORBIDDEN, and do they share a root cause?",
+    "requires_docs": [
+      "BUG-1012",
+      "BUG-1019"
+    ],
+    "type": "error_code_aggregation",
+    "notes": "Same error code, genuinely different causes (permission-check bug post-migration vs SSO accounts wrongly shown a password form) -- correct answer should NOT merge them as duplicates."
+  },
+  {
+    "question": "How many bugs are currently Open in the Checkout module?",
+    "requires_docs": "filter:module=Checkout,status=Open",
+    "type": "structured_filter",
+    "notes": "BUG-1003(In Progress, excl), BUG-1009(Open), BUG-1015(In Progress, excl), BUG-1018(Open), BUG-1025(Wont Fix, excl) -> answer is 2 (BUG-1009, BUG-1018)."
+  },
+  {
+    "question": "What are the steps to reproduce the double-charge bug on payment retry?",
+    "requires_docs": [
+      "BUG-1023"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Straightforward single-document retrieval, high severity payments bug, no cross-referencing needed."
+  },
+  {
+    "question": "What are the preconditions for testing exact SKU search ranking?",
+    "requires_docs": [
+      "TC-0302"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Single test-case retrieval. Note: BUG-1020 describes this exact symptom in prod but does NOT cite TC-0302 by ID -- a good adversarial variant is asking whether the system links them anyway from title/content, since no explicit reference exists."
+  }
+]
