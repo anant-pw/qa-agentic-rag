@@ -10,6 +10,7 @@ class Settings(BaseSettings):
 
     opensearch_host: str = "opensearch"
     opensearch_port: int = 9200
+    opensearch_index_alias: str = "qa_documents"
 
     # Ollama runs natively on the host, not as a container — see docker-compose.yml
     ollama_host: str = "host.docker.internal"
