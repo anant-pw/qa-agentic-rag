@@ -235,7 +235,8 @@ def resolve_explicit_bug_mentions(conn, bugs, id_map):
     with conn.cursor() as cur:
         for b in bugs:
             source_id = id_map[("bug_report", b["external_id"])]
-            combined_lower = (b["title"] + " " + b["description"]).lower()
+            combined_lower = (b["title"] + " " + b["description"] + " " +
+                              b["steps_to_reproduce"]).lower()
             is_duplicate_lang = any(kw in combined_lower for kw in RELATED_KEYWORDS)
             ref_type = "duplicate_of" if is_duplicate_lang else "related_to"
             for bug_ref in b["bug_refs"]:
@@ -313,9 +314,12 @@ def run(conn_params):
 
 if __name__ == "__main__":
     run(dict(
-        dbname=os.environ.get("POSTGRES_DB", "arxiv_curator"),
-        user=os.environ.get("POSTGRES_USER", "postgres"),
-        password=os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        host=os.environ.get("POSTGRES_HOST", "localhost"),
-        port=os.environ.get("POSTGRES_PORT", "5432"),
+        dbname=os.environ.get("POSTGRES_DB", "rag_db"),
+        user=os.environ.get("POSTGRES_USER", "rag_user"),
+        password=os.environ.get("POSTGRES_PASSWORD", "rag_password"),
+        host=os.environ.get("POSTGRES_HOST", "127.0.0.1"),  # not "localhost" -- on
+        # Windows, "localhost" can resolve to ::1 (IPv6) and hit a different,
+        # unrelated Postgres instance (e.g. a native service) instead of
+        # Docker's IPv4 port mapping. Forcing IPv4 removes the ambiguity.
+        port=os.environ.get("POSTGRES_PORT", "5433"),
     ))

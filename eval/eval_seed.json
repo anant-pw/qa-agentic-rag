@@ -1,89 +1,106 @@
 [
   {
-    "question": "What is the account lockout duration, and does it match what BUG-1001 says is happening?",
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
     "requires_docs": [
       "BUG-1001",
       "TC-0142"
     ],
     "type": "cross_reference_bug_to_test_case",
-    "notes": "TC-0142 defines a 5-minute cooldown; BUG-1001 describes the correct-password retry still failing. Needs both docs to answer correctly."
+    "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
   },
   {
-    "question": "BUG-1002 says lockout should follow TC-0142 -- what does that test case say should happen after the cooldown period?",
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
     "requires_docs": [
       "BUG-1002",
       "TC-0142"
     ],
     "type": "cross_reference_bug_to_test_case",
-    "notes": "Direct citation; answer must come from TC-0142 Expected Result, not BUG-1002 text."
+    "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
   },
   {
-    "question": "Is BUG-1024 a new issue, or does it relate to any other open tickets?",
+    "question": "Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?",
     "requires_docs": [
-      "BUG-1024",
-      "BUG-1001",
-      "BUG-1002"
+      "BUG-1002",
+      "BUG-1001"
     ],
     "type": "duplicate_resolution",
-    "notes": "BUG-1024 explicitly says \"same lockout/ERR_401_UNAUTH pattern as BUG-1001 and BUG-1002\". Wrong if system returns only BUG-1024 in isolation."
+    "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
-    "question": "BUG-1011 was just filed for duplicate notifications -- has this already been reported?",
+    "question": "Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?",
     "requires_docs": [
       "BUG-1011",
       "BUG-1006"
     ],
     "type": "duplicate_resolution",
-    "notes": "BUG-1011 explicitly duplicates BUG-1006, filed independently by a different QA engineer. Correct answer names BUG-1006 and confirms same root cause suspected (notification queue race condition)."
+    "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
-    "question": "Has the >5000 row admin export crash (BUG-1007) been fixed?",
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
     "requires_docs": [
-      "BUG-1007",
-      "BUG-1017"
+      "BUG-1024",
+      "BUG-1001"
     ],
     "type": "duplicate_resolution",
-    "notes": "Tests related_to (not duplicate_of) -- BUG-1017 is the resolution/follow-up ticket, status Resolved, confirms cursor-based pagination fix verified at 12000 rows."
+    "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
-    "question": "Which open tickets are associated with ERR_401_UNAUTH, and are any of them related to each other?",
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "requires_docs": [
+      "BUG-1024",
+      "BUG-1002"
+    ],
+    "type": "duplicate_resolution",
+    "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
+  },
+  {
+    "question": "Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?",
+    "requires_docs": [
+      "BUG-1017",
+      "BUG-1007"
+    ],
+    "type": "related_resolution",
+    "notes": "Distinguishes 'related_to' from 'duplicate_of' -- correct answer should NOT call this a duplicate if it's a follow-up/resolution ticket instead."
+  },
+  {
+    "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
     "requires_docs": [
       "BUG-1001",
       "BUG-1015",
       "BUG-1024"
     ],
     "type": "error_code_aggregation",
-    "notes": "BUG-1001/1024 are the same underlying login-lockout issue; BUG-1015 is a different session-expiry issue that happens to surface the same error code. Tests whether the system conflates same-error-code with same-root-cause."
+    "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
   },
   {
-    "question": "Which bug reports mention ERR_403_FORBIDDEN, and do they share a root cause?",
+    "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
     "requires_docs": [
       "BUG-1012",
       "BUG-1019"
     ],
     "type": "error_code_aggregation",
-    "notes": "Same error code, genuinely different causes (permission-check bug post-migration vs SSO accounts wrongly shown a password form) -- correct answer should NOT merge them as duplicates."
+    "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
   },
   {
-    "question": "How many bugs are currently Open in the Checkout module?",
-    "requires_docs": "filter:module=Checkout,status=Open",
+    "question": "How many bugs are currently Open in the Login module?",
+    "requires_docs": "filter:module+status",
     "type": "structured_filter",
-    "notes": "BUG-1003(In Progress, excl), BUG-1009(Open), BUG-1015(In Progress, excl), BUG-1018(Open), BUG-1025(Wont Fix, excl) -> answer is 2 (BUG-1009, BUG-1018)."
+    "notes": "Tests metadata-filtered retrieval rather than semantic search."
   },
   {
-    "question": "What are the steps to reproduce the double-charge bug on payment retry?",
+    "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
     "requires_docs": [
-      "BUG-1023"
+      "BUG-1003"
     ],
     "type": "single_doc_factual",
-    "notes": "Straightforward single-document retrieval, high severity payments bug, no cross-referencing needed."
+    "notes": "Deliberately picked a bug report with no cross-references, to isolate plain single-document retrieval from relational retrieval."
   },
   {
-    "question": "What are the preconditions for testing exact SKU search ranking?",
+    "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
     "requires_docs": [
-      "TC-0302"
+      "TC-0301"
     ],
     "type": "single_doc_factual",
-    "notes": "Single test-case retrieval. Note: BUG-1020 describes this exact symptom in prod but does NOT cite TC-0302 by ID -- a good adversarial variant is asking whether the system links them anyway from title/content, since no explicit reference exists."
+    "notes": "Picked a test case not explicitly cited by any bug report ID -- worth separately checking whether the system links it to a thematically similar bug anyway, since that would be inference beyond what the reference graph supports."
   }
 ]

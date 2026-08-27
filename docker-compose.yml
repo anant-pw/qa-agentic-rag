@@ -16,7 +16,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rag_password}
       POSTGRES_DB: ${POSTGRES_DB:-rag_db}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-5433}:5432"  # host-side port only; container still listens
+      # on 5432 internally. Remapped from 5432 -> 5433 on the host because a
+      # native Windows postgres.exe service was already bound to 5432,
+      # silently intercepting connections meant for this container.
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
