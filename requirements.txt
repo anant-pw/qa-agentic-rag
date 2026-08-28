@@ -4,4 +4,4 @@ psycopg2-binary
 httpx
 pydantic-settings
 scikit-learn
-opensearch-py
+opensearch-py==2.7.1

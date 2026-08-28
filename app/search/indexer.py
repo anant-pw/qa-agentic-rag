@@ -27,15 +27,36 @@ delete propagation (requires either a soft-delete flag on `documents`
 or a diff between Postgres IDs and OpenSearch IDs on each run). Neither
 exists yet. Full rebuild sidesteps both by construction -- revisit if
 the corpus grows past "rebuild in a few seconds" territory.
+
+--- Phase 4 addition ---
+
+Every document currently ingested is short enough (30-165 words,
+measured directly against the real CSV/markdown -- see Phase 4
+readiness report) to be exactly one chunk. `build_os_document()` below
+therefore emits ONE OpenSearch document per Postgres row, same as
+Phase 3, but now carries a `chunk_id` / `parent_document_id` pair and a
+`chunk_vector` embedding, so the schema shape doesn't have to change
+the day a longer document (e.g. a future SRS/spec doc) needs real
+sub-document splitting -- at that point, this function is where a
+`for chunk in split(text): yield {...}` loop would go, one Postgres row
+producing multiple OpenSearch documents instead of one.
+
+Embedding input is built from the SUBTYPE-specific structured fields
+(description/steps_to_reproduce for bug reports; preconditions/steps/
+expected_result for test cases), not the flattened `cleaned_text` blob
+-- see embeddings.py and the Phase 4 readiness report for why field
+order matters to the embedding model. This requires joining
+bug_reports/test_cases into the fetch query below, which Phase 3 never
+needed since BM25 only ever read `cleaned_text`.
 """
 
 import re
 import time
-from typing import Optional
 
 from opensearchpy import OpenSearch, helpers
 
 from app.search.mapping import INDEX_BODY
+from app.search.embeddings import embed_document
 
 # Same patterns ingest.py uses for TC_ID_RE / BUG_ID_RE. Duplicated here
 # rather than imported because indexer.py and ingest.py are meant to be
@@ -57,6 +78,11 @@ FETCH_DOCUMENTS_SQL = """
         d.date_created,
         d.cleaned_text,
         d.ingested_at,
+        br.description        AS bug_description,
+        br.steps_to_reproduce AS bug_steps_to_reproduce,
+        tc.preconditions       AS tc_preconditions,
+        tc.steps               AS tc_steps,
+        tc.expected_result     AS tc_expected_result,
         COALESCE(
             array_agg(ec.code) FILTER (WHERE ec.code IS NOT NULL),
             '{}'
@@ -64,7 +90,10 @@ FETCH_DOCUMENTS_SQL = """
     FROM documents d
     LEFT JOIN document_error_codes dec ON dec.document_id = d.id
     LEFT JOIN error_codes ec ON ec.id = dec.error_code_id
-    GROUP BY d.id
+    LEFT JOIN bug_reports br ON br.document_id = d.id
+    LEFT JOIN test_cases tc ON tc.document_id = d.id
+    GROUP BY d.id, br.description, br.steps_to_reproduce,
+             tc.preconditions, tc.steps, tc.expected_result
     ORDER BY d.id;
 """
 
@@ -79,7 +108,34 @@ def fetch_documents_from_postgres(conn) -> list[dict]:
         return [dict(zip(cols, row)) for row in cur.fetchall()]
 
 
-def build_os_document(row: dict) -> dict:
+def build_embedding_input(row: dict) -> str:
+    """Structured, per-doc-type text for the embedding model -- NOT
+    `cleaned_text`. Field order/composition differs by doc_type because
+    a flattened blob loses the semantic role each field plays (a
+    bug's `steps_to_reproduce` and a test case's `steps` are different
+    things that happen to share a column name)."""
+    if row["doc_type"] == "bug_report":
+        parts = [
+            row.get("title") or "",
+            row.get("bug_description") or "",
+            row.get("bug_steps_to_reproduce") or "",
+        ]
+    else:  # test_case
+        parts = [
+            row.get("title") or "",
+            row.get("tc_preconditions") or "",
+            row.get("tc_steps") or "",
+            row.get("tc_expected_result") or "",
+        ]
+    return "\n".join(p for p in parts if p)
+
+
+def build_os_document(
+    row: dict,
+    ollama_host: str | None = None,
+    ollama_port: int | None = None,
+    chunk_index: int = 0,
+) -> dict:
     """Postgres row -> OpenSearch document body.
 
     Exact-match ID fields are extracted here, not trusted to the
@@ -88,10 +144,17 @@ def build_os_document(row: dict) -> dict:
     reports and the full markdown for test cases, so a self-reference
     (a document mentioning its own ID in its title) is included. That's
     harmless for filtering/boosting purposes and not worth excluding.
+
+    Phase 4: if `ollama_host`/`ollama_port` are provided, also computes
+    `chunk_vector` via embed_document() and sets `chunk_id` /
+    `parent_document_id`. If omitted, chunk_vector is left unset --
+    lets build_os_document() still be called (e.g. in tests) without a
+    live Ollama, at the cost of that document being BM25-only in the
+    resulting index. rebuild_index() always passes them in real use.
     """
     text = row.get("cleaned_text") or ""
     date_created = row.get("date_created")
-    return {
+    doc = {
         "document_id": row["id"],
         "doc_type": row["doc_type"],
         "external_id": row["external_id"],
@@ -104,7 +167,13 @@ def build_os_document(row: dict) -> dict:
         "mentioned_bug_ids": sorted(set(BUG_ID_RE.findall(text))),
         "mentioned_tc_ids": sorted(set(TC_ID_RE.findall(text))),
         "ingested_at": row["ingested_at"].isoformat() if row.get("ingested_at") else None,
+        "chunk_id": f"{row['external_id']}::chunk_{chunk_index:03d}",
+        "parent_document_id": row["id"],
     }
+    if ollama_host and ollama_port:
+        embedding_input = build_embedding_input(row)
+        doc["chunk_vector"] = embed_document(embedding_input, ollama_host, ollama_port)
+    return doc
 
 
 def rebuild_index(
@@ -112,13 +181,23 @@ def rebuild_index(
     os_client: OpenSearch,
     alias: str = "qa_documents",
     keep_previous: int = 1,
+    ollama_host: str | None = None,
+    ollama_port: int | None = None,
 ) -> dict:
     """Full rebuild into a new versioned index, verify count, then
     atomically flip the alias. Returns a summary dict for logging/tests.
 
     Raises RuntimeError (does NOT swap the alias) if the OpenSearch doc
     count after indexing doesn't match the Postgres row count -- a
-    partial index should never become the live one.
+    partial index should never become the live one. Same all-or-nothing
+    posture applies to embedding failures (Phase 4): if `ollama_host`/
+    `ollama_port` are given and any document's embedding call fails
+    (EmbeddingError, propagated as a bulk-index error below since it's
+    raised while building the action generator), the whole rebuild
+    aborts and the new index is deleted -- a hybrid index missing
+    vectors on some documents would silently degrade to BM25-only for
+    those documents with no visible signal that anything was wrong,
+    which is worse than a loud failure here.
     """
     rows = fetch_documents_from_postgres(pg_conn)
     pg_count = len(rows)
@@ -126,11 +205,21 @@ def rebuild_index(
     new_index = f"{alias}_v{int(time.time())}"
     os_client.indices.create(index=new_index, body=INDEX_BODY)
 
-    actions = (
-        {"_index": new_index, "_id": row["id"], "_source": build_os_document(row)}
-        for row in rows
-    )
-    success, errors = helpers.bulk(os_client, actions, raise_on_error=False)
+    def _actions():
+        for row in rows:
+            doc = build_os_document(row, ollama_host=ollama_host, ollama_port=ollama_port)
+            yield {"_index": new_index, "_id": doc["chunk_id"], "_source": doc}
+
+    try:
+        success, errors = helpers.bulk(os_client, _actions(), raise_on_error=False)
+    except Exception as e:
+        # Embedding failures (EmbeddingError) surface here, mid-generator,
+        # before opensearchpy gets a chance to collect them as a normal
+        # per-doc bulk error -- treat identically to a bulk-index error:
+        # abort, clean up the partial index, don't touch the alias.
+        os_client.indices.delete(index=new_index, ignore=[404])
+        raise RuntimeError(f"Rebuild aborted during embedding/indexing: {e}") from e
+
     if errors:
         os_client.indices.delete(index=new_index)
         raise RuntimeError(f"Bulk indexing had {len(errors)} error(s): {errors[:3]}")

@@ -40,12 +40,52 @@ Design decisions (the "why" matters more than the JSON):
    normal for the cluster overall (verify_infra.py already treats it as
    healthy), but there's no reason to manufacture unassigned shards for
    an index we control.
+
+--- Phase 4 additions below (chunk_vector, chunk_id, parent_document_id) ---
+
+5. `chunk_vector` (`knn_vector`, dim=768, cosine). Backed by
+   `nomic-embed-text` via Ollama (see app/search/embeddings.py) --
+   confirmed dimension, not assumed; a mismatch here is a hard
+   bulk-index failure at rebuild time, not a silent bug. `cosinesimil`
+   space chosen because it's the standard metric for sentence-embedding
+   models and there's no corpus-specific reason to deviate to L2 here.
+   `index.knn: true` is required at the index-settings level for any
+   `knn_vector` field to be queryable -- OpenSearch will accept the
+   mapping without it, then refuse k-NN queries at search time, so this
+   is easy to silently get wrong; it's set explicitly below, not left
+   to a default.
+
+6. `chunk_id` / `parent_document_id`. Every document in this corpus is
+   currently short enough (30-165 words, measured directly against the
+   real ingested data) to be a single chunk -- there is no real
+   sub-document splitting happening yet. These two fields exist anyway
+   so the schema doesn't have to change shape the day a longer document
+   (e.g. a future SRS/spec doc) actually needs real splitting.
+   `chunk_id` is `{external_id}::chunk_{n:03d}`; `parent_document_id` is
+   the Postgres `documents.id` integer, which is what lets a chunk-level
+   hybrid search result resolve back to a document-level citation
+   without a second Postgres round-trip per result (document_id,
+   external_id, title, module, status are already denormalized onto
+   every chunk, same as Phase 3 already does for the whole-document
+   case).
+
+Existing Phase 3 BM25 fields (document_id, doc_type, external_id, title,
+module, status, date_created, cleaned_text, error_codes,
+mentioned_bug_ids, mentioned_tc_ids, ingested_at) are UNCHANGED below --
+adding a knn_vector field to the same mapping does not alter how
+OpenSearch analyzes, scores, or filters any existing field. The
+`/search` endpoint (app/routers/search.py, app/search/queries.py) reads
+none of the new fields and its query shape does not change.
 """
 
 INDEX_SETTINGS = {
     "index": {
         "number_of_shards": 1,
         "number_of_replicas": 0,
+        "knn": True,  # required for chunk_vector to be queryable via k-NN;
+        # the mapping below would silently accept without this and only
+        # fail at query time, so it's set here explicitly rather than
+        # left implicit.
     },
     "analysis": {
         "normalizer": {
@@ -77,6 +117,19 @@ INDEX_MAPPING = {
         "mentioned_bug_ids": {"type": "keyword", "normalizer": "lowercase_normalizer"},
         "mentioned_tc_ids": {"type": "keyword", "normalizer": "lowercase_normalizer"},
         "ingested_at": {"type": "date"},
+
+        # --- Phase 4 additions ---
+        "chunk_id": {"type": "keyword"},
+        "parent_document_id": {"type": "integer"},
+        "chunk_vector": {
+            "type": "knn_vector",
+            "dimension": 768,
+            "method": {
+                "name": "hnsw",
+                "space_type": "cosinesimil",
+                "engine": "nmslib",
+            },
+        },
     }
 }
 

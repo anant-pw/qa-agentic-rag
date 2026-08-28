@@ -1,39 +1,22 @@
 import psycopg2
 import httpx
-from fastapi import FastAPI, APIRouter, Query
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from app.routers.search import router as search_router
 from app.config import settings
-from app.search.service import get_client, search
 
 app = FastAPI(title="RAG Infra - Phase 1")
- 
-router = APIRouter()
 
 app.include_router(search_router)
- 
-@router.get("/search")
-def search_documents(
-    q: str | None = Query(None, description="Free-text or exact ID/error-code query"),
-    doc_type: str | None = Query(None, description="Filter: 'bug_report' or 'test_case'"),
-    module: str | None = Query(None, description="Filter: exact module name"),
-    status: str | None = Query(None, description="Filter: exact status (bug reports only)"),
-    size: int = Query(10, ge=1, le=100),
-):
-    client = get_client(settings.opensearch_host, settings.opensearch_port)
-    results = search(
-        client,
-        alias=settings.opensearch_index_alias,
-        q=q,
-        doc_type=doc_type,
-        module=module,
-        status=status,
-        size=size,
-    )
-    return {"query": q, "doc_type": doc_type, "module": module, "status": status, "results": results}
-
-
-
+# Removed (Phase 4 cleanup): a second, inert `/search` APIRouter used to
+# live here, duplicating app/routers/search.py's endpoint but never
+# passed to include_router(). It had no effect on runtime behavior --
+# app.include_router(search_router) above was already live -- but it
+# made main.py look like there were two competing /search
+# implementations. Deleted as dead code, not a behavior change; the
+# Phase 3 handoff's claim that the router "isn't yet wired in" was
+# already stale before this cleanup (confirmed by reading this file
+# during the Phase 4 readiness check).
 
 
 def check_postgres() -> dict:
