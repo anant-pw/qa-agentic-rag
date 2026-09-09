@@ -182,21 +182,58 @@ def build_knn_query(
     build_filters() as BM25 so a hybrid search never applies a filter
     to one leg and not the other.
 
+    --- Phase 5 fix: post-filter, not native knn.filter ---
+
     OpenSearch's k-NN plugin supports a filtered k-NN form (`knn.filter`)
-    on the query itself rather than a separate bool/filter wrapper --
-    using it here (not a bool-must-wrap) so the ANN search algorithm
-    itself is filter-aware, not filtering after the fact on a fixed-size
-    candidate set (which can under-return results when a filter is
-    selective and the initial ANN candidate pool is small -- not a
-    concern at 28 documents, but the correct pattern regardless of
-    corpus size)."""
+    that makes the ANN search itself filter-aware -- this was the
+    original design here, on paper the more correct pattern regardless
+    of corpus size (avoids under-returning when a filter is selective
+    and the ANN candidate pool is small). It was never actually exercised
+    against a live index until Phase 5's `/generate` endpoint became the
+    first caller to combine doc_type+module+status filters with the k-NN
+    leg. That surfaced a real, confirmed error:
+
+        opensearchpy.exceptions.RequestError: (400,
+        'search_phase_execution_exception',
+        'failed to create query: Engine [NMSLIB] does not support filters')
+
+    `mapping.py` configures `chunk_vector` with method "hnsw" / engine
+    "nmslib" (see mapping.py's module docstring) -- native `knn.filter`
+    requires the lucene or faiss engine. Switching engines is a mapping
+    change requiring a full reindex, out of scope for fixing an unfiltered
+    query mid-Phase-5. Fixed instead by post-filtering: a `bool` query
+    with the k-NN clause in `must` and metadata filters in `filter`, so
+    the ANN search runs unfiltered and the filter is applied to its
+    results afterward.
+
+    Trade-off, stated not hidden: this is NOT filter-aware at ANN
+    candidate-generation time -- a sufficiently selective filter combined
+    with a small `k` could in principle return fewer than `size` results,
+    if the unfiltered top-k doesn't contain enough filter-matching
+    documents. Not a concern at 28 documents (the whole corpus fits
+    inside one k-NN candidate pool); the first thing to revisit if the
+    corpus grows and filtered hybrid search starts under-returning.
+
+    Unfiltered queries (no doc_type/module/status given) are unaffected --
+    same query shape as before this fix, confirmed by the `if not filters`
+    early return below."""
     filters = build_filters(doc_type, module, status)
     knn_clause = {"vector": vector, "k": size}
-    if filters:
-        knn_clause["filter"] = {"bool": {"filter": filters}}
+
+    if not filters:
+        return {
+            "size": size,
+            "query": {"knn": {"chunk_vector": knn_clause}},
+        }
+
     return {
         "size": size,
-        "query": {"knn": {"chunk_vector": knn_clause}},
+        "query": {
+            "bool": {
+                "filter": filters,
+                "must": [{"knn": {"chunk_vector": knn_clause}}],
+            }
+        },
     }
 
 

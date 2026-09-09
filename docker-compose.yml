@@ -67,6 +67,25 @@ services:
   #   OLLAMA_HOST=0.0.0.0 ollama serve
   # and confirm from the host with: curl http://localhost:11434/api/tags
 
+  redis:
+    image: redis:7-alpine
+    container_name: rag-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - rag-network
+    # No volume: cache invalidation is by design tied to the OpenSearch
+    # index name (app/generation/cache.py), not persistence -- losing the
+    # cache on a container restart is a cold cache, not a correctness
+    # problem, so this is deliberately NOT added to the `volumes:` block.
+
   fastapi:
     build:
       context: .
@@ -83,12 +102,23 @@ services:
       OPENSEARCH_PORT: 9200
       OLLAMA_HOST: host.docker.internal
       OLLAMA_PORT: 11434
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     extra_hosts:
       - "host.docker.internal:host-gateway"  # required on Linux; no-op on Mac/Windows
     ports:
       - "${FASTAPI_PORT:-8000}:8000"
+    volumes:
+      - ./logs:/app/logs   # Phase 6 fix: app/observability/logger.py writes to
+      # ./logs/generation.jsonl relative to the container's WORKDIR (/app, per
+      # Dockerfile) -- with no mount, that file existed only inside the
+      # container and was invisible on the host. Confirmed as the real cause
+      # after the first live Phase 6 run: `docker exec rag-fastapi ls logs/`
+      # should be checked to confirm the file was there all along before
+      # assuming the logger itself was silently failing.
     depends_on:
       - postgres
       - opensearch
+      - redis
     networks:
       - rag-network

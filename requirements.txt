@@ -5,3 +5,5 @@ httpx
 pydantic-settings
 scikit-learn
 opensearch-py==2.7.1
+redis
+requests

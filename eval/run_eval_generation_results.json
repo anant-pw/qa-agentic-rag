@@ -1,0 +1,729 @@
+[
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "The test case TC\u20110142 (referenced by BUG\u20111001) specifies that after three failed login attempts the account should be locked.  \n- Step\u202f4 (immediate retry with the correct password) must fail and return a clear lock\u2011out message, **not** a generic authentication error.  \n- After the defined 5\u2011minute cooldown period, step\u202f6 (retry with the correct password) must succeed.  \n\n(Source: TC\u20110142)",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.03125,
+        "parent_document_id": 26
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03076923076923077,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "The test case cited by BUG\u20111002 is **TC\u20110142**.  \nIts expected result is:\n\n* After three failed login attempts the account is locked.  \n* A subsequent attempt with the correct password (step\u202f4) must still fail, returning a clear lock\u2011out message (not a generic authentication error).  \n* After the defined 5\u2011minute cooldown period (step\u202f5), a login attempt with the correct password (step\u202f6) must succeed.  \n\n(Source: TC\u20110142)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 26
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03076923076923077,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "Yes.  \n- **Duplicate of:** BUG\u20111001 (Login fails after 3 attempts even with correct password).  \n- **Affected module:** Login.  \n\n(Source: BUG\u20111002\u2019s recorded cross\u2011references.)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.031754032258064516,
+        "parent_document_id": 26
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030536130536130537,
+        "parent_document_id": 1
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "Yes.  \nBUG\u20111011 is recorded as a duplicate of BUG\u20111006 (see the \u201cRecorded cross\u2011references\u201d line). BUG\u20111006 is in the **Notifications** module and its status is \u201cIn Progress\u201d (i.e., still open).  \n\nSource: BUG\u20111011 and BUG\u20111006 documents.",
+    "sources": [
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1006",
+        "title": "Push notifications sent twice for same order update",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03128054740957967,
+        "parent_document_id": 6
+      },
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030309988518943745,
+        "parent_document_id": 23
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "Yes.  BUG\u20111024 is recorded as a duplicate of BUG\u20111001 (and also of BUG\u20111002).  Both of those tickets are open and belong to the **Login** module.  (Source: BUG\u20111024 cross\u2011references)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "parent_document_id": 17
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "Yes.  \n- **Duplicate of:** BUG\u20111001 (also a duplicate of BUG\u20111002).  \n- **Module affected:** Login.  \n\n(Source: BUG\u20111024 and BUG\u20111001)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "parent_document_id": 17
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?",
+    "type": "related_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs, no unqualified duplicate claim",
+    "answer": "Yes.  \n- **BUG\u20111017** is recorded as **related to (NOT a duplicate of) BUG\u20111007** (see the \u201cRecorded cross\u2011references\u201d section of BUG\u20111017).  \n- The description of BUG\u20111017 also states it is a \u201cfollow\u2011up to BUG\u20111007.\u201d  \n\nThus BUG\u20111017 is connected to BUG\u20111007, but it is not a duplicate; it is a follow\u2011up/related ticket. (Source: BUG\u20111017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031009615384615385,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1012",
+        "title": "Admin export ERR_403_FORBIDDEN for sub-admin roles",
+        "doc_type": "bug_report",
+        "rrf_score": 0.029850746268656716,
+        "parent_document_id": 12
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "PASS",
+    "detail": "contains all IDs in the error-code group",
+    "answer": "The bug reports that mention **ERR_401_UNAUTH** are:\n\n| Bug ID | Module | Status |\n|--------|--------|--------|\n| **BUG\u20111024** | Login | Reopened |\n| **BUG\u20111001** | Login | Open |\n| **BUG\u20111015** | Checkout | In Progress |\n\n**Relationship between them**\n\n- **BUG\u20111024** is recorded as a duplicate of **BUG\u20111001** (see the \u201cRecorded cross\u2011references\u201d section).  \n- No cross\u2011reference is recorded between **BUG\u20111015** and either of the other two bugs, so it appears unrelated to them.\n\nThus, the only related pair among the ERR_401_UNAUTH bugs is BUG\u20111024 and BUG\u20111001. BUG\u20111015 stands alone.",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031009615384615385,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030330882352941176,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "PASS",
+    "detail": "contains all IDs in the error-code group",
+    "answer": "The bug reports that mention **ERR_403_FORBIDDEN** are:\n\n- **BUG\u20111012** \u2013 \u201cUsers with \u2018sub\u2011admin\u2019 role get ERR_403_FORBIDDEN when attempting export.\u201d\n- **BUG\u20111019** \u2013 \u201cAccounts linked via SSO show the change\u2011password form and fail with ERR_403_FORBIDDEN on submit.\u201d\n\nThere is no recorded cross\u2011reference indicating that BUG\u20111012 and BUG\u20111019 are duplicates or otherwise related. They are listed as separate, unrelated bugs.",
+    "sources": [
+      {
+        "external_id": "BUG-1012",
+        "title": "Admin export ERR_403_FORBIDDEN for sub-admin roles",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "parent_document_id": 12
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report",
+        "rrf_score": 0.032266458495966696,
+        "parent_document_id": 19
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030621785881252923,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03055037313432836,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Login module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (4)",
+    "answer": "There are **4** bugs that are currently Open in the Login module (BUG-1001, BUG-1002, BUG-1019, BUG-1008).",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report",
+        "rrf_score": 0.015873015873015872,
+        "parent_document_id": 19
+      },
+      {
+        "external_id": "BUG-1008",
+        "title": "Password reset email delayed by up to 20 minutes",
+        "doc_type": "bug_report",
+        "rrf_score": 0.015625,
+        "parent_document_id": 8
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Payments module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (3)",
+    "answer": "There are **3** bugs currently Open in the Payments module (BUG-1023, BUG-1013, BUG-1004).",
+    "sources": [
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 23
+      },
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 13
+      },
+      {
+        "external_id": "BUG-1004",
+        "title": "Payment declined shows generic error instead of decline reason",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 4
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "**Steps to reproduce BUG\u20111003 (Checkout page times out on slow connections)**  \n(Source: BUG\u20111003)\n\n1. Throttle the network to a Slow 3G connection.  \n2. Add an item to the cart.  \n3. Proceed to checkout.  \n4. Submit the payment form.  \n5. Wait 30\u202fseconds \u2192 the page returns an **ERR_504_TIMEOUT**.",
+    "sources": [
+      {
+        "external_id": "BUG-1003",
+        "title": "Checkout page times out on slow connections",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 3
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.0304147465437788,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.029877369007803793,
+        "parent_document_id": 15
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "**Steps to reproduce BUG\u20111023 (Payment retry after decline charges card twice)**  \n(From BUG\u20111023)\n\n1. Use a card that gets declined then approved on retry (the test processor supports this scenario).  \n2. Submit the payment \u2013 it will be declined.  \n3. Click **Retry** immediately after the decline.  \n4. Check the processor dashboard to verify whether a duplicate charge has been created.",
+    "sources": [
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 23
+      },
+      {
+        "external_id": "BUG-1004",
+        "title": "Payment declined shows generic error instead of decline reason",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 4
+      },
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "parent_document_id": 13
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1003",
+        "title": "Checkout page times out on slow connections",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030090497737556562,
+        "parent_document_id": 3
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "The preconditions for TC\u20110301 are:  \n- The product catalog must contain items that include both the \u201cwifi\u201d and the \u201cwi\u2011fi\u201d spellings in their titles or descriptions. (Source: TC\u20110301)",
+    "sources": [
+      {
+        "external_id": "TC-0301",
+        "title": "Search tokenization consistency for hyphenated terms",
+        "doc_type": "test_case",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 27
+      },
+      {
+        "external_id": "BUG-1005",
+        "title": "Search returns zero results for queries with hyphens",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 5
+      },
+      {
+        "external_id": "TC-0302",
+        "title": "Exact SKU match ranks first in search results",
+        "doc_type": "test_case",
+        "rrf_score": 0.031746031746031744,
+        "parent_document_id": 28
+      },
+      {
+        "external_id": "BUG-1020",
+        "title": "Search relevance ranks exact SKU match below fuzzy matches",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030090497737556562,
+        "parent_document_id": 20
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.029211087420042643,
+        "parent_document_id": 2
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "The preconditions for **TC-0302** are:\n\n- A product with a known unique SKU exists in the catalog, **along with other products with similar text descriptions**. (Source: TC-0302)",
+    "sources": [
+      {
+        "external_id": "TC-0302",
+        "title": "Exact SKU match ranks first in search results",
+        "doc_type": "test_case",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 28
+      },
+      {
+        "external_id": "BUG-1020",
+        "title": "Search relevance ranks exact SKU match below fuzzy matches",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 20
+      },
+      {
+        "external_id": "TC-0301",
+        "title": "Search tokenization consistency for hyphenated terms",
+        "doc_type": "test_case",
+        "rrf_score": 0.03149801587301587,
+        "parent_document_id": 27
+      },
+      {
+        "external_id": "BUG-1005",
+        "title": "Search returns zero results for queries with hyphens",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03057889822595705,
+        "parent_document_id": 5
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02967032967032967,
+        "parent_document_id": 2
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?",
+    "type": "dangling_reference_citation",
+    "result": "PASS",
+    "detail": "mentions TC-0209 and states it is not in the corpus",
+    "answer": "BUG-1013 cites TC\u20110209, but TC\u20110209 is not present in the retrieved corpus.",
+    "sources": [
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 13
+      },
+      {
+        "external_id": "BUG-1004",
+        "title": "Payment declined shows generic error instead of decline reason",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 4
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031009615384615385,
+        "parent_document_id": 23
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03055037313432836,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?",
+    "type": "resolution_in_narrative",
+    "result": "PASS",
+    "detail": "no wrongful abstention, 10 shared content words with real description",
+    "answer": "The fix for BUG\u20111017 was to replace the in\u2011memory export logic with **cursor\u2011based pagination** in the export query. This change prevented the entire dataset from being loaded into memory and was verified by running a 12,000\u2011row export in staging. (Source: BUG\u20111017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1012",
+        "title": "Admin export ERR_403_FORBIDDEN for sub-admin roles",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "parent_document_id": 12
+      }
+    ]
+  }
+]

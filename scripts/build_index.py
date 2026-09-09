@@ -36,6 +36,7 @@ import os
 import psycopg2
 from opensearchpy import OpenSearch
 
+
 from app.search.indexer import rebuild_index
 
 

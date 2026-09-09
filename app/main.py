@@ -3,11 +3,15 @@ import httpx
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from app.routers.search import router as search_router
+from app.routers.generate import router as generate_router
 from app.config import settings
 
 app = FastAPI(title="RAG Infra - Phase 1")
 
 app.include_router(search_router)
+app.include_router(generate_router)  # Phase 5: POST /generate -- see
+# app/routers/generate.py. Does not modify search_router's routes or
+# behavior; GET /search and GET /search/hybrid are unchanged.
 # Removed (Phase 4 cleanup): a second, inert `/search` APIRouter used to
 # live here, duplicating app/routers/search.py's endpoint but never
 # passed to include_router(). It had no effect on runtime behavior --

@@ -1,83 +1,55 @@
 [
   {
     "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
-    "requires_docs": [
-      "BUG-1001",
-      "TC-0142"
-    ],
+    "requires_docs": ["BUG-1001", "TC-0142"],
     "type": "cross_reference_bug_to_test_case",
     "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
   },
   {
     "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
-    "requires_docs": [
-      "BUG-1002",
-      "TC-0142"
-    ],
+    "requires_docs": ["BUG-1002", "TC-0142"],
     "type": "cross_reference_bug_to_test_case",
     "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
   },
   {
     "question": "Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?",
-    "requires_docs": [
-      "BUG-1002",
-      "BUG-1001"
-    ],
+    "requires_docs": ["BUG-1002", "BUG-1001"],
     "type": "duplicate_resolution",
     "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
     "question": "Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?",
-    "requires_docs": [
-      "BUG-1011",
-      "BUG-1006"
-    ],
+    "requires_docs": ["BUG-1011", "BUG-1006"],
     "type": "duplicate_resolution",
     "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
     "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
-    "requires_docs": [
-      "BUG-1024",
-      "BUG-1001"
-    ],
+    "requires_docs": ["BUG-1024", "BUG-1001"],
     "type": "duplicate_resolution",
     "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
     "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
-    "requires_docs": [
-      "BUG-1024",
-      "BUG-1002"
-    ],
+    "requires_docs": ["BUG-1024", "BUG-1002"],
     "type": "duplicate_resolution",
     "notes": "Fails if system treats the two reports as unrelated and only returns one; correct answer names both and the shared module."
   },
   {
     "question": "Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?",
-    "requires_docs": [
-      "BUG-1017",
-      "BUG-1007"
-    ],
+    "requires_docs": ["BUG-1017", "BUG-1007"],
     "type": "related_resolution",
     "notes": "Distinguishes 'related_to' from 'duplicate_of' -- correct answer should NOT call this a duplicate if it's a follow-up/resolution ticket instead."
   },
   {
     "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
-    "requires_docs": [
-      "BUG-1001",
-      "BUG-1015",
-      "BUG-1024"
-    ],
+    "requires_docs": ["BUG-1001", "BUG-1015", "BUG-1024"],
     "type": "error_code_aggregation",
     "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
   },
   {
     "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
-    "requires_docs": [
-      "BUG-1012",
-      "BUG-1019"
-    ],
+    "requires_docs": ["BUG-1012", "BUG-1019"],
     "type": "error_code_aggregation",
     "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
   },
@@ -85,22 +57,48 @@
     "question": "How many bugs are currently Open in the Login module?",
     "requires_docs": "filter:module+status",
     "type": "structured_filter",
-    "notes": "Tests metadata-filtered retrieval rather than semantic search."
+    "notes": "Tests metadata-filtered retrieval rather than semantic search. NOTE: this question is tied with at least one other module/status pair at equal count -- see phase-02-handoff.md Section 8. Not fixed here deliberately, so eval history against this exact question stays valid; see the second structured_filter question below for a tie-free case."
+  },
+  {
+    "question": "How many bugs are currently Open in the Payments module?",
+    "requires_docs": "filter:module+status",
+    "type": "structured_filter",
+    "notes": "Phase 6 addition: a second structured_filter question chosen specifically to NOT be tied for its count (3, unambiguous against the real corpus), so it reproduces deterministically on regeneration even though the first structured_filter question above still isn't fixed."
   },
   {
     "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
-    "requires_docs": [
-      "BUG-1003"
-    ],
+    "requires_docs": ["BUG-1003"],
     "type": "single_doc_factual",
     "notes": "Deliberately picked a bug report with no cross-references, to isolate plain single-document retrieval from relational retrieval."
   },
   {
+    "question": "What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?",
+    "requires_docs": ["BUG-1023"],
+    "type": "single_doc_factual",
+    "notes": "Phase 6 addition: a second standalone-bug single_doc_factual question, picked to include a report with editorializing severity language in its own text ('HIGH severity -- real money impact'), testing whether the system reports content as-is without amplifying it."
+  },
+  {
     "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
-    "requires_docs": [
-      "TC-0301"
-    ],
+    "requires_docs": ["TC-0301"],
     "type": "single_doc_factual",
     "notes": "Picked a test case not explicitly cited by any bug report ID -- worth separately checking whether the system links it to a thematically similar bug anyway, since that would be inference beyond what the reference graph supports."
+  },
+  {
+    "question": "What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?",
+    "requires_docs": ["TC-0302"],
+    "type": "single_doc_factual",
+    "notes": "Phase 6 addition: the second (and, in the current corpus, last) standalone test case."
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?",
+    "requires_docs": ["BUG-1013"],
+    "type": "dangling_reference_citation",
+    "notes": "Phase 6 addition. BUG-1013 cites TC-0209, which was never ingested (document_references.target_document_id IS NULL). Correct answer states the citation exists but TC-0209 is not present in the corpus -- fails if the system either omits the citation entirely or fabricates TC-0209's contents. This is the specific case phase-05-handoff.md flagged as designed but never tested end-to-end through /generate."
+  },
+  {
+    "question": "What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?",
+    "requires_docs": ["BUG-1017"],
+    "type": "resolution_in_narrative",
+    "notes": "Phase 6 addition. BUG-1017 has no dedicated resolution field (schema.sql has none), but its description contains the actual fix in prose ('Fix deployed using cursor-based pagination... Verified with 12000-row export'). Fails if the system wrongly emits Rule 2's abstention sentence ('the retrieved documents do not state a resolution') for a bug that does document one, just not in a separate column."
   }
 ]
