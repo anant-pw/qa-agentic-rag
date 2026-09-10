@@ -34,9 +34,13 @@ import argparse
 import json
 import os
 import re
+import time
 
 import httpx
 import psycopg2
+
+EVAL_BASE_URL = os.environ.get("EVAL_BASE_URL", "http://localhost:8000")
+EVAL_REQUEST_TIMEOUT = float(os.environ.get("EVAL_REQUEST_TIMEOUT", "6000"))
 
 
 def _pg_connect():
@@ -71,7 +75,7 @@ def call_generate(base_url: str, question: str, requires_docs, doc_type=None, mo
         payload["module"] = module
     if status:
         payload["status"] = status
-    resp = httpx.post(f"{base_url}/generate", json=payload, timeout=600)
+    resp = httpx.post(f"{base_url}/generate", json=payload, timeout=EVAL_REQUEST_TIMEOUT)
     resp.raise_for_status()
     full = resp.text
     if "---SOURCES---" in full:
@@ -258,7 +262,14 @@ def run(base_url: str, seed_path: str):
     conn = _pg_connect()
     results = []
     try:
-        for q in questions:
+        total_questions = len(questions)
+        for question_number, q in enumerate(questions, start=1):
+            question_started = time.perf_counter()
+            print(
+                f"[{question_number}/{total_questions}] START ({q['type']}): "
+                f"{q['question']}",
+                flush=True,
+            )
             qtype = q["type"]
             checker = CHECKERS.get(qtype)
             if checker is None:
@@ -277,6 +288,11 @@ def run(base_url: str, seed_path: str):
                     "answer": answer,
                     "sources": sources,
                 })
+                print(
+                    f"[{question_number}/{total_questions}] DONE "
+                    f"MANUAL_REQUIRED in {time.perf_counter() - question_started:.1f}s",
+                    flush=True,
+                )
                 continue
             if qtype == "structured_filter":
                 module, status = _parse_module_status(q["question"])
@@ -291,6 +307,12 @@ def run(base_url: str, seed_path: str):
                 "answer": answer,
                 "sources": sources,
             })
+            print(
+                f"[{question_number}/{total_questions}] DONE "
+                f"{'PASS' if passed else 'FAIL'} in "
+                f"{time.perf_counter() - question_started:.1f}s",
+                flush=True,
+            )
     finally:
         conn.close()
 
@@ -312,7 +334,7 @@ def run(base_url: str, seed_path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base-url", default="http://localhost:8000")
+    parser.add_argument("--base-url", default=EVAL_BASE_URL)
     parser.add_argument("--seed-path", default="eval/eval_seed.json")
     args = parser.parse_args()
     run(args.base_url, args.seed_path)

@@ -57,6 +57,7 @@ from app.search.service import get_client, hybrid_search
 from app.generation.context import fetch_structured_fields, fetch_references
 from app.generation.prompt import build_messages, format_doc_context, SYSTEM_PROMPT
 from app.generation.llm import stream_chat
+from app.config import settings
 
 
 logging.basicConfig(
@@ -124,9 +125,9 @@ def build_real_context(question: str, pg_host, pg_port, pg_db, pg_user, pg_passw
 
 
 def call_groq(messages: list[dict]) -> str:
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = settings.groq_api_key
     if not api_key:
-        raise RuntimeError("GROQ_API_KEY not set in environment")
+        raise RuntimeError("GROQ_API_KEY is missing from .env or the process environment")
 
     start_time = time.perf_counter()
     try:

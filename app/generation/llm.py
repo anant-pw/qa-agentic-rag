@@ -34,9 +34,7 @@ import logging
 import time
 
 import requests
-
-CHAT_MODEL = "gpt-oss:20b"
-GENERATION_TEMPERATURE = 0.1
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +51,9 @@ def stream_chat(
     messages: list[dict],
     host: str,
     port: int,
-    model: str = CHAT_MODEL,
-    timeout: float = 600.0,  # 10 minutes; reasoning models can be slow
-    temperature: float = GENERATION_TEMPERATURE,
+    model: str | None = None,
+    timeout: float | None = None,
+    temperature: float | None = None,
     log_stats: bool = True,
     think: bool | None = None,
     keep_alive: str | None = None,
@@ -89,6 +87,9 @@ def stream_chat(
     the field is simply omitted from the request payload for those, not
     sent as a no-op, since an unrecognized field being silently ignored
     by every model was an assumption worth not relying on."""
+    model = settings.ollama_chat_model if model is None else model
+    timeout = settings.ollama_chat_timeout if timeout is None else timeout
+    temperature = settings.ollama_temperature if temperature is None else temperature
     url = f"http://{host}:{port}/api/chat"
 
     start_time = time.perf_counter()
@@ -112,7 +113,7 @@ def stream_chat(
             url,
             json=payload,
             stream=True,
-            timeout=(10.0, timeout),  # (connect_timeout, read_timeout)
+            timeout=(settings.ollama_connect_timeout, timeout),
         )
         resp.raise_for_status()
 

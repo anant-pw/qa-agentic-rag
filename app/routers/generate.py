@@ -59,10 +59,6 @@ from app.observability.logger import log_generation_event, timed_span
 
 router = APIRouter()
 
-RETRIEVAL_SIZE = 10   # requested from hybrid_search() -- see module docstring
-CONTEXT_TOP_N = 5     # actually fed into the prompt, after fusion
-
-
 class GenerateRequest(BaseModel):
     question: str
     doc_type: str | None = None
@@ -82,7 +78,7 @@ def _get_pg_connection():
         user=settings.postgres_user,
         password=settings.postgres_password,
         dbname=settings.postgres_db,
-        connect_timeout=5,
+        connect_timeout=settings.postgres_connect_timeout,
     )
 
 
@@ -124,9 +120,9 @@ def generate(req: GenerateRequest):
             doc_type=req.doc_type,
             module=req.module,
             status=req.status,
-            size=RETRIEVAL_SIZE,
+            size=settings.retrieval_size,
         )
-        top_hits = hits[:CONTEXT_TOP_N]
+        top_hits = hits[:settings.context_top_n]
         retrieval_span["doc_ids"] = [h["external_id"] for h in top_hits]
         retrieval_span["scores"] = [h["rrf_score"] for h in top_hits]
 
@@ -165,7 +161,16 @@ def generate(req: GenerateRequest):
         gen_span = {}
         gen_start = time.time()
         try:
-            for content, maybe_done_chunk in stream_chat(messages, settings.ollama_host, settings.ollama_port, model=settings.ollama_chat_model):
+            for content, maybe_done_chunk in stream_chat(
+                messages,
+                settings.ollama_host,
+                settings.ollama_port,
+                model=settings.ollama_chat_model,
+                timeout=settings.ollama_chat_timeout,
+                temperature=settings.ollama_temperature,
+                think=settings.ollama_think,
+                keep_alive=settings.ollama_keep_alive,
+            ):
                 accumulated.append(content)
                 yield content
         except GenerationError as e:

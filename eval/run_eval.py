@@ -40,7 +40,7 @@ def run(base_url: str, endpoint: str, seed: list[dict], size: int = 10) -> list[
     for q in seed:
         if q["type"] == "structured_filter":
             continue
-        resp = httpx.get(f"{base_url}{endpoint}", params={"q": q["question"], "size": size}, timeout=300)
+        resp = httpx.get(f"{base_url}{endpoint}", params={"q": q["question"], "size": size}, timeout=3000)
         resp.raise_for_status()
         hits = [r["external_id"].upper() for r in resp.json()["results"]]
         gold = set(q["requires_docs"])

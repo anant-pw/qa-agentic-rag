@@ -4,7 +4,7 @@
     "type": "cross_reference_bug_to_test_case",
     "result": "PASS",
     "detail": "contains required source and target IDs",
-    "answer": "The test case TC\u20110142 (referenced by BUG\u20111001) specifies that after three failed login attempts the account should be locked.  \n- Step\u202f4 (immediate retry with the correct password) must fail and return a clear lock\u2011out message, **not** a generic authentication error.  \n- After the defined 5\u2011minute cooldown period, step\u202f6 (retry with the correct password) must succeed.  \n\n(Source: TC\u20110142)",
+    "answer": "The expected result of the test case referenced in bug report BUG-1001 is described in TC-0142. According to TC-0142, after 3 failed login attempts, the account should be locked, and the 4th attempt with the correct password should fail, returning a clear lockout message (not a generic auth error). After a 5-minute cooldown period, the login attempt with the correct password should succeed. (Source: TC-0142)",
     "sources": [
       {
         "external_id": "BUG-1001",
@@ -48,7 +48,7 @@
     "type": "cross_reference_bug_to_test_case",
     "result": "PASS",
     "detail": "contains required source and target IDs",
-    "answer": "The test case cited by BUG\u20111002 is **TC\u20110142**.  \nIts expected result is:\n\n* After three failed login attempts the account is locked.  \n* A subsequent attempt with the correct password (step\u202f4) must still fail, returning a clear lock\u2011out message (not a generic authentication error).  \n* After the defined 5\u2011minute cooldown period (step\u202f5), a login attempt with the correct password (step\u202f6) must succeed.  \n\n(Source: TC\u20110142)",
+    "answer": "The expected result of the test case referenced in bug report BUG-1002 is described in TC-0142. According to TC-0142, after 3 failed login attempts, the account should be locked, and any subsequent login attempt with the correct password should fail, returning a clear lockout message (not a generic authentication error). After a 5-minute cooldown period, a login attempt with the correct password should succeed.\n\n(Source: TC-0142)",
     "sources": [
       {
         "external_id": "BUG-1002",
@@ -92,7 +92,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Yes.  \n- **Duplicate of:** BUG\u20111001 (Login fails after 3 attempts even with correct password).  \n- **Affected module:** Login.  \n\n(Source: BUG\u20111002\u2019s recorded cross\u2011references.)",
+    "answer": "Bug report BUG-1002 is a duplicate of BUG-1001. Both affect the \"Login\" module. This is confirmed by the recorded cross-reference stating \"BUG-1002 is a duplicate of BUG-1001\" (Source: BUG-1002).",
     "sources": [
       {
         "external_id": "BUG-1002",
@@ -136,7 +136,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Yes.  \nBUG\u20111011 is recorded as a duplicate of BUG\u20111006 (see the \u201cRecorded cross\u2011references\u201d line). BUG\u20111006 is in the **Notifications** module and its status is \u201cIn Progress\u201d (i.e., still open).  \n\nSource: BUG\u20111011 and BUG\u20111006 documents.",
+    "answer": "Yes, bug report BUG-1011 (Duplicate notification bug) is a duplicate of another ticket. It is a duplicate of BUG-1006, which affects the Notifications module. This relationship is explicitly recorded in the cross-references. (Source: BUG-1011)",
     "sources": [
       {
         "external_id": "BUG-1011",
@@ -180,7 +180,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Yes.  BUG\u20111024 is recorded as a duplicate of BUG\u20111001 (and also of BUG\u20111002).  Both of those tickets are open and belong to the **Login** module.  (Source: BUG\u20111024 cross\u2011references)",
+    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. The module affected by these bugs is \"Login.\" This information is confirmed by the recorded cross-references in the retrieved documents:\n\n- BUG-1024 is a duplicate of BUG-1001 (Source: BUG-1024)\n- BUG-1024 is a duplicate of BUG-1002 (Source: BUG-1024)\n\nBoth BUG-1001 and BUG-1002 are related to the \"Login\" module (Source: BUG-1001, BUG-1002).",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -224,7 +224,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Yes.  \n- **Duplicate of:** BUG\u20111001 (also a duplicate of BUG\u20111002).  \n- **Module affected:** Login.  \n\n(Source: BUG\u20111024 and BUG\u20111001)",
+    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. The module affected is \"Login.\" This information is confirmed by the recorded cross-references in the documents:\n\n- BUG-1024 is a duplicate of BUG-1001 (Source: BUG-1024)\n- BUG-1024 is a duplicate of BUG-1002 (Source: BUG-1024)\n\nBoth BUG-1001 and BUG-1002 are related to the \"Login\" module (Source: BUG-1001, BUG-1002).",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -268,7 +268,7 @@
     "type": "related_resolution",
     "result": "PASS",
     "detail": "contains required IDs, no unqualified duplicate claim",
-    "answer": "Yes.  \n- **BUG\u20111017** is recorded as **related to (NOT a duplicate of) BUG\u20111007** (see the \u201cRecorded cross\u2011references\u201d section of BUG\u20111017).  \n- The description of BUG\u20111017 also states it is a \u201cfollow\u2011up to BUG\u20111007.\u201d  \n\nThus BUG\u20111017 is connected to BUG\u20111007, but it is not a duplicate; it is a follow\u2011up/related ticket. (Source: BUG\u20111017)",
+    "answer": "Bug report BUG-1017 is connected to another ticket, specifically BUG-1007. According to the \"Recorded cross-references\" line, BUG-1017 is related to (NOT a duplicate of) BUG-1007. This indicates that BUG-1017 is a follow-up or resolution to BUG-1007, rather than a duplicate. (Source: BUG-1017)",
     "sources": [
       {
         "external_id": "BUG-1017",
@@ -312,7 +312,7 @@
     "type": "error_code_aggregation",
     "result": "PASS",
     "detail": "contains all IDs in the error-code group",
-    "answer": "The bug reports that mention **ERR_401_UNAUTH** are:\n\n| Bug ID | Module | Status |\n|--------|--------|--------|\n| **BUG\u20111024** | Login | Reopened |\n| **BUG\u20111001** | Login | Open |\n| **BUG\u20111015** | Checkout | In Progress |\n\n**Relationship between them**\n\n- **BUG\u20111024** is recorded as a duplicate of **BUG\u20111001** (see the \u201cRecorded cross\u2011references\u201d section).  \n- No cross\u2011reference is recorded between **BUG\u20111015** and either of the other two bugs, so it appears unrelated to them.\n\nThus, the only related pair among the ERR_401_UNAUTH bugs is BUG\u20111024 and BUG\u20111001. BUG\u20111015 stands alone.",
+    "answer": "The following bug reports are associated with the error code ERR_401_UNAUTH:\n\n1. **[BUG-1024]**: This bug report mentions the same lockout/ERR_401_UNAUTH pattern as BUG-1001 and BUG-1002. (Source: BUG-1024)\n\n2. **[BUG-1001]**: This bug report describes a situation where, after exactly 3 failed login attempts, the account gets locked, and on the 4th attempt with the correct password, login still fails with ERR_401_UNAUTH. (Source: BUG-1001)\n\n3. **[BUG-1015]**: This bug report involves a session token expiring mid-checkout, resulting in a submission failure with ERR_401_UNAUTH. (Source: BUG-1015)\n\nRegarding relationships between these bug reports:\n\n- **[BUG-1024]** is a duplicate of **[BUG-1001]** and **[BUG-1002]**. (Source: BUG-1024)\n- **[BUG-1001]** is a duplicate of **[BUG-1024]** and **[BUG-1002]**. (Source: BUG-1001)\n\nThus, **[BUG-1024]** and **[BUG-1001]** are duplicates of each other, and both are duplicates of **[BUG-1002]**. This indicates a relationship between these three bug reports. There is no recorded relationship between **[BUG-1015]** and the other ERR_401_UNAUTH-related bug reports.",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -356,7 +356,7 @@
     "type": "error_code_aggregation",
     "result": "PASS",
     "detail": "contains all IDs in the error-code group",
-    "answer": "The bug reports that mention **ERR_403_FORBIDDEN** are:\n\n- **BUG\u20111012** \u2013 \u201cUsers with \u2018sub\u2011admin\u2019 role get ERR_403_FORBIDDEN when attempting export.\u201d\n- **BUG\u20111019** \u2013 \u201cAccounts linked via SSO show the change\u2011password form and fail with ERR_403_FORBIDDEN on submit.\u201d\n\nThere is no recorded cross\u2011reference indicating that BUG\u20111012 and BUG\u20111019 are duplicates or otherwise related. They are listed as separate, unrelated bugs.",
+    "answer": "The bug reports associated with ERR_403_FORBIDDEN are:\n\n1. **[BUG-1012]**: Admin export ERR_403_FORBIDDEN for sub-admin roles (module=Admin, status=Open)\n   - Description: Users with 'sub-admin' role get ERR_403_FORBIDDEN when attempting export, despite having export permission set to true in the DB. This issue may be due to permission check logic not matching the DB schema after a roles migration.\n\n2. **[BUG-1019]**: ERR_403_FORBIDDEN on password change for SSO-linked accounts (module=Login, status=Open)\n   - Description: Accounts linked via SSO show a password change form and fail with ERR_403_FORBIDDEN on submit, instead of hiding the option. This is identified as a UX issue rather than a security bug.\n\nRegarding relationships, there are no recorded cross-references indicating that these two bug reports are related to each other. Therefore, based on the retrieved documents, they do not appear to be related. \n\nIn summary, the bug reports associated with ERR_403_FORBIDDEN are BUG-1012 and BUG-1019, and they do not have any recorded relationship with each other.",
     "sources": [
       {
         "external_id": "BUG-1012",
@@ -400,7 +400,7 @@
     "type": "structured_filter",
     "result": "PASS",
     "detail": "answer contains the correct live count (4)",
-    "answer": "There are **4** bugs that are currently Open in the Login module (BUG-1001, BUG-1002, BUG-1019, BUG-1008).",
+    "answer": "The retrieved documents list the following bugs in the Login module with an \"Open\" status:\n\n1. [BUG-1001] Login fails after 3 attempts even with correct password\n2. [BUG-1002] Account lockout not clearing after correct password entry\n3. [BUG-1019] ERR_403_FORBIDDEN on password change for SSO-linked accounts\n4. [BUG-1008] Password reset email delayed by up to 20 minutes\n\nThere are 4 bugs currently open in the Login module.",
     "sources": [
       {
         "external_id": "BUG-1001",
@@ -437,7 +437,7 @@
     "type": "structured_filter",
     "result": "PASS",
     "detail": "answer contains the correct live count (3)",
-    "answer": "There are **3** bugs currently Open in the Payments module (BUG-1023, BUG-1013, BUG-1004).",
+    "answer": "There are three bugs currently open in the Payments module, as identified in the retrieved documents:\n\n1. [BUG-1023] Payment retry after decline charges card twice\n2. [BUG-1013] Payment form accepts expired card without client-side warning\n3. [BUG-1004] Payment declined shows generic error instead of decline reason\n\nThe number of open bugs in the Payments module is 3. (Source: BUG-1023, BUG-1013, BUG-1004)",
     "sources": [
       {
         "external_id": "BUG-1023",
@@ -467,7 +467,7 @@
     "type": "single_doc_factual",
     "result": "MANUAL_REQUIRED",
     "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
-    "answer": "**Steps to reproduce BUG\u20111003 (Checkout page times out on slow connections)**  \n(Source: BUG\u20111003)\n\n1. Throttle the network to a Slow 3G connection.  \n2. Add an item to the cart.  \n3. Proceed to checkout.  \n4. Submit the payment form.  \n5. Wait 30\u202fseconds \u2192 the page returns an **ERR_504_TIMEOUT**.",
+    "answer": "The steps to reproduce BUG-1003 (Checkout page times out on slow connections) are as follows:\n\n1. Throttle network to Slow 3G.\n2. Add an item to the cart.\n3. Proceed to checkout.\n4. Submit the payment form.\n5. Wait 30 seconds, which results in an ERR_504_TIMEOUT error.\n\n(Source: BUG-1003)",
     "sources": [
       {
         "external_id": "BUG-1003",
@@ -511,7 +511,7 @@
     "type": "single_doc_factual",
     "result": "MANUAL_REQUIRED",
     "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
-    "answer": "**Steps to reproduce BUG\u20111023 (Payment retry after decline charges card twice)**  \n(From BUG\u20111023)\n\n1. Use a card that gets declined then approved on retry (the test processor supports this scenario).  \n2. Submit the payment \u2013 it will be declined.  \n3. Click **Retry** immediately after the decline.  \n4. Check the processor dashboard to verify whether a duplicate charge has been created.",
+    "answer": "The steps to reproduce BUG-1023 (Payment retry after decline charges card twice) are as follows:\n\n1. Use a card that gets declined then approved on retry (test processor supports this).\n2. Submit payment (declines).\n3. Click Retry immediately.\n4. Check processor dashboard for duplicate charge.\n\n(Source: BUG-1023)",
     "sources": [
       {
         "external_id": "BUG-1023",
@@ -555,7 +555,7 @@
     "type": "single_doc_factual",
     "result": "MANUAL_REQUIRED",
     "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
-    "answer": "The preconditions for TC\u20110301 are:  \n- The product catalog must contain items that include both the \u201cwifi\u201d and the \u201cwi\u2011fi\u201d spellings in their titles or descriptions. (Source: TC\u20110301)",
+    "answer": "The preconditions for TC-0301 (Search tokenization consistency for hyphenated terms) are that the product catalog contains items with both 'wifi' and 'wi-fi' spellings in titles or descriptions. (Source: TC-0301)",
     "sources": [
       {
         "external_id": "TC-0301",
@@ -599,7 +599,7 @@
     "type": "single_doc_factual",
     "result": "MANUAL_REQUIRED",
     "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
-    "answer": "The preconditions for **TC-0302** are:\n\n- A product with a known unique SKU exists in the catalog, **along with other products with similar text descriptions**. (Source: TC-0302)",
+    "answer": "The preconditions for TC-0302 (Exact SKU match ranks first in search results) are:\n\n1. A product with a known unique SKU exists in the catalog.\n2. There are other products with similar text descriptions.\n\n(Document ID: TC-0302)",
     "sources": [
       {
         "external_id": "TC-0302",
@@ -643,7 +643,7 @@
     "type": "dangling_reference_citation",
     "result": "PASS",
     "detail": "mentions TC-0209 and states it is not in the corpus",
-    "answer": "BUG-1013 cites TC\u20110209, but TC\u20110209 is not present in the retrieved corpus.",
+    "answer": "The retrieved documents do not address this question. The test case TC-0209, which is cited in the bug report BUG-1013, is not present in the corpus. Therefore, the expected result of the test case referenced in BUG-1013 cannot be determined from the provided documents. (Source: BUG-1013)",
     "sources": [
       {
         "external_id": "BUG-1013",
@@ -686,8 +686,8 @@
     "question": "What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?",
     "type": "resolution_in_narrative",
     "result": "PASS",
-    "detail": "no wrongful abstention, 10 shared content words with real description",
-    "answer": "The fix for BUG\u20111017 was to replace the in\u2011memory export logic with **cursor\u2011based pagination** in the export query. This change prevented the entire dataset from being loaded into memory and was verified by running a 12,000\u2011row export in staging. (Source: BUG\u20111017)",
+    "detail": "no wrongful abstention, 13 shared content words with real description",
+    "answer": "The fix for BUG-1017 was to deploy cursor-based pagination in the export query to address the issue of the export job loading the entire dataset into memory instead of streaming/paginating. This fix was verified with a 12,000-row export in staging. (Source: BUG-1017)",
     "sources": [
       {
         "external_id": "BUG-1017",

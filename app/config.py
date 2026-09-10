@@ -1,7 +1,9 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
     postgres_host: str = "postgres"
     postgres_port: int = 5432
     postgres_user: str = "rag_user"
@@ -16,12 +18,19 @@ class Settings(BaseSettings):
     ollama_host: str = "host.docker.internal"
     ollama_port: int = 11434
     ollama_keep_alive: str = "24h"
-    # Phase 6 addition: was hardcoded as CHAT_MODEL in llm.py, which meant
-    # comparing models required a code edit instead of a config change.
-    # Exposed here so a swap is one env var, matching how every other
-    # infra choice in this project is already settings-driven.
-    ollama_chat_model: str = "gpt-oss:20b"
-    
+    ollama_chat_model: str
+    ollama_temperature: float
+    ollama_think: bool
+    ollama_connect_timeout: float
+    ollama_chat_timeout: float
+    ollama_embedding_model: str
+    ollama_embedding_dimension: int
+    ollama_embedding_timeout: float
+
+    retrieval_size: int
+    context_top_n: int
+    postgres_connect_timeout: int
+    groq_api_key: str | None = None
 
     # Phase 6: Redis response cache for /generate. Containerized (unlike
     # Ollama) since there's no GPU/acceleration reason to run it natively,
@@ -30,9 +39,5 @@ class Settings(BaseSettings):
     # app/generation/cache.py and app/observability/logger.py docstrings).
     redis_host: str = "redis"
     redis_port: int = 6379
-
-    class Config:
-        env_file = ".env"
-
 
 settings = Settings()

@@ -25,9 +25,10 @@ convention keeps one HTTP client pattern in the codebase instead of two.
 """
 
 import httpx
+from app.config import settings
 
-EMBEDDING_MODEL = "nomic-embed-text"
-EMBEDDING_DIMENSION = 768  # confirmed via `ollama show nomic-embed-text`; a
+EMBEDDING_MODEL = settings.ollama_embedding_model
+EMBEDDING_DIMENSION = settings.ollama_embedding_dimension  # confirmed via the configured model; a
 # mismatch between this constant and the model actually installed will
 # surface as an OpenSearch bulk-index error (vector dimension mismatch),
 # not a silent failure -- see indexer.py's rebuild_index() count check,
@@ -47,13 +48,13 @@ class EmbeddingError(Exception):
     error."""
 
 
-def _embed(text: str, host: str, port: int, timeout: float = 30.0) -> list[float]:
+def _embed(text: str, host: str, port: int, timeout: float | None = None) -> list[float]:
     url = f"http://{host}:{port}/api/embed"
     try:
         resp = httpx.post(
             url,
             json={"model": EMBEDDING_MODEL, "input": text},
-            timeout=timeout,
+            timeout=settings.ollama_embedding_timeout if timeout is None else timeout,
         )
         resp.raise_for_status()
     except httpx.HTTPError as e:
