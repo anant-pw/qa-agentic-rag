@@ -54,7 +54,7 @@ def _pg_connect():
     )
 
 
-def call_generate(base_url: str, question: str, requires_docs, doc_type=None, module=None, status=None) -> tuple[str, list[dict]]:
+def call_generate(base_url: str, endpoint_path: str, question: str, requires_docs, doc_type=None, module=None, status=None) -> tuple[str, list[dict]]:
     """POSTs to /generate with no_cache=true, splits the streamed response
     on the ---SOURCES--- marker (app/routers/generate.py's fixed contract),
     returns (answer_text, sources_list).
@@ -75,7 +75,7 @@ def call_generate(base_url: str, question: str, requires_docs, doc_type=None, mo
         payload["module"] = module
     if status:
         payload["status"] = status
-    resp = httpx.post(f"{base_url}/generate", json=payload, timeout=EVAL_REQUEST_TIMEOUT)
+    resp = httpx.post(f"{base_url}{endpoint_path}", json=payload, timeout=EVAL_REQUEST_TIMEOUT)
     resp.raise_for_status()
     full = resp.text
     if "---SOURCES---" in full:
@@ -241,6 +241,29 @@ def check_structured_filter(question: dict, answer: str, conn) -> tuple[bool, st
         return False, f"expected count {real_count} not found in answer text"
     return True, f"answer contains the correct live count ({real_count})"
 
+def check_out_of_domain(question: dict, answer: str, conn) -> tuple[bool, str]:
+        """PASS means the answer did not cite a real document ID and reads
+        like a rejection, not a fabricated answer. This check is only
+        meaningful against an endpoint that HAS a guardrail. Run against
+        plain /generate, this is EXPECTED to FAIL -- /generate has no
+        mechanism to refuse an out-of-scope question at all. That's not a
+        bug in this checker; it's the documented reason the guardrail was
+        built in the first place. A FAIL here on /generate is not alarming.
+        A FAIL here on /generate/agentic is.
+        """
+        id_pattern = re.compile(r"\b(BUG|TC)-\d{4}\b")
+        if id_pattern.search(_normalize_dashes(answer)):
+            return False, "answer cites a real document ID for a question that should have been rejected"
+        reject_phrases = [
+            "doesn't appear to be about", "does not appear to be about",
+            "out of scope", "cannot answer", "no answer was generated",
+        ]
+        if not any(p in answer.lower() for p in reject_phrases):
+            return False, "answer does not read like a rejection -- check manually, may be a generic non-answer rather than a real reject"
+        return True, "correctly rejected, no document ID cited"
+
+
+
 
 CHECKERS = {
     "duplicate_resolution": check_duplicate_resolution,
@@ -250,12 +273,14 @@ CHECKERS = {
     "resolution_in_narrative": check_resolution_in_narrative,
     "error_code_aggregation": check_error_code_aggregation,
     "structured_filter": check_structured_filter,
+    "out_of_domain": check_out_of_domain,
+
     # single_doc_factual deliberately absent -- no structured ground truth
     # to check against. See eval/manual_eval_log.py.
 }
 
 
-def run(base_url: str, seed_path: str):
+def run(base_url: str, seed_path: str, endpoint_path: str = "/generate"):
     with open(seed_path) as f:
         questions = json.load(f)
 
@@ -280,7 +305,7 @@ def run(base_url: str, seed_path: str):
                 # to read. Now fetches the real answer/sources like every
                 # other question type; only the deterministic check is
                 # skipped, not the generation call itself.
-                answer, sources = call_generate(base_url, q["question"], q["requires_docs"])
+                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
                 results.append({
                     "question": q["question"], "type": qtype,
                     "result": "MANUAL_REQUIRED",
@@ -296,9 +321,9 @@ def run(base_url: str, seed_path: str):
                 continue
             if qtype == "structured_filter":
                 module, status = _parse_module_status(q["question"])
-                answer, sources = call_generate(base_url, q["question"], q["requires_docs"], module=module, status=status)
+                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"], module=module, status=status)
             else:
-                answer, sources = call_generate(base_url, q["question"], q["requires_docs"])
+                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
             passed, detail = checker(q, answer, conn)
             results.append({
                 "question": q["question"], "type": qtype,
@@ -336,5 +361,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default=EVAL_BASE_URL)
     parser.add_argument("--seed-path", default="eval/eval_seed.json")
+    parser.add_argument("--endpoint-path", default="/generate")
     args = parser.parse_args()
-    run(args.base_url, args.seed_path)
+    run(args.base_url, args.seed_path, args.endpoint_path)

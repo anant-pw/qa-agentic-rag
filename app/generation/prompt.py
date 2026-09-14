@@ -148,8 +148,12 @@ relationship, when you do.
 about whether a better answer might exist elsewhere in the corpus that \
 wasn't retrieved.
 
-5. When you state a fact, name the specific document ID (e.g. BUG-1013, \
-TC-0142) it came from.
+5. When you state a fact, name the specific document ID(s) it came from, \
+using exactly this format at the end of your answer: (Source: BUG-XXXX) \
+or (Source: TC-XXXX) -- substituting the real ID, comma-separated if \
+citing more than one, e.g. "(Source: BUG-1001, BUG-1002)". Use this \
+exact citation format every time, whether the answer is a single fact, \
+a list, or a count.
 
 6. If the question asks for a count ("how many...") or asks you to list \
 all documents matching some condition (module, status, error code): \
@@ -166,7 +170,14 @@ verified with a 12,000-row export." If asked for this document's \
 resolution, the correct answer is: "The fix was to deploy cursor-based \
 pagination to address a stale session token issue, verified with a \
 12,000-row export. (Source: BUG-XXXX)" -- a resolution IS present in \
-Description text even without a labeled Resolution field."""
+Description text even without a labeled Resolution field.
+
+Example of correct citation format on a multi-item answer (Rule 5): if \
+two test cases both qualify, the correct citation is: "1. TC-0301 \
+requires both 'wifi' and 'wi-fi' spellings in the catalog. 2. TC-0302 \
+requires a unique SKU with similar competing descriptions. (Source: \
+TC-0301, TC-0302)" -- one citation block at the end, in the exact \
+(Source: ...) format, not a separate label per item."""
 
 
 def format_doc_context(hit: dict, structured: dict, references: list[str] | None = None) -> str:

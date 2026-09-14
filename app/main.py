@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from app.routers.search import router as search_router
 from app.routers.generate import router as generate_router
 from app.config import settings
+from app.routers.generate_agentic import router as generate_agentic_router
 
 app = FastAPI(title="RAG Infra - Phase 1")
 
@@ -21,6 +22,7 @@ app.include_router(generate_router)  # Phase 5: POST /generate -- see
 # Phase 3 handoff's claim that the router "isn't yet wired in" was
 # already stale before this cleanup (confirmed by reading this file
 # during the Phase 4 readiness check).
+app.include_router(generate_agentic_router)  # Phase 7: POST /generate/agentic
 
 
 def check_postgres() -> dict:

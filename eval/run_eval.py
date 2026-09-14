@@ -38,7 +38,7 @@ def load_seed(path: str = "eval/eval_seed.json") -> list[dict]:
 def run(base_url: str, endpoint: str, seed: list[dict], size: int = 10) -> list[dict]:
     rows = []
     for q in seed:
-        if q["type"] == "structured_filter":
+        if q["type"] in ("structured_filter", "out_of_domain"):
             continue
         resp = httpx.get(f"{base_url}{endpoint}", params={"q": q["question"], "size": size}, timeout=3000)
         resp.raise_for_status()
@@ -91,7 +91,7 @@ def main():
     rows = run(args.base_url, args.endpoint, seed, size=10)
 
     print(f"Endpoint: {args.endpoint}")
-    print(f"Questions scored (ranked-retrieval, structured_filter excluded): {len(rows)}")
+    print(f"Questions scored (ranked-retrieval, structured_filter and out_of_domain excluded): {len(rows)}")
     print(f"Recall@3:  {recall_at_k(rows, 3):.3f}")
     print(f"Recall@5:  {recall_at_k(rows, 5):.3f}")
     print(f"Recall@10: {recall_at_k(rows, 10):.3f}")

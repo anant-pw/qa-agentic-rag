@@ -100,5 +100,23 @@
     "requires_docs": ["BUG-1017"],
     "type": "resolution_in_narrative",
     "notes": "Phase 6 addition. BUG-1017 has no dedicated resolution field (schema.sql has none), but its description contains the actual fix in prose ('Fix deployed using cursor-based pagination... Verified with 12000-row export'). Fails if the system wrongly emits Rule 2's abstention sentence ('the retrieved documents do not state a resolution') for a bug that does document one, just not in a separate column."
-  }
+  },
+  {
+  "question": "What's the weather like today?",
+  "requires_docs": [],
+  "type": "out_of_domain",
+  "notes": "Guardrail regression check. Should be rejected without citing any real document ID. Expected to FAIL against plain /generate (no guardrail exists there) -- that's expected, not a bug. Should PASS against /generate/agentic."
+},
+{
+  "question": "What is the capital of France?",
+  "requires_docs": [],
+  "type": "out_of_domain",
+  "notes": "Same as above."
+},
+{
+  "question": "How do I bake a chocolate cake?",
+  "requires_docs": [],
+  "type": "out_of_domain",
+  "notes": "Same as above."
+}
 ]

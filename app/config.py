@@ -31,7 +31,9 @@ class Settings(BaseSettings):
     context_top_n: int
     postgres_connect_timeout: int
     groq_api_key: str | None = None
-
+    deterministic_count_routing: bool = True
+    vector_score_guardrail_threshold: float = 0.75
+    
     # Phase 6: Redis response cache for /generate. Containerized (unlike
     # Ollama) since there's no GPU/acceleration reason to run it natively,
     # and it's a single lightweight container — not the same local-first
