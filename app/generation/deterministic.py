@@ -31,18 +31,18 @@ now without touching /generate or any other live endpoint.
 
 import re
 
-from app.search.service import search
+from app.search.service import search, count_documents
+
 
 # Corpus was 28 real documents as of Phase 2's ingest (25 bug_report + 3
 # test_case) -- confirmed in phase-02-handoff.md Section 4, unchanged
 # through Phase 6. Set well above that so a filtered COUNT never
 # silently truncates. Revisit if the corpus genuinely grows past this.
-CORPUS_SIZE_CEILING = 100
+MAX_LISTED_IDS = 100
 
 _COUNT_PATTERNS = [
-    r"\bhow many\b",
-    r"\bhow much\b",
-    r"\bcount of\b",
+    r"\bhow many (bugs?|bug reports?|test cases?|documents?)\b",
+    r"\bcount of (bugs?|bug reports?|test cases?|documents?)\b",
 ]
 _LIST_PATTERNS = [
     r"\blist all\b",
@@ -63,25 +63,19 @@ def is_countable_question(question: str) -> bool:
     return any(re.search(p, q) for p in _COUNT_PATTERNS + _LIST_PATTERNS)
 
 
-def answer_countable_question(
-    client, alias: str, doc_type: str | None, module: str | None, status: str | None
-) -> tuple[str, list[dict]]:
-    """Returns (answer_text, sources) built entirely from search() --
-    zero LLM calls, zero hallucination risk on the count itself. Uses
-    CORPUS_SIZE_CEILING (not context_top_n) specifically to get an exact
-    count -- see module docstring.
-    """
-    hits = search(client, alias=alias, doc_type=doc_type, module=module, status=status, size=CORPUS_SIZE_CEILING)
-    ids = [h["external_id"] for h in hits]
-    n = len(ids)
-
+def answer_countable_question(client, alias, doc_type, module, status):
+    n = count_documents(client, alias=alias, doc_type=doc_type, module=module, status=status)
     if n == 0:
-        answer = "No documents match the given filters."
+        return "No documents match the given filters.", []
+
+    hits = search(client, alias=alias, doc_type=doc_type, module=module, status=status,
+                  size=min(n, MAX_LISTED_IDS))
+    ids = [h["external_id"] for h in hits]
+
+    if n > len(ids):
+        answer = f"{n} document(s) match. Showing {len(ids)}: {', '.join(ids)} ({n - len(ids)} more not shown)."
     else:
         answer = f"{n} document(s) match: {', '.join(ids)}."
 
-    sources = [
-        {"external_id": h["external_id"], "title": h["title"], "doc_type": h["doc_type"]}
-        for h in hits
-    ]
+    sources = [{"external_id": h["external_id"], "title": h["title"], "doc_type": h["doc_type"]} for h in hits]
     return answer, sources

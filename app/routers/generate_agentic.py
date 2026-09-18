@@ -145,7 +145,7 @@ def guardrail_and_route(state: AgenticState) -> dict:
             size=settings.retrieval_size,
         )
     top_hits = hits[: settings.context_top_n]
-    top_vector_score = hits[0]["vector_score"] if hits else None
+    top_vector_score = top_vector_score = next((h["vector_score"] for h in hits if h["vector_score"] is not None), None)
 
     retrieval_span["doc_ids"] = [h["external_id"] for h in top_hits]
     retrieval_span["vector_scores"] = [h["vector_score"] for h in top_hits]
@@ -159,7 +159,8 @@ def guardrail_and_route(state: AgenticState) -> dict:
 
     if not is_in_domain(
         top_vector_score,
-        has_explicit_filter=bool(state.get("doc_type") or state.get("module") or state.get("status")),
+        has_explicit_filter=bool(state.get("doc_type") or state.get("module") or state.get("status"))
+        or (settings.deterministic_count_routing and is_countable_question(state["question"])),
     ):
         retrieval_span["path"] = "reject"
         return {

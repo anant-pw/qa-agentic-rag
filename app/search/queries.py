@@ -221,10 +221,7 @@ def build_knn_query(
     knn_clause = {"vector": vector, "k": size}
 
     if not filters:
-        return {
-            "size": size,
-            "query": {"knn": {"chunk_vector": knn_clause}},
-        }
+        return {"size": size, "query": {"knn": {"chunk_vector": knn_clause}}}
 
     return {
         "size": size,

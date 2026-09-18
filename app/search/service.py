@@ -62,6 +62,19 @@ def search(
         for hit in resp["hits"]["hits"]
     ]
 
+def count_documents(
+    client: OpenSearch, alias: str,
+    doc_type: str | None = None, module: str | None = None, status: str | None = None,
+) -> int:
+    """Exact match count via OpenSearch's _count API -- no document bodies
+    fetched, no `size` cap involved. Reuses build_search_query()'s filter
+    logic (q=None -> match_all + filter); search() itself is untouched,
+    per its own Phase 3 freeze note above."""
+    body = build_search_query(q=None, doc_type=doc_type, module=module, status=status)
+    resp = client.count(index=alias, body={"query": body["query"]})
+    return resp["count"]
+
+
 
 def hybrid_search(
     client: OpenSearch,
@@ -97,7 +110,17 @@ def hybrid_search(
     bm25_results = [_shape_hit(h) for h in bm25_resp["hits"]["hits"]]
 
     query_vector = embed_query(q, ollama_host, ollama_port)
-    knn_body = build_knn_query(query_vector, doc_type=doc_type, module=module, status=status, size=size)
+    # nmslib has no native filtered k-NN (no `filter` clause inside knn) --
+    # confirmed via mapping.py's engine setting. A narrow module/status
+    # filter combined with an unfiltered top-`size` ANN pool can post-filter
+    # to zero real hits even when matching documents exist (Payments+Open:
+    # 3 real documents, still saw vector_score=None for all of them).
+    # Oversample the raw candidate pool before the post-filter, per this
+    # function's own note above -- cheap at 173 documents, revisit the
+    # multiplier/cap if the corpus grows into the thousands.
+    knn_candidate_size = min(size * 10, 150)
+    knn_body = build_knn_query(query_vector, doc_type=doc_type, module=module, status=status, size=knn_candidate_size)
+    #knn_body = build_knn_query(query_vector, doc_type=doc_type, module=module, status=status, size=size)
     vector_resp = client.search(index=alias, body=knn_body)
     vector_results = [_shape_hit(h) for h in vector_resp["hits"]["hits"]]
 

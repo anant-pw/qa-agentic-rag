@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from app.routers.search import router as search_router
 from app.routers.generate import router as generate_router
+from fastapi.responses import FileResponse
 from app.config import settings
 from app.routers.generate_agentic import router as generate_agentic_router
 
@@ -83,3 +84,7 @@ def health():
         "services": checks,
     }
     return JSONResponse(status_code=200 if all_healthy else 503, content=payload)
+
+@app.get("/ui")
+def ui():
+    return FileResponse("app/static/index.html")

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA Corpus — Ask</title>
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --ink: #1B1F23;
+    --ink-soft: #565B61;
+    --border: #E2E0DB;
+    --accent: #3457D5;
+    --accent-ink: #FFFFFF;
+    --status-open: #B54708;
+    --status-progress: #946800;
+    --status-closed: #1E7F4F;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .sub {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin: 0 0 32px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 14px;
+    font-family: var(--sans);
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    resize: vertical;
+  }
+  textarea:focus, select:focus, input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  select, .row label {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  select {
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: #fff;
+    font-family: var(--sans);
+  }
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  button {
+    align-self: flex-start;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--sans);
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  #status {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    display: none;
+  }
+  #status.active { display: block; }
+  #result { margin-top: 32px; }
+  #answer {
+    white-space: pre-wrap;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  #sources {
+    margin-top: 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  #sources h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  .source {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .source:last-child { border-bottom: none; }
+  .source .id {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    flex-shrink: 0;
+    min-width: 76px;
+  }
+  .source .title { color: var(--ink); }
+  .source .meta {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  #error {
+    display: none;
+    margin-top: 24px;
+    padding: 12px 14px;
+    border: 1px solid var(--status-open);
+    border-radius: 6px;
+    color: var(--status-open);
+    font-size: 0.9rem;
+  }
+  #error.active { display: block; }
+    #latency {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    font-family: var(--mono);
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ask the QA corpus</h1>
+  <p class="sub">Bug reports and test cases, answered from real retrieved documents only.</p>
+
+  <form id="askForm">
+    <textarea id="question" placeholder="e.g. How many bugs are currently Open in the Login module?" required></textarea>
+    <div class="row">
+      <label>Endpoint
+        <select id="endpoint">
+          <option value="/generate/agentic" selected>/generate/agentic (guardrail + router)</option>
+          <option value="/generate">/generate (baseline, no guardrail)</option>
+        </select>
+      </label>
+      <label>Type
+        <select id="docType">
+          <option value="">any</option>
+          <option value="bug_report">bug_report</option>
+          <option value="test_case">test_case</option>
+        </select>
+      </label>
+      <label>Module
+        <select id="module">
+          <option value="">any</option>
+          <option>Login</option><option>Payments</option><option>Checkout</option>
+          <option>Search</option><option>Notifications</option><option>Admin</option>
+          <option>Profile</option><option>Cart</option><option>Reports</option><option>API</option>
+        </select>
+      </label>
+      <label>Status
+        <select id="statusFilter">
+          <option value="">any</option>
+          <option>Open</option><option>In Progress</option><option>Closed</option><option>Resolved</option>
+        </select>
+      </label>
+      <span class="checkbox-row">
+        <input type="checkbox" id="noCache">
+        <label for="noCache">no_cache</label>
+      </span>
+    </div>
+    <button type="submit" id="submitBtn">Ask</button>
+  </form>
+
+  <div id="status"></div>
+  <div id="error"></div>
+  <div id="latency"></div>
+
+  <div id="result" style="display:none">
+    <div id="answer"></div>
+    <div id="sources" style="display:none">
+      <h2>Sources</h2>
+      <div id="sourceList"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const form = document.getElementById('askForm');
+const latencyEl = document.getElementById('latency');
+const submitBtn = document.getElementById('submitBtn');
+const statusEl = document.getElementById('status');
+const errorEl = document.getElementById('error');
+const resultEl = document.getElementById('result');
+const answerEl = document.getElementById('answer');
+const sourcesEl = document.getElementById('sources');
+const sourceListEl = document.getElementById('sourceList');
+
+let timerHandle = null;
+let requestStart = null;
+
+function startTimer() {
+  requestStart = Date.now();
+  statusEl.classList.add('active');
+  timerHandle = setInterval(() => {
+    const s = Math.floor((Date.now() - requestStart) / 1000);
+    statusEl.textContent = `Working... ${s}s (semantic answers on this stack typically take 60-300s -- this is not frozen)`;
+  }, 500);
+}
+
+function formatElapsed(ms) {
+  return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
+}
+
+function stopTimer() {
+  clearInterval(timerHandle);
+  statusEl.classList.remove('active');
+  statusEl.textContent = '';
+}
+
+function statusDotColor(status) {
+  if (!status) return null;
+  const s = status.toLowerCase();
+  if (s === 'open') return 'var(--status-open)';
+  if (s === 'in progress') return 'var(--status-progress)';
+  return 'var(--status-closed)';
+}
+
+function renderSources(sources) {
+  sourceListEl.innerHTML = '';
+  if (!sources || sources.length === 0) {
+    sourcesEl.style.display = 'none';
+    return;
+  }
+  sourcesEl.style.display = 'block';
+  for (const s of sources) {
+    const row = document.createElement('div');
+    row.className = 'source';
+    const metaBits = [];
+    if (s.doc_type) metaBits.push(s.doc_type);
+    if (typeof s.vector_score === 'number') metaBits.push(`v=${s.vector_score.toFixed(3)}`);
+    if (typeof s.rrf_score === 'number') metaBits.push(`rrf=${s.rrf_score.toFixed(4)}`);
+    row.innerHTML = `
+      <span class="id">${s.external_id ?? ''}</span>
+      <span class="title">${s.title ?? ''}</span>
+      <span class="meta">${metaBits.join(' · ')}</span>
+    `;
+    sourceListEl.appendChild(row);
+  }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  errorEl.classList.remove('active');
+  resultEl.style.display = 'none';
+  answerEl.textContent = '';
+  sourceListEl.innerHTML = '';
+  latencyEl.textContent = '';
+  startTimer();
+
+  const endpoint = document.getElementById('endpoint').value;
+  const body = {
+    question: document.getElementById('question').value,
+    no_cache: document.getElementById('noCache').checked,
+  };
+  const docType = document.getElementById('docType').value;
+  const module = document.getElementById('module').value;
+  const statusVal = document.getElementById('statusFilter').value;
+  if (docType) body.doc_type = docType;
+  if (module) body.module = module;
+  if (statusVal) body.status = statusVal;
+
+  try {
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) {
+      throw new Error(`Server returned ${resp.status}`);
+    }
+
+    resultEl.style.display = 'block';
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    const marker = '---SOURCES---';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const markerIdx = buffer.indexOf(marker);
+      if (markerIdx === -1) {
+        answerEl.textContent = buffer;
+      } else {
+        answerEl.textContent = buffer.slice(0, markerIdx).trim();
+      }
+    }
+
+    const markerIdx = buffer.indexOf(marker);
+    if (markerIdx !== -1) {
+      const jsonPart = buffer.slice(markerIdx + marker.length).trim();
+      try {
+        renderSources(JSON.parse(jsonPart));
+      } catch (parseErr) {
+        // Sources block didn't parse -- show the answer anyway, don't
+        // hide a real answer behind a source-rendering failure.
+        sourcesEl.style.display = 'none';
+      }
+    }
+    const elapsed = Date.now() - requestStart;
+    latencyEl.textContent = `⏱ ${formatElapsed(elapsed)}`;
+  } catch (err) {
+    const elapsed = Date.now() - requestStart;
+    latencyEl.textContent = `⏱ ${formatElapsed(elapsed)} (failed)`;
+    errorEl.textContent = `Request failed: ${err.message}. Check that the API is reachable and the stack is running (docker compose ps).`;
+    errorEl.classList.add('active');
+  } finally {
+    stopTimer();
+    submitBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
