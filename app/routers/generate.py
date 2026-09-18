@@ -175,7 +175,12 @@ def generate(req: GenerateRequest):
                 yield content
         except GenerationError as e:
             generation_failed = True
-            yield f"\n\n[GENERATION ERROR: {e}]"
+            print(f"[generation] ERROR: Ollama chat request failed: {e}")
+            yield (
+                "\n\n[This question took too long to answer, or the local model "
+                "is temporarily unreachable. Try a shorter or more specific "
+                "question, or try again in a moment.]"
+            )
 
         gen_span["latency_s"] = round(time.time() - gen_start, 4)
         gen_span["token_count"] = len("".join(accumulated).split())

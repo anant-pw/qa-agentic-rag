@@ -256,7 +256,12 @@ def run_semantic_generate(state: AgenticState) -> dict:
             accumulated.append(content)
     except GenerationError as e:
         generation_failed = True
-        accumulated.append(f"\n\n[GENERATION ERROR: {e}]")
+        print(f"[generation] ERROR: Ollama chat request failed: {e}")
+        accumulated.append(
+            "\n\n[This question took too long to answer, or the local model "
+            "is temporarily unreachable. Try a shorter or more specific "
+            "question, or try again in a moment.]"
+        )
 
     gen_span = {
         "latency_s": round(time.time() - gen_start, 4),
