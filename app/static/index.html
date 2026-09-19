@@ -243,8 +243,9 @@ function startTimer() {
   statusEl.classList.add('active');
   timerHandle = setInterval(() => {
     const s = Math.floor((Date.now() - requestStart) / 1000);
-    statusEl.textContent = `Working... ${s}s (semantic answers on this stack typically take 60-300s -- this is not frozen)`;
-  }, 500);
+    statusEl.textContent = `Working... ${s}s (this local model can take up to 10 minutes on complex questions -- not frozen; it will time out past 600s)`;
+    //statusEl.textContent = `Working... ${s}s (this local model can take up to 10 minutes on complex questions -- not frozen; it will time out and show an error past ${Math.floor(settings_timeout_placeholder)}s)`;
+  }, 600);
 }
 
 function formatElapsed(ms) {
@@ -345,8 +346,8 @@ form.addEventListener('submit', async (e) => {
       try {
         renderSources(JSON.parse(jsonPart));
       } catch (parseErr) {
-        // Sources block didn't parse -- show the answer anyway, don't
-        // hide a real answer behind a source-rendering failure.
+        // Sources block didn't parse -- show the answer anyway, 
+        // dont't hide a real answer behind a source-rendering failure.statusEl.textContent
         sourcesEl.style.display = 'none';
       }
     }

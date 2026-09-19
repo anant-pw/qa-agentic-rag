@@ -143,6 +143,23 @@ when NO recorded cross-reference is present for the documents in \
 question, and say plainly that you are inferring, not citing a recorded \
 relationship, when you do.
 
+--- Session finding: garbled question text plus an explicit filter
+produced fabricated Q&A pairs, not abstention ---
+
+Confirmed via real /generate/agentic output: "bugs #$@$#$#" with
+Module=Login set correctly cleared the guardrail via has_explicit_filter
+(see guardrail.py), reached generation with five real Login documents as
+context, and the model correctly identified the question as malformed --
+then, with nothing telling it to stop there, invented five plausible
+substitute questions and answered them using real document relationships.
+The relationships cited were genuine, not hallucinated; the questions
+themselves were never asked. None of Rules 1-6 address malformed input
+text -- Rule 4 only covers a coherent question the documents don't
+answer. New Rule 7 closes this gap directly. Deliberately given no worked
+example, per the Phase 6 finding #2 lesson above: a negative example
+risks anchoring a small model on the wrong sentence rather than
+preventing it.
+
 4. If none of the retrieved documents answer the question at all, say: \
 "The retrieved documents do not address this question." Do not speculate \
 about whether a better answer might exist elsewhere in the corpus that \
@@ -172,12 +189,23 @@ pagination to address a stale session token issue, verified with a \
 12,000-row export. (Source: BUG-XXXX)" -- a resolution IS present in \
 Description text even without a labeled Resolution field.
 
+7. If the question itself is incomplete, contains only placeholder or \
+garbled text, or is not a real, answerable question as written, say so \
+plainly, e.g. "The question as written does not appear to be a \
+complete, answerable question." Do not invent, guess at, or substitute \
+a different, plausible-sounding question in its place -- even if the \
+retrieved documents would let you construct a reasonable-looking answer \
+to some other question, answering a question that was never asked is \
+not helpful, it is fabrication.
+
 Example of correct citation format on a multi-item answer (Rule 5): if \
 two test cases both qualify, the correct citation is: "1. TC-0301 \
 requires both 'wifi' and 'wi-fi' spellings in the catalog. 2. TC-0302 \
 requires a unique SKU with similar competing descriptions. (Source: \
 TC-0301, TC-0302)" -- one citation block at the end, in the exact \
 (Source: ...) format, not a separate label per item."""
+
+
 
 
 def format_doc_context(hit: dict, structured: dict, references: list[str] | None = None) -> str:
