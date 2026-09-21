@@ -75,6 +75,40 @@ def count_documents(
     return resp["count"]
 
 
+def resolve_document_ids(client: OpenSearch, alias: str, ids: list[str]) -> dict[str, dict]:
+    """Exact-match existence lookup for document IDs named in a question.
+    Returns {lowercase external_id: hit shaped like a hybrid_search() hit}.
+
+    Deliberately a SEPARATE query, not inferred from hybrid_search()'s
+    returned hits: those are truncated to `size` after fusion, so "not in the
+    top 10" would be indistinguishable from "does not exist" -- the exact
+    confusion this function exists to remove. No filters are applied here
+    (existence only); the caller decides whether a document is pinnable.
+
+    Score/rank fields are None: this hit did not come from either retrieval
+    leg. format_doc_context() reads only external_id/title/doc_type/module/
+    status, and the sources JSON serialises None as null."""
+    if not ids:
+        return {}
+    body = {
+        "size": min(len(ids) * 10, 100),
+        "query": {"terms": {"external_id": [i.lower() for i in ids]}},
+    }
+    resp = client.search(index=alias, body=body)
+    found: dict[str, dict] = {}
+    for h in resp["hits"]["hits"]:
+        shaped = _shape_hit(h)
+        key = shaped["external_id"].lower()
+        if key not in found:
+            found[key] = {
+                **shaped,
+                "bm25_rank": None, "bm25_score": None,
+                "vector_rank": None, "vector_score": None,
+                "rrf_score": None,
+            }
+    return found
+
+
 
 def hybrid_search(
     client: OpenSearch,

@@ -1,0 +1,90 @@
+﻿=== What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)? What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)? Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect? Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect? Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect? Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect? Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution? Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other? Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other? How many bugs are currently Open in the Login module? How many bugs are currently Open in the Payments module? What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)? What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)? What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)? What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)? What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)? What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)? What's the weather like today? What is the capital of France? How do I bake a chocolate cake?
+RESULT: PASS PASS PASS PASS PASS PASS PASS PASS PASS PASS PASS MANUAL_REQUIRED MANUAL_REQUIRED MANUAL_REQUIRED MANUAL_REQUIRED PASS PASS PASS PASS PASS
+SOURCES: BUG-1001, BUG-1024, BUG-1002, BUG-2030, BUG-2095, BUG-1002, TC-0142, BUG-1024, BUG-1011, BUG-2030, BUG-1002, TC-0142, BUG-1011, BUG-1024, BUG-1001, BUG-1011, BUG-1024, BUG-1006, BUG-1017, BUG-1002, BUG-1024, BUG-1001, BUG-1011, BUG-1002, BUG-1017, BUG-1024, BUG-1001, BUG-1011, BUG-1002, BUG-1017, BUG-1017, BUG-1007, BUG-1011, BUG-1024, BUG-2023, BUG-1024, BUG-1001, BUG-1015, BUG-1011, BUG-1017, BUG-2042, BUG-1012, BUG-1019, BUG-2085, BUG-2099, BUG-1001, BUG-1002, BUG-1008, BUG-1019, BUG-1004, BUG-1013, BUG-1023, BUG-1003, BUG-1011, BUG-1017, BUG-2095, BUG-2024, BUG-1023, BUG-1004, BUG-1013, BUG-1011, BUG-1024, TC-0301, TC-2002, TC-2001, TC-2024, TC-2005, TC-0302, BUG-1020, BUG-1005, BUG-2002, BUG-2031, BUG-1013, BUG-1015, TC-2018, TC-2013, TC-2007, BUG-1017, BUG-1007, BUG-1024, BUG-2023, BUG-2028
+ANSWER:
+The expected result of the test case referenced in bug report BUG-1001 is that the account should unlock after a cooldown period, as per TC-0142. This is mentioned in the description of BUG-1001, which states that the expected behavior is for the account to unlock after the cooldown, contrary to the observed behavior of failing with ERR_401_UNAUTH even with the correct password on the 4th attempt. (Source: BUG-1001)
+The expected result of the test case referenced in bug report BUG-1002 is as follows:
+
+1. After 3 failed login attempts, the account is locked, and an immediate attempt to log in with the correct password must fail, returning a clear lockout message (not a generic authentication error).
+2. After the 5-minute cooldown period, an attempt to log in with the correct password must succeed.
+
+(Source: TC-0142)
+Bug report BUG-1002 is a duplicate of BUG-1001. Both affect the Login module. (Source: BUG-1002, BUG-1001)
+Bug report BUG-1011 is a duplicate of bug report BUG-1006. Both affect the Notifications module. (Source: BUG-1011, BUG-1006)
+Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the "Login" module. 
+
+- BUG-1024 is a duplicate of BUG-1001, which is open and affects the Login module.
+- BUG-1024 is also a duplicate of BUG-1002, which is open and affects the Login module.
+
+(Source: BUG-1024, BUG-1001, BUG-1002)
+Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the Login module. 
+
+- BUG-1024 is a duplicate of BUG-1001, which is an open ticket in the Login module.
+- BUG-1024 is also a duplicate of BUG-1002, which is another open ticket in the Login module.
+
+(Source: BUG-1024, BUG-1001, BUG-1002)
+Bug report BUG-1017 is related to another ticket, specifically BUG-1007. According to the recorded cross-references, BUG-1017 is related to (NOT a duplicate of) BUG-1007. This indicates that BUG-1017 is a follow-up or resolution to BUG-1007, rather than a duplicate. (Source: BUG-1017, BUG-1007)
+The following bug reports are associated with the error code ERR_401_UNAUTH:
+
+1. **BUG-1024**: This bug report is related to a login issue where users experience a lockout and receive ERR_401_UNAUTH after three failed login attempts, even when entering the correct password on the fourth attempt. It is a duplicate of BUG-1001 and BUG-1002.
+
+2. **BUG-1001**: This bug report describes a login failure after three incorrect attempts, resulting in an account lockout. On the fourth attempt with the correct password, users still receive ERR_401_UNAUTH. It is a duplicate of BUG-1024 and BUG-1002.
+
+3. **BUG-1015**: This bug report involves a session expiration issue during checkout, where users receive ERR_401_UNAUTH and lose their entered information without warning. It is not directly related to the login issues in BUG-1024 and BUG-1001.
+
+In terms of relationships:
+
+- **BUG-1024** is a duplicate of **BUG-1001** and **BUG-1002**.
+- **BUG-1001** is a duplicate of **BUG-1024** and **BUG-1002**.
+
+The ERR_401_UNAUTH errors in BUG-1024 and BUG-1001 are related as they are duplicates of each other and involve similar login issues. BUG-1015, while also involving ERR_401_UNAUTH, is related to a different context (session expiration during checkout) and is not directly related to the login issues in BUG-1024 and BUG-1001.
+
+(Source: BUG-1024, BUG-1001, BUG-1015)
+The following bug reports are associated with ERR_403_FORBIDDEN:
+
+1. **[BUG-2042]**: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present. (Source: BUG-2042)
+2. **[BUG-1012]**: Admin export ERR_403_FORBIDDEN for sub-admin roles. (Source: BUG-1012)
+3. **[BUG-1019]**: ERR_403_FORBIDDEN on password change for SSO-linked accounts. (Source: BUG-1019)
+4. **[BUG-2085]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2085)
+5. **[BUG-2099]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2099)
+
+Regarding relationships between these bug reports:
+
+- **[BUG-2042]** is a duplicate of several other bug reports, including **[BUG-2085]** and **[BUG-2099]**. (Source: BUG-2042)
+- **[BUG-2085]** is a duplicate of **[BUG-2042]** and **[BUG-2099]**. (Source: BUG-2085)
+- **[BUG-2099]** is a duplicate of **[BUG-2042]** and **[BUG-2085]**. (Source: BUG-2099)
+
+Thus, **[BUG-2042]**, **[BUG-2085]**, and **[BUG-2099]** are related to each other as duplicates. (Source: BUG-2042, BUG-2085, BUG-2099)
+4 document(s) match: BUG-1001, BUG-1002, BUG-1008, BUG-1019.
+3 document(s) match: BUG-1004, BUG-1013, BUG-1023.
+The steps to reproduce BUG-1003 are as follows:
+
+1. Throttle network to Slow 3G.
+2. Add an item to the cart.
+3. Proceed to checkout.
+4. Submit the payment form.
+5. Wait 30 seconds, which results in an ERR_504_TIMEOUT.
+
+(Source: BUG-1003)
+The steps to reproduce BUG-1023 are as follows:
+
+1. Use a card that gets declined then approved on retry (test processor supports this).
+2. Submit payment (declines).
+3. Click Retry immediately.
+4. Check the processor dashboard for a duplicate charge.
+
+(Source: BUG-1023)
+The preconditions for TC-0301 (Search tokenization consistency for hyphenated terms) are that the product catalog contains items with both 'wifi' and 'wi-fi' spellings in titles or descriptions. 
+
+(Source: TC-0301)
+The preconditions for TC-0302 are that a product with a known unique SKU exists in the catalog, along with other products with similar text descriptions. 
+
+(Source: TC-0302)
+The question asks for the expected result of the test case referenced in bug report BUG-1013, which cites TC-0209. However, TC-0209 is not present in the retrieved corpus. Therefore, the expected result of the test case referenced in BUG-1013 cannot be determined from the provided documents.
+
+(BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus.)
+The resolution for BUG-1017 involved deploying a fix using cursor-based pagination in the export query to address the issue of the export job loading the entire dataset into memory instead of streaming or paginating. This fix was verified with a 12,000-row export in staging. (Source: BUG-1017)
+This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.
+This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.
+This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.
+

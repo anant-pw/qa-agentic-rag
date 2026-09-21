@@ -14,12 +14,21 @@ tested separately before being connected here:
                                     see guardrail.py's own docstring for
                                     the numbers).
   app/generation/deterministic.py -- count/list shortcut, zero LLM calls,
-                                    gated by settings.deterministic_count_routing
-                                    (default False).
+                                    gated by settings.deterministic_count_routing.
   hybrid_search() + stream_chat() -- the EXACT same Phase 4/5 functions
                                     /generate already calls. No retrieval
                                     or generation logic is duplicated or
                                     reimplemented here.
+
+ID ROUTE (added after the guardrail shape probes -- see
+app/search/id_resolution.py's docstring for the measurements): a question
+naming a BUG-/TC- document ID is decided by whether that ID EXISTS, not by
+the cosine score. Exists and passes the active filters -> that document is
+pinned to the front of the hits, the cosine gate and the deterministic count
+shortcut are skipped, decision "semantic". Named IDs that exist nowhere ->
+decision "reject" with an accurate "no document with ID ..." message and NO
+retrieval call at all. No ID (or IDs excluded by explicit filters) -> the
+pre-existing path, unchanged.
 
 WIRE CONTRACT: deliberately matches /generate's shape (text/plain,
 answer text, then "\n\n---SOURCES---\n", then a JSON source list) so
@@ -71,7 +80,14 @@ from pydantic import BaseModel
 from langgraph.graph import StateGraph, END
 
 from app.config import settings
-from app.search.service import get_client, hybrid_search
+from app.search.service import get_client, hybrid_search, resolve_document_ids
+from app.search.id_resolution import (
+    extract_document_ids,
+    classify_id_question,
+    pin_resolved_hits,
+    passes_filters,
+    unknown_id_message,
+)
 from app.generation.context import fetch_structured_fields, fetch_references
 from app.generation.prompt import build_messages, format_doc_context
 from app.generation.llm import stream_chat, GenerationError
@@ -132,24 +148,53 @@ def guardrail_and_route(state: AgenticState) -> dict:
     """The only node that touches OpenSearch/Ollama for retrieval. Runs
     hybrid_search() ONCE; every downstream node reuses its output."""
     os_client = get_client(settings.opensearch_host, settings.opensearch_port)
+    doc_type, module, status = state.get("doc_type"), state.get("module"), state.get("status")
+
     with timed_span() as retrieval_span:
-        hits = hybrid_search(
-            os_client,
-            alias=settings.opensearch_index_alias,
-            q=state["question"],
-            ollama_host=settings.ollama_host,
-            ollama_port=settings.ollama_port,
-            doc_type=state.get("doc_type"),
-            module=state.get("module"),
-            status=state.get("status"),
-            size=settings.retrieval_size,
+        # ID route, step 1: which BUG-/TC- IDs does the question name, and
+        # which exist? Separate exact-match lookup -- NOT inferred from
+        # hybrid_search()'s truncated hits (see resolve_document_ids()).
+        question_ids = extract_document_ids(state["question"])
+        existing = (
+            resolve_document_ids(os_client, settings.opensearch_index_alias, question_ids)
+            if question_ids else {}
         )
+        pinnable = {
+            k: v for k, v in existing.items() if passes_filters(v, doc_type, module, status)
+        }
+        id_class = classify_id_question(question_ids, existing, pinnable)
+
+        if id_class == "unknown":
+            # Named IDs exist nowhere: no retrieval, no embedding call.
+            hits = []
+            top_vector_score = None
+        else:
+            hits = hybrid_search(
+                os_client,
+                alias=settings.opensearch_index_alias,
+                q=state["question"],
+                ollama_host=settings.ollama_host,
+                ollama_port=settings.ollama_port,
+                doc_type=doc_type,
+                module=module,
+                status=status,
+                size=settings.retrieval_size,
+            )
+            # Guardrail score is taken from RRF order BEFORE any pinning, so
+            # it keeps its original meaning for logs/eval comparisons.
+            top_vector_score = next((h["vector_score"] for h in hits if h["vector_score"] is not None), None)
+            if id_class == "resolved":
+                hits = pin_resolved_hits(hits, pinnable, question_ids)
+
     top_hits = hits[: settings.context_top_n]
-    top_vector_score = top_vector_score = next((h["vector_score"] for h in hits if h["vector_score"] is not None), None)
 
     retrieval_span["doc_ids"] = [h["external_id"] for h in top_hits]
     retrieval_span["vector_scores"] = [h["vector_score"] for h in top_hits]
     retrieval_span["guardrail_vector_score"] = top_vector_score
+    if question_ids:
+        retrieval_span["question_ids"] = question_ids
+        retrieval_span["resolved_ids"] = [i for i in question_ids if i in existing]
+        retrieval_span["id_route"] = id_class
 
     base = {
         "hits": hits,
@@ -157,9 +202,25 @@ def guardrail_and_route(state: AgenticState) -> dict:
         "guardrail_vector_score": top_vector_score,
     }
 
+    if id_class == "unknown":
+        retrieval_span["path"] = "reject_unknown_id"
+        return {
+            **base,
+            "decision": "reject",
+            "retrieval_span": retrieval_span,
+            "answer": unknown_id_message(question_ids),
+            "sources": [],
+        }
+
+    if id_class == "resolved":
+        # Existence of the named document is the domain signal; the cosine
+        # gate and the count shortcut are both skipped (see module docstring).
+        retrieval_span["path"] = "semantic"
+        return {**base, "decision": "semantic", "retrieval_span": retrieval_span}
+
     if not is_in_domain(
         top_vector_score,
-        has_explicit_filter=bool(state.get("doc_type") or state.get("module") or state.get("status"))
+        has_explicit_filter=bool(doc_type or module or status)
         or (settings.deterministic_count_routing and is_countable_question(state["question"])),
     ):
         retrieval_span["path"] = "reject"

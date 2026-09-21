@@ -4,7 +4,7 @@
     "type": "cross_reference_bug_to_test_case",
     "result": "PASS",
     "detail": "contains required source and target IDs",
-    "answer": "The expected result of the test case referenced in bug report BUG-1001 is that the account should unlock after a cooldown period, as described in TC-0142. (Source: BUG-1001)",
+    "answer": "The expected result of the test case referenced in bug report BUG-1001 is that the account should unlock after a cooldown period, as per TC-0142. This is mentioned in the description of BUG-1001, which states that the expected behavior is for the account to unlock after the cooldown, contrary to the observed behavior of failing with ERR_401_UNAUTH even with the correct password on the 4th attempt. (Source: BUG-1001)",
     "sources": [
       {
         "external_id": "BUG-1001",
@@ -53,7 +53,7 @@
     "type": "cross_reference_bug_to_test_case",
     "result": "PASS",
     "detail": "contains required source and target IDs",
-    "answer": "The expected result of the test case referenced in bug report BUG-1002 is as follows:\n\n1. After 3 failed login attempts, the account should be locked, and any immediate attempt to log in with the correct password must fail, returning a clear lockout message (not a generic authentication error).\n2. After a 5-minute cooldown period, an attempt to log in with the correct password should succeed.\n\nThis information is based on the content of TC-0142, which is cited by BUG-1002. (Source: TC-0142)",
+    "answer": "The expected result of the test case referenced in bug report BUG-1002 is as follows:\n\n1. After 3 failed login attempts, the account is locked, and an immediate attempt to log in with the correct password must fail, returning a clear lockout message (not a generic authentication error).\n2. After the 5-minute cooldown period, an attempt to log in with the correct password must succeed.\n\n(Source: TC-0142)",
     "sources": [
       {
         "external_id": "BUG-1002",
@@ -102,7 +102,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Bug report BUG-1002 is a duplicate of BUG-1001, and it affects the Login module. Additionally, BUG-1024 is also a duplicate of BUG-1002. (Source: BUG-1002, BUG-1001, BUG-1024)",
+    "answer": "Bug report BUG-1002 is a duplicate of BUG-1001. Both affect the Login module. (Source: BUG-1002, BUG-1001)",
     "sources": [
       {
         "external_id": "BUG-1002",
@@ -200,7 +200,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the \"Login\" module. (Source: BUG-1024, BUG-1001, BUG-1002)",
+    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the \"Login\" module. \n\n- BUG-1024 is a duplicate of BUG-1001, which is open and affects the Login module.\n- BUG-1024 is also a duplicate of BUG-1002, which is open and affects the Login module.\n\n(Source: BUG-1024, BUG-1001, BUG-1002)",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -211,20 +211,20 @@
         "parent_document_id": 24
       },
       {
-        "external_id": "BUG-1011",
-        "title": "Duplicate notification bug",
-        "doc_type": "bug_report",
-        "rrf_score": 0.03252247488101534,
-        "vector_score": 0.8238702,
-        "parent_document_id": 11
-      },
-      {
         "external_id": "BUG-1001",
         "title": "Login fails after 3 attempts even with correct password",
         "doc_type": "bug_report",
         "rrf_score": 0.03125763125763126,
         "vector_score": 0.729621,
         "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238702,
+        "parent_document_id": 11
       },
       {
         "external_id": "BUG-1002",
@@ -249,7 +249,7 @@
     "type": "duplicate_resolution",
     "result": "PASS",
     "detail": "contains required IDs and 'duplicate' language",
-    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)",
+    "answer": "Bug report BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are related to the Login module. \n\n- BUG-1024 is a duplicate of BUG-1001, which is an open ticket in the Login module.\n- BUG-1024 is also a duplicate of BUG-1002, which is another open ticket in the Login module.\n\n(Source: BUG-1024, BUG-1001, BUG-1002)",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -260,20 +260,20 @@
         "parent_document_id": 24
       },
       {
-        "external_id": "BUG-1011",
-        "title": "Duplicate notification bug",
-        "doc_type": "bug_report",
-        "rrf_score": 0.03252247488101534,
-        "vector_score": 0.8238702,
-        "parent_document_id": 11
-      },
-      {
         "external_id": "BUG-1001",
         "title": "Login fails after 3 attempts even with correct password",
         "doc_type": "bug_report",
         "rrf_score": 0.03125763125763126,
         "vector_score": 0.729621,
         "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238702,
+        "parent_document_id": 11
       },
       {
         "external_id": "BUG-1002",
@@ -298,7 +298,7 @@
     "type": "related_resolution",
     "result": "PASS",
     "detail": "contains required IDs, no unqualified duplicate claim",
-    "answer": "Bug report BUG-1017 is connected to another ticket, specifically BUG-1007. According to the recorded cross-references, BUG-1017 is related to (NOT a duplicate of) BUG-1007. This indicates that BUG-1017 is a follow-up to BUG-1007, not a duplicate. (Source: BUG-1017, BUG-1007)",
+    "answer": "Bug report BUG-1017 is related to another ticket, specifically BUG-1007. According to the recorded cross-references, BUG-1017 is related to (NOT a duplicate of) BUG-1007. This indicates that BUG-1017 is a follow-up or resolution to BUG-1007, rather than a duplicate. (Source: BUG-1017, BUG-1007)",
     "sources": [
       {
         "external_id": "BUG-1017",
@@ -309,20 +309,20 @@
         "parent_document_id": 17
       },
       {
-        "external_id": "BUG-1011",
-        "title": "Duplicate notification bug",
-        "doc_type": "bug_report",
-        "rrf_score": 0.03225806451612903,
-        "vector_score": 0.8189775,
-        "parent_document_id": 11
-      },
-      {
         "external_id": "BUG-1007",
         "title": "Admin panel bulk export crashes on >5000 rows",
         "doc_type": "bug_report",
         "rrf_score": 0.031746031746031744,
         "vector_score": 0.7828015,
         "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.8189775,
+        "parent_document_id": 11
       },
       {
         "external_id": "BUG-1024",
@@ -347,7 +347,7 @@
     "type": "error_code_aggregation",
     "result": "PASS",
     "detail": "contains all IDs in the error-code group",
-    "answer": "The following bug reports are associated with the error code ERR_401_UNAUTH:\n\n1. **BUG-1024**: This bug report is a duplicate of BUG-1001 and mentions the same lockout/ERR_401_UNAUTH pattern. (Source: BUG-1024)\n\n2. **BUG-1001**: This bug report describes a scenario where a user is locked out after three failed login attempts, and on the fourth attempt with the correct password, the login still fails with ERR_401_UNAUTH. (Source: BUG-1001)\n\n3. **BUG-1015**: This bug report involves a session expiration during checkout, resulting in an ERR_401_UNAUTH error. (Source: BUG-1015)\n\nRegarding relationships:\n\n- **BUG-1024** is a duplicate of **BUG-1001** and **BUG-1002**. (Source: BUG-1024)\n- **BUG-1001** is a duplicate of **BUG-1002**. (Source: BUG-1001)\n\nThus, BUG-1024 and BUG-1001 are related as duplicates, and both are associated with ERR_401_UNAUTH. Additionally, BUG-1001 and BUG-1002 are duplicates, indicating a relationship between them. (Source: BUG-1024, BUG-1001)",
+    "answer": "The following bug reports are associated with the error code ERR_401_UNAUTH:\n\n1. **BUG-1024**: This bug report is related to a login issue where users experience a lockout and receive ERR_401_UNAUTH after three failed login attempts, even when entering the correct password on the fourth attempt. It is a duplicate of BUG-1001 and BUG-1002.\n\n2. **BUG-1001**: This bug report describes a login failure after three incorrect attempts, resulting in an account lockout. On the fourth attempt with the correct password, users still receive ERR_401_UNAUTH. It is a duplicate of BUG-1024 and BUG-1002.\n\n3. **BUG-1015**: This bug report involves a session expiration issue during checkout, where users receive ERR_401_UNAUTH and lose their entered information without warning. It is not directly related to the login issues in BUG-1024 and BUG-1001.\n\nIn terms of relationships:\n\n- **BUG-1024** is a duplicate of **BUG-1001** and **BUG-1002**.\n- **BUG-1001** is a duplicate of **BUG-1024** and **BUG-1002**.\n\nThe ERR_401_UNAUTH errors in BUG-1024 and BUG-1001 are related as they are duplicates of each other and involve similar login issues. BUG-1015, while also involving ERR_401_UNAUTH, is related to a different context (session expiration during checkout) and is not directly related to the login issues in BUG-1024 and BUG-1001.\n\n(Source: BUG-1024, BUG-1001, BUG-1015)",
     "sources": [
       {
         "external_id": "BUG-1024",
@@ -396,7 +396,7 @@
     "type": "error_code_aggregation",
     "result": "PASS",
     "detail": "contains all IDs in the error-code group",
-    "answer": "The following bug reports are associated with ERR_403_FORBIDDEN:\n\n1. **[BUG-2042]**: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present. (Source: BUG-2042)\n2. **[BUG-1012]**: Admin export ERR_403_FORBIDDEN for sub-admin roles. (Source: BUG-1012)\n3. **[BUG-1019]**: ERR_403_FORBIDDEN on password change for SSO-linked accounts. (Source: BUG-1019)\n4. **[BUG-2085]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2085)\n5. **[BUG-2099]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2099)\n\nRegarding relationships, the following recorded cross-references indicate that certain bug reports are duplicates of each other:\n\n- **[BUG-2042]** is a duplicate of **[BUG-2085]** and **[BUG-2099]**.\n- **[BUG-2085]** is a duplicate of **[BUG-2042]** and **[BUG-2099]**.\n- **[BUG-2099]** is a duplicate of **[BUG-2042]** and **[BUG-2085]**.\n\nThus, **[BUG-2042]**, **[BUG-2085]**, and **[BUG-2099]** are related to each other as duplicates. (Source: BUG-2042, BUG-2085, BUG-2099)",
+    "answer": "The following bug reports are associated with ERR_403_FORBIDDEN:\n\n1. **[BUG-2042]**: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present. (Source: BUG-2042)\n2. **[BUG-1012]**: Admin export ERR_403_FORBIDDEN for sub-admin roles. (Source: BUG-1012)\n3. **[BUG-1019]**: ERR_403_FORBIDDEN on password change for SSO-linked accounts. (Source: BUG-1019)\n4. **[BUG-2085]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2085)\n5. **[BUG-2099]**: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present. (Source: BUG-2099)\n\nRegarding relationships between these bug reports:\n\n- **[BUG-2042]** is a duplicate of several other bug reports, including **[BUG-2085]** and **[BUG-2099]**. (Source: BUG-2042)\n- **[BUG-2085]** is a duplicate of **[BUG-2042]** and **[BUG-2099]**. (Source: BUG-2085)\n- **[BUG-2099]** is a duplicate of **[BUG-2042]** and **[BUG-2085]**. (Source: BUG-2099)\n\nThus, **[BUG-2042]**, **[BUG-2085]**, and **[BUG-2099]** are related to each other as duplicates. (Source: BUG-2042, BUG-2085, BUG-2099)",
     "sources": [
       {
         "external_id": "BUG-2042",
@@ -645,7 +645,7 @@
     "type": "single_doc_factual",
     "result": "MANUAL_REQUIRED",
     "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
-    "answer": "The preconditions for TC-0302 are that a product with a known unique SKU exists in the catalog, along with other products with similar text descriptions.\n\n(Source: TC-0302)",
+    "answer": "The preconditions for TC-0302 are that a product with a known unique SKU exists in the catalog, along with other products with similar text descriptions. \n\n(Source: TC-0302)",
     "sources": [
       {
         "external_id": "TC-0302",
@@ -743,7 +743,7 @@
     "type": "resolution_in_narrative",
     "result": "PASS",
     "detail": "no wrongful abstention, 14 shared content words with real description",
-    "answer": "The resolution for BUG-1017 involved deploying a fix using cursor-based pagination in the export query to address the issue of the export job loading the entire dataset into memory instead of streaming/paginating. This fix was verified with a 12,000-row export in staging. (Source: BUG-1017)",
+    "answer": "The resolution for BUG-1017 involved deploying a fix using cursor-based pagination in the export query to address the issue of the export job loading the entire dataset into memory instead of streaming or paginating. This fix was verified with a 12,000-row export in staging. (Source: BUG-1017)",
     "sources": [
       {
         "external_id": "BUG-1017",
