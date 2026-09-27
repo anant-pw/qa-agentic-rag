@@ -313,6 +313,7 @@ def run_semantic_generate(state: AgenticState) -> dict:
             temperature=settings.ollama_temperature,
             think=settings.ollama_think,
             keep_alive=settings.ollama_keep_alive,
+            wall_clock_timeout=settings.ollama_chat_wall_clock_timeout,
         ):
             accumulated.append(content)
     except GenerationError as e:

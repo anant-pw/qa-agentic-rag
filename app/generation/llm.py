@@ -57,6 +57,7 @@ def stream_chat(
     log_stats: bool = True,
     think: bool | None = None,
     keep_alive: str | None = None,
+    wall_clock_timeout: float | None = None,
 ):
     """Yields (content, maybe_done_chunk) as it streams from Ollama's /api/chat.
 
@@ -86,13 +87,48 @@ def stream_chat(
     phi4-mini/llama3.1/gpt-oss, none of which expose a thinking mode --
     the field is simply omitted from the request payload for those, not
     sent as a no-op, since an unrecognized field being silently ignored
-    by every model was an assumption worth not relying on."""
+    by every model was an assumption worth not relying on.
+
+    wall_clock_timeout: real gap found via eval/run_eval_generation.py
+    (2026-09-21, single_doc_factual BUG-1023, phi4:14b): 1795.7s total, a
+    real grounded answer, not a stall -- every individual gap between
+    streamed tokens stayed under `timeout` (600s), so requests' per-read
+    timeout never fired. `timeout` bounds silence between tokens; nothing
+    bounded the SUM across a whole streamed answer. A demo behind a public
+    link has exactly one Ollama slot (see phase handoffs); a slow trickle,
+    not just a stalled connection, can occupy it for 30+ minutes with no
+    circuit breaker.
+
+    This adds that missing bound: wraps the SAME loop already reading
+    resp.iter_lines(), no new request, no second timeout system -- if the
+    total elapsed time exceeds wall_clock_timeout when the NEXT line
+    arrives, the connection is closed and GenerationError is raised, same
+    as any other stream failure (existing callers' except GenerationError
+    already handles it, unchanged).
+
+    ACCEPTED, DOCUMENTED TRADE-OFF: this can abort a genuine slow-but-
+    correct answer -- the 1795.7s case above is real evidence that
+    happens. Defaults to settings.ollama_chat_wall_clock_timeout (900s,
+    i.e. 15 minutes) when not passed -- a judgment call, not a measured
+    number: it is a circuit breaker against runaway trickle, not a tuned
+    value, and would have cut off the 1795.7s answer. Exposed as a
+    separate config value (not derived from `timeout`) specifically so it
+    can be raised, lowered, or disabled (0 or None) per deployment without
+    a code change -- same reasoning guardrail.py's threshold already
+    documents for itself. Does not fix the underlying availability
+    problem (one Ollama slot, first-come-first-served) -- that needs a
+    queue or "busy" response at the API layer, flagged separately, not
+    solved here."""
     model = settings.ollama_chat_model if model is None else model
     timeout = settings.ollama_chat_timeout if timeout is None else timeout
     temperature = settings.ollama_temperature if temperature is None else temperature
+    wall_clock_timeout = (
+        settings.ollama_chat_wall_clock_timeout if wall_clock_timeout is None else wall_clock_timeout
+    )
     url = f"http://{host}:{port}/api/chat"
 
     start_time = time.perf_counter()
+    deadline = (start_time + wall_clock_timeout) if wall_clock_timeout else None
     first_token_time = None
     total_tokens = None
     done_chunk_seen = False
@@ -118,6 +154,12 @@ def stream_chat(
         resp.raise_for_status()
 
         for line in resp.iter_lines():
+            if deadline is not None and time.perf_counter() > deadline:
+                resp.close()
+                raise GenerationError(
+                    f"Ollama chat request exceeded wall_clock_timeout of {wall_clock_timeout}s "
+                    f"(total elapsed, not a single-gap read timeout)"
+                )
             if not line:
                 continue
             chunk = json.loads(line)
