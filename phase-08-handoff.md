@@ -3,7 +3,7 @@
 ## 1. Completion Status: **Complete. The project is closed at this phase.**
 
 Phase 8 had three goals:
-1. Make answers fast enough to use on the 16 GB reference laptop.
+1. Make answers fast enough to use on a 16 GB laptop (all Phase 8 numbers: Machine B, Core Ultra 7 155U, CPU-only).
 2. Replace the saturated, self-referential eval with real evidence on the 173-doc corpus.
 3. Finish the project: reproducible setup, tests, CI and documentation.
 
@@ -97,7 +97,7 @@ Frozen and unchanged: `/search`, `/search/hybrid`, `/generate`, `SYSTEM_PROMPT`,
 1. Query rewrite for short/messy questions (addresses limitations 1 and 3).
 2. Status-word → filter routing, plus top-8 context for list questions (addresses 2).
 3. Fine-tuning a small model with RAFT + Unsloth on Colab (addresses 4). Only if 1–2 don't close the gap.
-4. Machine B: OpenVINO / IPEX-LLM test on its Arc iGPU; also bring it to this commit and apply the data fix.
+4. OpenVINO / IPEX-LLM test on Machine B's Arc iGPU / NPU. All Phase 8 numbers were measured on Machine B (Core Ultra 7 155U) CPU-only, so this applies to the reference numbers directly. Bring Machine A to this commit and apply the data fix.
 5. SRS / long-document chunking. It does not improve the current corpus; it is a capability for new document types.
 6. Auth and rate limiting before any public tunnel.
 

@@ -15,7 +15,7 @@ question ─► guardrail + router (LangGraph) ─┬─ unknown ID ............
 
 ## Measured results
 
-All figures are on the 173-document corpus with `qwen3:4b-instruct` on an i5-1135G7 laptop with 16 GB RAM and no GPU.
+All figures are on the 173-document corpus with `qwen3:4b-instruct` on a Core Ultra 7 155U laptop (Machine B) with 16 GB RAM, CPU-only inference.
 
 | Eval | Result |
 |---|---|

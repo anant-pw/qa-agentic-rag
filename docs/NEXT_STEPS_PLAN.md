@@ -48,7 +48,7 @@ Original design notes, kept for reference:
 - The 20-question Tier A result is identical to the run before the change.
 - The new log field `first_token_s` is recorded and is smaller than `latency_s` for every semantic answer.
 
-## Step 3: Memory headroom on Machine A (owner actions, reversible)
+## Step 3: Memory headroom on the 16 GB machine (owner actions, reversible)
 
 1. `C:\Users\anant\.wslconfig` with `memory=3GB` and `autoMemoryReclaim=gradual`, then `wsl --shutdown` and restart Docker.
 2. Close browsers and VS Code during demos; disable the Edge, OneDrive and Ollama auto-start entries.
@@ -87,7 +87,7 @@ Prerequisite for any fine-tuning or retrieval tuning. The current seed is genera
 
 ## Step 7: Machine B acceleration test (≈ half a day)
 
-Machine B has a Core Ultra 7 155U with an Arc iGPU and an NPU. Machine A's Iris Xe gives no benefit (an external benchmark agrees, and Phase 6 saw 0% GPU use).
+All 2026-10-01 measurements were taken on Machine B (Core Ultra 7 155U: Arc iGPU + NPU), CPU-only. Its iGPU and NPU were never used, so this step applies to the machine the numbers came from. Machine A (i5-1135G7) has Iris Xe, which gives no benefit (an external benchmark agrees, and Phase 6 saw 0% GPU use).
 1. Bring Machine B to the current commit and apply the data fix (`UPDATE` + `build_index`).
 2. Compare the same model on stock Ollama (CPU), IPEX-LLM Ollama (SYCL, iGPU) and OpenVINO GenAI. Record prompt-read time, writing speed and Tier A for each.
 
@@ -120,11 +120,11 @@ Ruled out: TurboRAG / CacheBlend / LMCache (GPU serving stacks; TurboRAG also ne
 | Idea | Why not |
 |---|---|
 | Speculative decoding | It only speeds up writing. Ollama doesn't expose it, and the extra draft model costs RAM, which is the scarce resource. |
-| Iris Xe GPU (IPEX-LLM / OpenVINO) on Machine A | No measured advantage over the CPU; it shares the same RAM pool. |
+| Iris Xe GPU (IPEX-LLM / OpenVINO) on Machine A (not this machine) | No measured advantage over the CPU; it shares the same RAM pool. |
 | LLMLingua prompt compression | It runs an extra model on the CPU, risks dropping document IDs (which breaks citations), and the context is already only ~700 tokens per question. |
 | Gemma 4 e2b/e4b | Listed by Ollama at 4.6–9.5 GB, no smaller than llama3.1:8b. |
 
-## Model bake-off (measured 2026-10-01, Machine A, `/generate/agentic`, 20-question frozen seed)
+## Model bake-off (measured 2026-10-01, Machine B (Core Ultra 7 155U, CPU-only), `/generate/agentic`, 20-question frozen seed)
 
 | Run (`eval/runs/…`) | Tier A | Whole run | LLM-path median / max | Notes |
 |---|---|---|---|---|
