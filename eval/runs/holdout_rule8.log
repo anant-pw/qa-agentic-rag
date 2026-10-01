@@ -1,0 +1,53 @@
+[1/41] P01 PASS  route=semantic   73.8s
+[2/41] P02 PASS  route=semantic   36.1s
+[3/41] P03 PASS  route=semantic   19.3s
+[4/41] P04 PASS  route=semantic   51.7s
+[5/41] P05 PASS  route=semantic   40.3s
+[6/41] P06 PASS  route=semantic   36.9s
+[7/41] P07 PASS  route=semantic   73.3s
+[8/41] P08 PASS  route=semantic   33.5s
+[9/41] N01 PASS  route=semantic   76.4s
+[10/41] N02 PASS  route=semantic   62.8s
+[11/41] N03 PASS  route=semantic   90.4s
+[12/41] N04 PASS  route=semantic   73.1s
+[13/41] N05 PASS  route=semantic   74.8s
+[14/41] N06 PASS  route=semantic   45.6s
+[15/41] N07 PASS  route=semantic   57.1s
+[16/41] A01 FAIL  route=semantic   89.7s  ["contains forbidden 'BUG-2052'", "contains forbidden 'BUG-2001'"]
+[17/41] A02 FAIL  route=semantic   82.6s  ["only 1/3 of ['BUG-2024', 'BUG-2043', 'BUG-2051', 'BUG-2108'] (['BUG-2024'])"]
+[18/41] A03 PASS  route=semantic  109.3s
+[19/41] A04 PASS  route=semantic   34.8s
+[20/41] A05 PASS  route=semantic   38.6s
+[21/41] M01 PASS  route=semantic   40.5s
+[22/41] M02 PASS  route=semantic   39.6s
+[23/41] M03 PASS  route=semantic   35.2s
+[24/41] M04 PASS  route=semantic   23.6s
+[25/41] U01 PASS  route=semantic   28.0s
+[26/41] U02 FAIL  route=semantic   35.2s  ["none of ['open', 'not been fixed', 'no fix', 'not fixed']"]
+[27/41] U03 PASS  route=semantic   45.6s
+[28/41] U04 PASS  route=semantic   28.3s
+[29/41] U05 PASS  route=semantic   35.3s
+[30/41] U06 PASS  route=reject    0.3s
+[31/41] F01 FAIL  route=semantic   34.4s  ['none of ["won\'t fix", \'won’t fix\', \'not fixed\', \'was not fixed\', "wasn\'t fixed"]']
+[32/41] F02 PASS  route=field_lookup    0.1s
+[33/41] F03 PASS  route=semantic   38.8s
+[34/41] F04 FAIL  route=semantic   37.4s  ["none of ['5-minute', '5 minute', 'five minute', '5 minutes']"]
+[35/41] G01 PASS  route=semantic   69.4s
+[36/41] G02 PASS  route=semantic   56.0s
+[37/41] G03 PASS  route=semantic   27.4s
+[38/41] S01 FAIL  route=reject    0.2s  ["none of ['BUG-1006', 'BUG-1011']"]
+[39/41] S02 FAIL  route=reject    0.2s  ["missing 'BUG-1003'"]
+[40/41] S03 FAIL  route=reject    0.2s  ["missing 'TC-0142'", "none of ['5-minute', '5 minute', '5 minutes', 'cooldown']"]
+[41/41] S04 FAIL  route=semantic   66.3s  ["missing 'BUG-1017'", "none of ['cursor', 'pagination', 'resolved']"]
+
+=== qwen3-4b-instruct_rule8: 32/41 PASS ===
+  paraphrase_single_doc            7/7
+  paraphrase_multi_doc             1/1
+  near_duplicate_discrimination    7/7
+  aggregation_open_set             1/3
+  compare_two_docs                 2/2
+  multi_hop                        4/4
+  unanswerable                     5/6
+  false_premise                    2/4
+  filtered_semantic                3/3
+  short_messy_input                0/4

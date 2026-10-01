@@ -1,0 +1,1022 @@
+{
+  "label": "phi4-14b",
+  "results": [
+    {
+      "id": "A01",
+      "category": "aggregation_open_set",
+      "question": "List the bug reports about scheduled reports failing to send after a DST change on Safari 17.",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "missing 'BUG-2039'"
+      ],
+      "route": "semantic",
+      "wall_s": 633.6,
+      "first_token_s": 535.2441,
+      "output_tokens": 111,
+      "context_ids": [
+        "BUG-2006",
+        "BUG-2039",
+        "BUG-2091",
+        "BUG-2052",
+        "BUG-2001"
+      ],
+      "answer": "The retrieved documents that mention scheduled reports failing to send after a DST change on Safari 17 are:\n\n1. **BUG-2006**: Scheduled report fails to send on Safari 17-generated schedules created after a DST change. (Source: BUG-2006)\n2. **BUG-2091**: Scheduled report fails to send on Safari 17-generated schedules created after a DST change. (Source: BUG-2091)\n\nThere are 2 bug reports that match this condition. (Source: BUG-2006, BUG-2091)",
+      "sources": [
+        "BUG-2006",
+        "BUG-2039",
+        "BUG-2091",
+        "BUG-2052",
+        "BUG-2001"
+      ],
+      "truth": "BUG-2006, BUG-2039, BUG-2091 (the only Safari 17 ones)."
+    },
+    {
+      "id": "A02",
+      "category": "aggregation_open_set",
+      "question": "Which open bugs involve users who cannot sign in despite entering the correct password?",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "only 2/3 of ['BUG-2024', 'BUG-2043', 'BUG-2051', 'BUG-2108'] (['BUG-2024', 'BUG-2051'])"
+      ],
+      "route": "semantic",
+      "wall_s": 277.2,
+      "first_token_s": 181.2514,
+      "output_tokens": 129,
+      "context_ids": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2095",
+        "BUG-1002",
+        "BUG-2051"
+      ],
+      "answer": "The open bugs that involve users who cannot sign in despite entering the correct password are:\n\n1. **BUG-2024**: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds. (Source: BUG-2024)\n2. **BUG-2051**: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds. (Source: BUG-2051)\n\nThese bugs are currently open and describe the issue of users being unable to sign in despite entering the correct password. (Source: BUG-2024, BUG-2051)",
+      "sources": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2095",
+        "BUG-1002",
+        "BUG-2051"
+      ],
+      "truth": "Open: BUG-2024, 2043, 2051, 2108 (BUG-2030 Resolved, BUG-2095 Closed). Retrieval top-5 limit may cap this."
+    },
+    {
+      "id": "U02",
+      "category": "unanswerable",
+      "question": "When was BUG-1009 fixed?",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "none of ['open', 'not been fixed', 'no fix', 'not fixed']"
+      ],
+      "route": "semantic",
+      "wall_s": 263.4,
+      "first_token_s": 184.1828,
+      "output_tokens": 23,
+      "context_ids": [
+        "BUG-1009",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2066"
+      ],
+      "answer": "The retrieved documents do not state a resolution for BUG-1009. (Source: BUG-1009)",
+      "sources": [
+        "BUG-1009",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2066"
+      ],
+      "truth": "Status Open; no fix recorded."
+    },
+    {
+      "id": "F01",
+      "category": "false_premise",
+      "question": "Why was BUG-1025 fixed so quickly?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 186.4,
+      "first_token_s": 141.8005,
+      "output_tokens": 62,
+      "context_ids": [
+        "BUG-1025",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "answer": "The question as written does not appear to be a complete, answerable question. The retrieved documents do not state that BUG-1025 was fixed; instead, it is marked with a status of \"Won't Fix,\" indicating that no resolution or fix was applied. (Source: BUG-1025)",
+      "sources": [
+        "BUG-1025",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "truth": "BUG-1025 is Won't Fix (cosmetic)."
+    },
+    {
+      "id": "F04",
+      "category": "false_premise",
+      "question": "What does TC-0142 say about the 10-minute cooldown?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 255.9,
+      "first_token_s": 152.0645,
+      "output_tokens": 64,
+      "context_ids": [
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1002",
+        "TC-2013",
+        "BUG-2020"
+      ],
+      "answer": "TC-0142 specifies a 5-minute cooldown period after an account is locked due to failed login attempts. After this period, the account should unlock, allowing a successful login with the correct password. There is no mention of a 10-minute cooldown in TC-0142.\n\n(Source: TC-0142)",
+      "sources": [
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1002",
+        "TC-2013",
+        "BUG-2020"
+      ],
+      "truth": "The cooldown is 5 minutes, not 10."
+    },
+    {
+      "id": "S04",
+      "category": "short_messy_input",
+      "question": "export broke >5000 rows fixed??",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "missing 'BUG-1017'",
+        "none of ['cursor', 'pagination', 'resolved']"
+      ],
+      "route": "semantic",
+      "wall_s": 316.0,
+      "first_token_s": 239.6344,
+      "output_tokens": 88,
+      "context_ids": [
+        "BUG-1007",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2022",
+        "BUG-2008"
+      ],
+      "answer": "The question as written does not appear to be a complete, answerable question. It seems to be asking about the resolution of a bug related to exporting more than 5000 rows, but it is not clearly stated.\n\nThe retrieved documents do not state a resolution for BUG-1007, which is the bug report related to the admin panel bulk export crashing on more than 5000 rows. (Source: BUG-1007)",
+      "sources": [
+        "BUG-1007",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2022",
+        "BUG-2008"
+      ],
+      "truth": "BUG-1007 crash; fixed per BUG-1017 (cursor-based pagination)."
+    },
+    {
+      "id": "U01",
+      "category": "unanswerable",
+      "question": "Who is assigned to BUG-1023?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 182.1,
+      "first_token_s": 115.6057,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1023",
+        "BUG-1017",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1023)",
+      "sources": [
+        "BUG-1023",
+        "BUG-1017",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "truth": "No assignee field exists."
+    },
+    {
+      "id": "U03",
+      "category": "unanswerable",
+      "question": "What severity level was assigned to BUG-2077?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 187.7,
+      "first_token_s": 158.8911,
+      "output_tokens": 28,
+      "context_ids": [
+        "BUG-2077",
+        "BUG-2102",
+        "BUG-2117",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-2077, BUG-2102, BUG-2117)",
+      "sources": [
+        "BUG-2077",
+        "BUG-2102",
+        "BUG-2117",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "truth": "No severity field."
+    },
+    {
+      "id": "U04",
+      "category": "unanswerable",
+      "question": "Which release version introduced BUG-1004?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 136.4,
+      "first_token_s": 109.131,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1004",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1004)",
+      "sources": [
+        "BUG-1004",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "truth": "No version field."
+    },
+    {
+      "id": "U05",
+      "category": "unanswerable",
+      "question": "How many story points was BUG-1018 estimated at?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 245.9,
+      "first_token_s": 141.2821,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1018",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1018)",
+      "sources": [
+        "BUG-1018",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "truth": "No estimate field."
+    },
+    {
+      "id": "N01",
+      "category": "near_duplicate_discrimination",
+      "question": "Which bug report describes cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 330.0,
+      "first_token_s": 271.7215,
+      "output_tokens": 70,
+      "context_ids": [
+        "BUG-2032",
+        "BUG-2065",
+        "BUG-2110",
+        "BUG-2112",
+        "BUG-2066"
+      ],
+      "answer": "The bug report that describes the cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29 is [BUG-2032]. The description specifically mentions this condition: \"Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 29.\" (Source: BUG-2032)",
+      "sources": [
+        "BUG-2032",
+        "BUG-2065",
+        "BUG-2110",
+        "BUG-2112",
+        "BUG-2066"
+      ],
+      "truth": "BUG-2032 (Safari 17, above 29). BUG-2065/2110/2112 are Safari 17 with other thresholds."
+    },
+    {
+      "id": "N02",
+      "category": "near_duplicate_discrimination",
+      "question": "Profile photo upload fails silently on Firefox 130 for files over 40MB. What is the ticket ID and its current status?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 276.0,
+      "first_token_s": 229.794,
+      "output_tokens": 47,
+      "context_ids": [
+        "BUG-2119",
+        "BUG-2046",
+        "BUG-2074",
+        "BUG-2055",
+        "BUG-2027"
+      ],
+      "answer": "The ticket ID for the issue where the profile photo upload fails silently on Firefox 130 for files over 40MB is BUG-2119. The current status of this ticket is Open. (Source: BUG-2119)",
+      "sources": [
+        "BUG-2119",
+        "BUG-2046",
+        "BUG-2074",
+        "BUG-2055",
+        "BUG-2027"
+      ],
+      "truth": "BUG-2119, Open."
+    },
+    {
+      "id": "N03",
+      "category": "near_duplicate_discrimination",
+      "question": "What is the status of the bug where applying a promo code leaves the cart total off by $4 on Safari 17?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 458.0,
+      "first_token_s": 335.6258,
+      "output_tokens": 74,
+      "context_ids": [
+        "BUG-2053",
+        "BUG-2106",
+        "BUG-2029",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "answer": "The status of the bug where applying a promo code leaves the cart total off by $4 on Safari 17 is \"Closed.\" This information is found in the description of [BUG-2053], which states that the cart total fails to update by $4.00 when a promo code is applied on Safari 17. (Source: BUG-2053)",
+      "sources": [
+        "BUG-2053",
+        "BUG-2106",
+        "BUG-2029",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "truth": "BUG-2053, Closed."
+    },
+    {
+      "id": "N04",
+      "category": "near_duplicate_discrimination",
+      "question": "Which ticket reports push notifications being delivered twice on Firefox 130, 27 seconds apart?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 304.5,
+      "first_token_s": 273.7572,
+      "output_tokens": 35,
+      "context_ids": [
+        "BUG-2090",
+        "BUG-2061",
+        "BUG-2019",
+        "BUG-2012",
+        "BUG-2025"
+      ],
+      "answer": "The ticket that reports push notifications being delivered twice on Firefox 130, 27 seconds apart, is [BUG-2090]. (Source: BUG-2090)",
+      "sources": [
+        "BUG-2090",
+        "BUG-2061",
+        "BUG-2019",
+        "BUG-2012",
+        "BUG-2025"
+      ],
+      "truth": "BUG-2090."
+    },
+    {
+      "id": "N05",
+      "category": "near_duplicate_discrimination",
+      "question": "Bulk export times out for reports over 44 rows when run from Safari 17. Which bug is that and which module is it in?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 420.4,
+      "first_token_s": 370.269,
+      "output_tokens": 44,
+      "context_ids": [
+        "BUG-2056",
+        "BUG-2005",
+        "BUG-2071",
+        "BUG-2028",
+        "BUG-2010"
+      ],
+      "answer": "The issue of bulk export timing out for reports over 44 rows when run from Safari 17 is described in [BUG-2056]. This bug is in the Admin module.\n\n(Source: BUG-2056)",
+      "sources": [
+        "BUG-2056",
+        "BUG-2005",
+        "BUG-2071",
+        "BUG-2028",
+        "BUG-2010"
+      ],
+      "truth": "BUG-2056, Admin, Closed."
+    },
+    {
+      "id": "N06",
+      "category": "near_duplicate_discrimination",
+      "question": "According to its title, on which browser does the sign-in failure in BUG-2024 happen, and after how many seconds does the session time out?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 234.6,
+      "first_token_s": 207.2072,
+      "output_tokens": 39,
+      "context_ids": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2043",
+        "BUG-2051",
+        "BUG-2095"
+      ],
+      "answer": "According to its title, the sign-in failure in BUG-2024 happens on Firefox 130, and the session times out after 6 seconds. (Source: BUG-2024)",
+      "sources": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2043",
+        "BUG-2051",
+        "BUG-2095"
+      ],
+      "truth": "Firefox 130, 6 seconds (its steps mention Safari 17 -- generator inconsistency; the title is the asked source)."
+    },
+    {
+      "id": "N07",
+      "category": "near_duplicate_discrimination",
+      "question": "Payment confirmation emails were delayed by up to 31 minutes after a successful Chrome 128 checkout. Which bug is that?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 403.2,
+      "first_token_s": 368.7509,
+      "output_tokens": 39,
+      "context_ids": [
+        "BUG-2038",
+        "BUG-2045",
+        "BUG-2000",
+        "BUG-2077",
+        "BUG-2076"
+      ],
+      "answer": "The bug report that describes payment confirmation emails being delayed by up to 31 minutes after a successful Chrome 128 checkout is [BUG-2038]. (Source: BUG-2038)",
+      "sources": [
+        "BUG-2038",
+        "BUG-2045",
+        "BUG-2000",
+        "BUG-2077",
+        "BUG-2076"
+      ],
+      "truth": "BUG-2038."
+    },
+    {
+      "id": "M01",
+      "category": "multi_hop",
+      "question": "Which module is the test case cited by BUG-1002 in, and what are its preconditions?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 233.1,
+      "first_token_s": 196.0633,
+      "output_tokens": 59,
+      "context_ids": [
+        "BUG-1002",
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1024",
+        "BUG-1011"
+      ],
+      "answer": "The test case cited by BUG-1002 is TC-0142, which is in the Login module. The preconditions for TC-0142 are that a registered user account exists with a known correct password, and the user is logged out. \n\n(Source: TC-0142)",
+      "sources": [
+        "BUG-1002",
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1024",
+        "BUG-1011"
+      ],
+      "truth": "TC-0142, Login; preconditions: registered account with known correct password, user logged out."
+    },
+    {
+      "id": "M02",
+      "category": "multi_hop",
+      "question": "BUG-1024 is a duplicate of which tickets, and what error code do those tickets report?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 324.2,
+      "first_token_s": 232.6893,
+      "output_tokens": 133,
+      "context_ids": [
+        "BUG-1024",
+        "BUG-1001",
+        "BUG-1002",
+        "BUG-1011",
+        "BUG-1017"
+      ],
+      "answer": "BUG-1024 is a duplicate of BUG-1001 and BUG-1002. Both of these tickets report the error code ERR_401_UNAUTH. \n\n- BUG-1001 describes a situation where after exactly 3 failed login attempts, the account gets locked, and on the 4th attempt with the correct password, login still fails with ERR_401_UNAUTH.\n- BUG-1002 mentions a similar issue where the lockout mechanism doesn't release even when the correct credentials are used, potentially due to the same root cause as BUG-1001.\n\n(Source: BUG-1024, BUG-1001, BUG-1002)",
+      "sources": [
+        "BUG-1024",
+        "BUG-1001",
+        "BUG-1002",
+        "BUG-1011",
+        "BUG-1017"
+      ],
+      "truth": "BUG-1001 and BUG-1002; ERR_401_UNAUTH (stated in BUG-1001)."
+    },
+    {
+      "id": "M03",
+      "category": "multi_hop",
+      "question": "What was the original bug that BUG-1017 followed up on, and what error code did that original bug report?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 210.0,
+      "first_token_s": 148.5664,
+      "output_tokens": 46,
+      "context_ids": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "answer": "The original bug that BUG-1017 followed up on is BUG-1007. The error code reported in BUG-1007 is ERR_500_INTERNAL. \n\n(Source: BUG-1017, BUG-1007)",
+      "sources": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1007, ERR_500_INTERNAL."
+    },
+    {
+      "id": "M04",
+      "category": "multi_hop",
+      "question": "BUG-1013 cites a test case. What are that test case's steps?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 138.1,
+      "first_token_s": 113.6638,
+      "output_tokens": 45,
+      "context_ids": [
+        "BUG-1013",
+        "TC-2018",
+        "TC-2007",
+        "TC-2013",
+        "BUG-1011"
+      ],
+      "answer": "BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. Therefore, the steps for the cited test case cannot be provided. (Source: BUG-1013)",
+      "sources": [
+        "BUG-1013",
+        "TC-2018",
+        "TC-2007",
+        "TC-2013",
+        "BUG-1011"
+      ],
+      "truth": "TC-0209 is cited but not in the corpus; steps unknown."
+    },
+    {
+      "id": "A03",
+      "category": "aggregation_open_set",
+      "question": "Which bugs involve the admin panel bulk export crashing on large exports, and has any of them been fixed?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 751.0,
+      "first_token_s": 421.0464,
+      "output_tokens": 367,
+      "context_ids": [
+        "BUG-1007",
+        "BUG-1017",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2010"
+      ],
+      "answer": "The bugs involving the admin panel bulk export crashing on large exports are:\n\n1. **BUG-1007**: This bug reports that exporting a user list to CSV from the admin panel throws an ERR_500_INTERNAL error when the row count exceeds approximately 5000. It is currently open. (Source: BUG-1007)\n\n2. **BUG-1017**: This bug is a follow-up to BUG-1007 and confirms that the root cause was the export job loading the entire dataset into memory instead of streaming/paginating. A fix was deployed using cursor-based pagination, and it has been verified with a 12,000-row export in staging. This bug is resolved. (Source: BUG-1017)\n\n3. **BUG-2028**: This bug reports that the bulk export times out for reports over 17 rows when run from Chrome 128. It is resolved. (Source: BUG-2028)\n\n4. **BUG-2023**: This bug reports that the bulk export times out for reports over 39 rows when run from Chrome 128. It is currently in progress. (Source: BUG-2023)\n\n5. **BUG-2010**: This bug reports that the bulk export times out for reports over 16 rows when run from Chrome 128. It is resolved. (Source: BUG-2010)\n\nIn summary, the bugs involving the admin panel bulk export crashing on large exports are BUG-1007, BUG-1017, BUG-2028, BUG-2023, and BUG-2010. Among these, BUG-1017, BUG-2028, and BUG-2010 have been fixed. (Source: BUG-1007, BUG-1017, BUG-2028, BUG-2023, BUG-2010)",
+      "sources": [
+        "BUG-1007",
+        "BUG-1017",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2010"
+      ],
+      "truth": "BUG-1007 (Open, ERR_500_INTERNAL >5000 rows); BUG-1017 Resolved: cursor-based pagination fix."
+    },
+    {
+      "id": "A04",
+      "category": "compare_two_docs",
+      "question": "Compare BUG-1003 and BUG-1015: which error code does each report and which module is each in?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 537.9,
+      "first_token_s": 403.0942,
+      "output_tokens": 67,
+      "context_ids": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "answer": "- **BUG-1003** reports the error code **ERR_504_TIMEOUT** and is in the **Checkout** module.\n- **BUG-1015** reports the error code **ERR_401_UNAUTH** and is also in the **Checkout** module.\n\n(Source: BUG-1003, BUG-1015)",
+      "sources": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "truth": "BUG-1003: ERR_504_TIMEOUT, Checkout. BUG-1015: ERR_401_UNAUTH, Checkout."
+    },
+    {
+      "id": "A05",
+      "category": "compare_two_docs",
+      "question": "Do BUG-1006 and BUG-1011 describe the same problem?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 346.4,
+      "first_token_s": 276.3549,
+      "output_tokens": 108,
+      "context_ids": [
+        "BUG-1006",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "answer": "Yes, BUG-1006 and BUG-1011 describe the same problem. Both bug reports address the issue of duplicate push notifications being sent for the same order status change. The description in BUG-1011 explicitly states that it is the same as BUG-1006, and it recommends closing BUG-1011 as a duplicate once the same root cause is confirmed. The recorded cross-references also indicate that BUG-1011 is a duplicate of BUG-1006.\n\n(Source: BUG-1006, BUG-1011)",
+      "sources": [
+        "BUG-1006",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "truth": "Yes: BUG-1011 is recorded as a duplicate of BUG-1006."
+    },
+    {
+      "id": "P01",
+      "category": "paraphrase_single_doc",
+      "question": "Why do some customers get charged twice when they hit retry right after a card decline?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 187.8,
+      "first_token_s": 118.0745,
+      "output_tokens": 79,
+      "context_ids": [
+        "BUG-1023",
+        "BUG-1004",
+        "BUG-1013",
+        "BUG-1006",
+        "BUG-1002"
+      ],
+      "answer": "The issue of customers being charged twice when they hit \"Retry\" after a card decline is described in [BUG-1023]. The root cause is suspected to be the absence of an idempotency key on the retry request. This leads to both the original attempt and the retry being processed by the payment processor, resulting in a double charge. (Source: BUG-1023)",
+      "sources": [
+        "BUG-1023",
+        "BUG-1004",
+        "BUG-1013",
+        "BUG-1006",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1023: suspected missing idempotency key on retry."
+    },
+    {
+      "id": "P02",
+      "category": "paraphrase_single_doc",
+      "question": "Searching for wi-fi gives nothing but wifi works. Is this a known problem, and what is the suspected cause?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 234.7,
+      "first_token_s": 123.2609,
+      "output_tokens": 109,
+      "context_ids": [
+        "BUG-1005",
+        "TC-0301",
+        "BUG-1024",
+        "TC-0142",
+        "BUG-1010"
+      ],
+      "answer": "The issue of searching for \"wi-fi\" returning zero results while \"wifi\" works is a known problem. This is documented in [BUG-1005], where the problem is described as the tokenizer inconsistently splitting on hyphens between indexing and query time. This inconsistency leads to \"wi-fi\" not matching the indexed terms, even though products containing \"wifi\" or \"wi-fi\" are present in the catalog. The suspected cause is related to the tokenizer's handling of hyphens. (Source: BUG-1005)",
+      "sources": [
+        "BUG-1005",
+        "TC-0301",
+        "BUG-1024",
+        "TC-0142",
+        "BUG-1010"
+      ],
+      "truth": "BUG-1005: tokenizer splits on hyphen inconsistently between index and query time."
+    },
+    {
+      "id": "P03",
+      "category": "paraphrase_single_doc",
+      "question": "An admin role lost some permissions after someone edited and saved it. Which ticket covers that?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 326.2,
+      "first_token_s": 77.8296,
+      "output_tokens": 74,
+      "context_ids": [
+        "BUG-1022",
+        "BUG-1012",
+        "TC-2021",
+        "TC-2003",
+        "TC-2016"
+      ],
+      "answer": "The ticket that covers the issue of an admin role losing some permissions after editing and saving it is [BUG-1022]. The description states that editing a user's admin role via the paginated permissions UI and saving will silently remove permissions that exist in the database but weren't rendered on the currently visible page of the form. (Source: BUG-1022)",
+      "sources": [
+        "BUG-1022",
+        "BUG-1012",
+        "TC-2021",
+        "TC-2003",
+        "TC-2016"
+      ],
+      "truth": "BUG-1022: paginated permissions UI drops permissions not on the visible page."
+    },
+    {
+      "id": "P04",
+      "category": "paraphrase_single_doc",
+      "question": "Is there a known bug that lets people make an order total go below zero?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 235.7,
+      "first_token_s": 167.7254,
+      "output_tokens": 87,
+      "context_ids": [
+        "BUG-1009",
+        "BUG-2009",
+        "BUG-2014",
+        "BUG-1011",
+        "BUG-1024"
+      ],
+      "answer": "Yes, there is a known bug that allows the order total to go below zero. The bug is documented in [BUG-1009], which describes a security/validation gap where manually editing the quantity parameter in the checkout URL to a negative number (e.g., qty=-5) is accepted by the backend, resulting in the order total going below zero. This issue is considered high severity. (Source: BUG-1009)",
+      "sources": [
+        "BUG-1009",
+        "BUG-2009",
+        "BUG-2014",
+        "BUG-1011",
+        "BUG-1024"
+      ],
+      "truth": "BUG-1009: negative qty via URL manipulation."
+    },
+    {
+      "id": "P05",
+      "category": "paraphrase_single_doc",
+      "question": "Password reset emails take ages to arrive. What do we know about it?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 368.3,
+      "first_token_s": 132.7976,
+      "output_tokens": 84,
+      "context_ids": [
+        "BUG-1008",
+        "BUG-1002",
+        "BUG-1001",
+        "BUG-2030",
+        "BUG-2095"
+      ],
+      "answer": "The retrieved documents address the issue of delayed password reset emails. According to [BUG-1008], password reset emails sometimes take 15-20 minutes to arrive instead of near-instant delivery. The issue might be related to a downstream email provider queue, rather than a problem with the code itself. Further investigation is needed before reassigning the issue to the infrastructure team. (Source: BUG-1008)",
+      "sources": [
+        "BUG-1008",
+        "BUG-1002",
+        "BUG-1001",
+        "BUG-2030",
+        "BUG-2095"
+      ],
+      "truth": "BUG-1008: 15-20 min delay, possibly downstream email provider queue."
+    },
+    {
+      "id": "P06",
+      "category": "paraphrase_single_doc",
+      "question": "Shoppers lose the shipping details they typed if they take a long time on the checkout form. What causes this?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 292.6,
+      "first_token_s": 131.3065,
+      "output_tokens": 107,
+      "context_ids": [
+        "BUG-1015",
+        "BUG-1013",
+        "TC-0301",
+        "BUG-1003",
+        "BUG-2041"
+      ],
+      "answer": "The issue of shoppers losing their shipping details when they take a long time on the checkout form is caused by the expiration of the user's session token. According to [BUG-1015], if a user's session token expires while they are on the checkout page, the submission fails with an error (ERR_401_UNAUTH), and they lose their entered shipping and payment information. There is no warning before the session expires, nor is there an autosave feature to preserve the entered data. (Source: BUG-1015)",
+      "sources": [
+        "BUG-1015",
+        "BUG-1013",
+        "TC-0301",
+        "BUG-1003",
+        "BUG-2041"
+      ],
+      "truth": "BUG-1015: session token expires (30 min TTL), ERR_401_UNAUTH, no autosave."
+    },
+    {
+      "id": "P07",
+      "category": "paraphrase_single_doc",
+      "question": "Which bug says that using two discount codes gives a total off by a few cents, and why does it happen?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 304.8,
+      "first_token_s": 237.6247,
+      "output_tokens": 75,
+      "context_ids": [
+        "BUG-1018",
+        "BUG-2014",
+        "BUG-2009",
+        "BUG-2018",
+        "BUG-2017"
+      ],
+      "answer": "The bug report that mentions the issue of the checkout total being off by a few cents when using two discount codes is [BUG-1018]. The description indicates that the problem arises due to a rounding order issue, specifically because the percentage discount is applied before the flat discount, leading to a discrepancy when compared to a manual calculation. \n\n(Source: BUG-1018)",
+      "sources": [
+        "BUG-1018",
+        "BUG-2014",
+        "BUG-2009",
+        "BUG-2018",
+        "BUG-2017"
+      ],
+      "truth": "BUG-1018: rounding order issue between percentage and flat discount."
+    },
+    {
+      "id": "P08",
+      "category": "paraphrase_multi_doc",
+      "question": "Exact SKU searches do not come first in results. Which bug reports this and which test case checks the expected behaviour?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 510.3,
+      "first_token_s": 107.7918,
+      "output_tokens": 207,
+      "context_ids": [
+        "TC-0302",
+        "BUG-1020",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "answer": "The issue of exact SKU searches not appearing first in search results is addressed in the following bug report:\n\n- **BUG-1020**: This bug report describes the problem where searching for an exact SKU code results in the exact match appearing 4th or 5th in the results, behind fuzzy/partial text matches. The description indicates that the relevance scoring seems to incorrectly weight text similarity over exact identifier matches. (Source: BUG-1020)\n\nThe expected behavior for exact SKU searches is checked by the following test case:\n\n- **TC-0302**: This test case specifies that when searching for an exact SKU string, the exact SKU match must appear as the first result. Fuzzy or partial text matches on unrelated fields must not outrank an exact identifier match. (Source: TC-0302)\n\nTherefore, the bug report addressing the issue is **BUG-1020**, and the test case checking the expected behavior is **TC-0302**. (Source: BUG-1020, TC-0302)",
+      "sources": [
+        "TC-0302",
+        "BUG-1020",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1020 (bug) and TC-0302 (test case); no recorded link between them."
+    },
+    {
+      "id": "G01",
+      "category": "filtered_semantic",
+      "question": "Which bugs mention timeouts?",
+      "filters": {
+        "module": "Checkout"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 296.0,
+      "first_token_s": 198.008,
+      "output_tokens": 91,
+      "context_ids": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-2053",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "answer": "The following bugs mention timeouts:\n\n1. **[BUG-1003]**: The checkout page times out on slow connections, specifically on 3G/throttled connections, resulting in a 30-second hang and an ERR_504_TIMEOUT error. (Source: BUG-1003)\n\nThe other retrieved documents do not mention timeouts. (Source: BUG-1015, BUG-2053, BUG-2044, BUG-2084)",
+      "sources": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-2053",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "truth": "BUG-1003 (ERR_504_TIMEOUT) in Checkout."
+    },
+    {
+      "id": "G02",
+      "category": "filtered_semantic",
+      "question": "What problems are being reported?",
+      "filters": {
+        "module": "Profile",
+        "status": "Open"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 243.4,
+      "first_token_s": 127.8829,
+      "output_tokens": 166,
+      "context_ids": [
+        "BUG-2027",
+        "BUG-2119",
+        "BUG-2046"
+      ],
+      "answer": "The retrieved documents report the following problems related to profile photo uploads:\n\n1. **BUG-2027**: Profile photo upload silently fails on Edge 127 for files over 5MB, with no error shown. (Source: BUG-2027)\n\n2. **BUG-2119**: Profile photo upload silently fails on Firefox 130 for files over 40MB, with no error shown. (Source: BUG-2119)\n\n3. **BUG-2046**: Profile photo upload silently fails on Firefox 130 for files over 4MB, with no error shown. (Source: BUG-2046)\n\nThese issues are all related to the Profile module and involve silent failures during photo uploads without any error messages being displayed. (Source: BUG-2027, BUG-2119, BUG-2046)",
+      "sources": [
+        "BUG-2027",
+        "BUG-2119",
+        "BUG-2046"
+      ],
+      "truth": "Open Profile bugs: BUG-2027, BUG-2046, BUG-2119."
+    },
+    {
+      "id": "G03",
+      "category": "filtered_semantic",
+      "question": "Describe what these test cases verify.",
+      "filters": {
+        "doc_type": "test_case",
+        "module": "Payments"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 242.5,
+      "first_token_s": 39.4179,
+      "output_tokens": 135,
+      "context_ids": [
+        "TC-2007",
+        "TC-2013",
+        "TC-2018"
+      ],
+      "answer": "These test cases verify the timing of the arrival of a confirmation email after a successful charge during the checkout process. Specifically, they check that the confirmation email is received within a specified time frame after completing a transaction using a test card in a sandbox mode payment processor. The expected time frames for the confirmation email to arrive are as follows:\n\n1. TC-2007 expects the confirmation email to arrive within 7 minutes.\n2. TC-2013 expects the confirmation email to arrive within 10 minutes.\n3. TC-2018 expects the confirmation email to arrive within 4 minutes.\n\n(Source: TC-2007, TC-2013, TC-2018)",
+      "sources": [
+        "TC-2007",
+        "TC-2013",
+        "TC-2018"
+      ],
+      "truth": "TC-2007 (7 min), TC-2013 (10 min), TC-2018 (4 min) confirmation email timing."
+    },
+    {
+      "id": "F03",
+      "category": "false_premise",
+      "question": "Since BUG-1017 is a duplicate of BUG-1007, can it be closed as a duplicate?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 279.6,
+      "first_token_s": 109.627,
+      "output_tokens": 55,
+      "context_ids": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "answer": "The question contains a misunderstanding. According to the retrieved documents, BUG-1017 is related to, but not a duplicate of, BUG-1007. Therefore, it cannot be closed as a duplicate. (Source: BUG-1017, BUG-1007)",
+      "sources": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1017 is related_to BUG-1007, NOT a duplicate; it is the resolved follow-up."
+    }
+  ]
+}

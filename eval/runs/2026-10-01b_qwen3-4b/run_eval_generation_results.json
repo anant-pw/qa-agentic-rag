@@ -1,0 +1,700 @@
+[
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "We are given a question: \"What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?\"\n\nFirst, we need to find the test case referenced in BUG-1001.\n\nLooking at the retrieved documents:\n\nFor BUG-1001 (the bug report):\n- Recorded cross-references: \n  - BUG-1001 cites TC-0142\n\nSo, BUG-1001 references the test case TC-0142.\n\nNow, we need to find the expected result of TC-0142.\n\nWe have the document for TC-0142 (the test case):\n\n[TC-0142] Account lockout and cooldown after failed login attempts (doc_type=test_case, module=Login, status=None)\nPreconditions: A registered user account exists with a known correct password. User is logged out.\nSteps: 1. Navigate to /login\n2. Enter the correct username with an incorrect password\n3. Repeat step 2 two more times (3 total failed attempts)\n4. Immediately attempt to log in with the CORRECT password\n5. Wait for the defined cooldown period (5 minutes) to elapse\n6. Attempt login again with the correct password\nExpected result: After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\n\nSo, the expected result of TC-0142 is: \n\"After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\"\n\nWe are to state the answer with the source.\n\nThe question asks for the expected result of the test case referenced in BUG-1001. We found that BUG-1001 references TC-0142, and TC-0142 has the expected result as above.\n\nTherefore, the answer is the expected result string from TC-0142.\n\nWe must format the answer with the source: (Source: TC-0142)\n\nLet's write the answer:\n\nThe expected result of the test case referenced in bug report BUG-1001 is: \"After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\" (Source: TC-0142)\n\nBut note: the question says \"the test case referenced in bug report BUG-1001\". We have confirmed that BUG-1001 cites TC-0142.\n\nAlso, note that the question does not ask for a resolution, root cause, or fix. So we don't have to worry about Rule 2 (the resolution abstention) because the question is about the expected result of a test case.\n\nWe are only using the information in the retrieved documents.\n\nLet's check if there's any other reference? The question is specific: the test case referenced in BUG-1001. We have the cross-reference: BUG-1001 cites TC-0142.\n\nSo, we are good.\n\nWe must write the answer exactly as the expected result string from TC-0142.\n\nBut note: the expected result string is long. We can quote it.\n\nAlso, the rule says: when stating a fact, name the specific document ID(s) it came from.\n\nSo, the answer is:\n\nAfter 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)\n\nHowever, the rule says: \"use exactly this format at the end of your answer: (Source: TC-0142)\".\n\nBut note: the example in rule 5: \"1. TC-0301 requires both 'wifi' and 'wi-fi' spellings in the catalog. 2. TC-0302 requires a unique SKU with similar competing descriptions. (Source: TC-0301, TC-0302)\"\n\nSo we write the expected result string and then the source.\n\nBut the question is: \"What is the expected result of the test case referenced in bug report BUG-1001\"\n\nWe have one test case: TC-0142.\n\nSo, the answer is the string above.\n\nLet me write it without the quotes? Actually, the rule doesn't specify quotes. But in the context, we can write it as a string.\n\nAlternatively, we can write:\n\nThe expected result is: \"After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\" (Source: TC-0142)\n\nBut the rule says: \"state the number as a digit\" for counts, but here we are not counting. We are stating a string.\n\nWe are to be precise.\n\nI think the answer should be:\n\nAfter 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)\n\nBut note: the rule says \"use exactly this format at the end of your answer: (Source: TC-0142)\".\n\nSo we write the string and then the source.\n\nAlso, note: the question says \"the test case referenced in bug report BUG-1001\". We have confirmed that BUG-1001 references TC-0142.\n\nTherefore, we output:\n\nAfter 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)\n\nBut wait: the rule says \"Do not use outside knowledge\". We are only using the retrieved documents.\n\nAlso, note: the question has a title: \"Login fails after 3 attempts even with correct password\" but that's the bug report title. We are not using that for the expected result of the test case.\n\nWe are using the test case TC-0142.\n\nSo, this is the answer.\n\nLet me check if there's any other test case referenced? The bug report BUG-1001 says: \"Expected: account should unlock after cooldown per TC-0142.\" So it references TC-0142.\n\nTherefore, we are good.\n\nFinal answer.\n</think>\n\nAfter 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.81412244,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.029910714285714284,
+        "vector_score": 0.7787763,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.7913883,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79337204,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-2030",
+        "title": "Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030536130536130537,
+        "vector_score": 0.7588558,
+        "parent_document_id": 56
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "First, I need to understand the question: \"What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?\"\n\nThe question is asking about the expected result of the test case that is referenced in BUG-1002. From the retrieved documents, I see that BUG-1002 has a \"Recorded cross-references\" line that says: \"- BUG-1002 cites TC-0142\". So, BUG-1002 references test case TC-0142.\n\nNow, I need to find what the expected result is for TC-0142. Looking at the TC-0142 document:\n\n[TC-0142] Account lockout and cooldown after failed login attempts (doc_type=test_case, module=Login, status=None)\nPreconditions: A registered user account exists with a known correct password. User is logged out.\nSteps: 1. Navigate to /login\n2. Enter the correct username with an incorrect password\n3. Repeat step 2 two more times (3 total failed attempts)\n4. Immediately attempt to log in with the CORRECT password\n5. Wait for the defined cooldown period (5 minutes) to elapse\n6. Attempt login again with the correct password\nExpected result: After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\n\nSo, the expected result for TC-0142 is clearly stated: \"After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\"\n\nThe question is specifically about the test case referenced in BUG-1002, which is TC-0142. So, I should provide the expected result from TC-0142.\n\nAlso, I need to cite the source correctly. Since the expected result is from TC-0142, I should say (Source: TC-0142).\n\nLet me double-check if there's any other information. BUG-1002 itself has a description that says: \"Similar to earlier reports -- lockout mechanism doesn't release even when the right creds are used. Might be same root cause as BUG-1001, filed separately by support team without cross-checking.\" But it doesn't give the expected result; it's referencing TC-0142.\n\nThe question is about the test case referenced in BUG-1002, so it's TC-0142, and I have the expected result from TC-0142.\n\nAlso, Rule 2 says: if the question asks about a resolution, root cause, or fix, but here it's not asking about that; it's asking for the expected result of a test case. So Rule 2 doesn't apply here.\n\nRule 3: There are recorded cross-references, but for this question, I'm not inferring a relationship; I'm directly using the cited test case.\n\nRule 4: The retrieved documents do address this question.\n\nRule 5: I need to state the fact with the source.\n\nSo, the answer should be: The expected result is: \"After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.\" (Source: TC-0142)\n\nBut to be precise, I should quote it exactly as in the document.\n\nAlso, the question says \"the test case referenced in bug report BUG-1002\". From the cross-references, BUG-1002 cites TC-0142, so that's correct.\n\nIn the recorded cross-references for BUG-1002, it says: \"- BUG-1002 cites TC-0142\", so yes.\n\nNow, for the citation: Rule 5 says to use the format \"(Source: TC-0142)\".\n\nI should make sure it's a single source.\n\nAlso, the question is phrased as \"What is the expected result...\", so I need to provide the text.\n\nLet me write it out.\n\nAnswer: After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)\n\nBut to be accurate, I should check if there's any other test case or something, but no, the question is clear.\n\nAlso, in the retrieved documents, TC-0142 is the only test case referenced by BUG-1002.\n\nRule 2b: If the question asks about a test case cited by a bug report, and a \"Recorded cross-references\" line shows that citation, but the cited test case's own content was not retrieved... but in this case, TC-0142 is retrieved, so no issue.\n\nHere, TC-0142 is in the retrieved documents, so I can use it.\n\nSo, I think that's it.\n\nThe question says \"the test case referenced in bug report BUG-1002\", and BUG-1002 references TC-0142, so expected result is from TC-0142.\n\nNo need to mention BUG-1002 in the source because the source is the test case itself.\n\nRule 5: \"name the specific document ID(s) it came from\" \u2013 here, it came from TC-0142.\n\nSo, final answer.\n</think>\n\nAfter 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password. (Source: TC-0142)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.86895317,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79397905,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7879022,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02967032967032967,
+        "vector_score": 0.74903286,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "We are given a question: \"Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nWe have retrieved documents for:\n- BUG-1002\n- TC-0142\n- BUG-1001\n- BUG-1011\n- BUG-1024\n\nWe need to check:\n1. Is BUG-1002 a duplicate of another open ticket?\n2. If yes, which one?\n3. What module does it affect?\n\nFirst, note the module for BUG-1002: from the document, it's \"module=Login\".\n\nNow, check the recorded cross-references for BUG-1002:\n\nFrom [BUG-1002] document:\n- BUG-1002 cites TC-0142\n- BUG-1002 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1002\n\nAlso, from [BUG-1001] document:\n- BUG-1001 cites TC-0142\n- BUG-1002 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1001\n\nAnd from [BUG-1024] document:\n- BUG-1024 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1002\n\nThe question asks: \"Is bug report BUG-1002 ... a duplicate of another open ticket\"\n\nWe see that in the recorded cross-references for BUG-1002, it says: \"BUG-1002 is a duplicate of BUG-1001\"\n\nAlso, the status of BUG-1001 is \"Open\" (from [BUG-1001] document: status=Open) and BUG-1002 is also \"Open\" (from [BUG-1002] document: status=Open).\n\nSo, BUG-1002 is a duplicate of BUG-1001.\n\nThe module for BUG-1002 (and BUG-1001) is \"Login\" (as per the module field in each bug report).\n\nTherefore, the answer is:\n- Yes, BUG-1002 is a duplicate of BUG-1001.\n- The module it affects is Login.\n\nWe must cite the source documents. The information about the duplicate relationship is recorded in the cross-references of BUG-1002 and also in BUG-1001. However, the rule says: \"name the specific document ID(s) it came from\". We can say the source is the recorded cross-references for BUG-1002 and BUG-1001.\n\nBut note: the question asks about BUG-1002. The recorded cross-references for BUG-1002 explicitly state that it is a duplicate of BUG-1001. So we can cite BUG-1002 as the source for the duplicate relationship.\n\nAlso, the module is stated in the bug report documents (both BUG-1001 and BUG-1002 have module=Login).\n\nSo the answer:\n\n\"Bug report BUG-1002 is a duplicate of BUG-1001, which affects the Login module. (Source: BUG-1002, BUG-1001)\"\n\nBut wait: the question says \"which one and what module does it affect\". The module is the same for both (Login). We don't need to say \"it\" (BUG-1002) affects the module? Actually, the bug report BUG-1002 is about the Login module.\n\nLet me re-read the question: \"Is bug report BUG-1002 ... a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nThe \"it\" refers to BUG-1002. So we say: BUG-1002 affects the Login module.\n\nWe have the information from the retrieved documents.\n\nAlso, note: the status of BUG-1001 is Open (from [BUG-1001] document) and BUG-1002 is Open (from [BUG-1002] document). So both are open.\n\nTherefore, the answer is:\n\nYes, BUG-1002 is a duplicate of BUG-1001, and it affects the Login module.\n\nWe must format the source as: (Source: BUG-1002, BUG-1001)\n\nBut note: the rule says: \"name the specific document ID(s) it came from\". The information about the duplicate relationship comes from the recorded cross-references in BUG-1002 and also in BUG-1001. However, the question is about BUG-1002, so we can cite BUG-1002 as the primary source for the duplicate relationship (since it explicitly states it is a duplicate of BUG-1001). Also, the module is stated in both.\n\nAlternatively, we can say the source is the BUG-1002 document because it has the duplicate relationship and the module.\n\nBut the rule says: \"count or list only the retrieved documents provided to you that match\". Here, we are using two documents: BUG-1002 and BUG-1001.\n\nLet me check the rule 5: \"When you state a fact, name the specific document ID(s) it came from, using exactly this format at the end of your answer: (Source: BUG-XXXX) or (Source: TC-XXXX) -- substituting the real ID, comma-separated if citing more than one\"\n\nSo we write: (Source: BUG-1002, BUG-1001)\n\nBut note: the question asks about the module. The module is stated in the bug report documents. We have two documents that have the module field: BUG-1001 and BUG-1002, both with module=Login.\n\nSo the answer:\n\n\"Bug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\"\n\nHowever, the question says: \"a duplicate of another open ticket\". We have confirmed both are open.\n\nBut note: the recorded cross-references for BUG-1002 say: \"BUG-1002 is a duplicate of BUG-1001\". So that's the direct answer.\n\nAlso, the question does not ask for the root cause or fix, so we don't need to look for that.\n\nLet me check if there's any other duplicate? The recorded cross-references for BUG-1002 also say: \"BUG-1024 is a duplicate of BUG-1002\", but that's a different bug (BUG-1024) and the question is about BUG-1002 being a duplicate of another open ticket. So the answer is BUG-1001.\n\nTherefore, the answer is:\n\nBug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\n\nBut wait: the question says \"what module does it affect\". The module for BUG-1002 is Login (as per the document). So we are good.\n\nLet me write it exactly.\n\nWe must be precise: the question asks \"which one\" (meaning which bug report) and \"what module\".\n\nSo:\n\n- Which one: BUG-1001\n- What module: Login\n\nWe have the information.\n\nNow, note: the rule 7 says: if the question is incomplete, garbled, etc. but this question is complete.\n\nAlso, the question is about a specific bug report (BUG-1002) and we have the information.\n\nSo the answer is:\n\n\"Bug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\"\n\nBut let me check the status: both are open? Yes, from the documents.\n\nThe question says \"another open ticket\". We have two open tickets: BUG-1001 and BUG-1002. So BUG-1001 is open.\n\nTherefore, the answer is as above.\n\nI think that's it.\n\nLet me write the answer in the required format.\n\nAnswer: Bug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\n\nBut note: the question says \"if so which one\". We have confirmed it is a duplicate of BUG-1001.\n\nSo we don't need to say \"yes\" because the question is structured as \"is ... a duplicate ... and if so ...\". We are saying it is a duplicate of BUG-1001.\n\nWe can write:\n\nYes, bug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\n\nBut the question doesn't require a \"yes\" because the answer is positive. However, to be safe, we can say \"Yes\" at the beginning.\n\nBut the problem says: \"Is bug report ... a duplicate ...\". So we can answer with a yes/no and then the rest.\n\nAlternatively, we can write:\n\nBug report BUG-1002 is a duplicate of BUG-1001 (which is open) and affects the Login module. (Source: BUG-1002, BUG-1001)\n\nBut the question doesn't ask for the status of the duplicate ticket, but it says \"another open ticket\". We have confirmed that BUG-1001 is open.\n\nSo we can say: \"Bug report BUG-1002 is a duplicate of the open ticket BUG-1001 and affects the Login module.\"\n\nBut the rule says: we must cite the source documents. We have two: BUG-1002 and BUG-1001.\n\nSo:\n\n\"Bug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)\"\n\nThis is clear.\n\nLet me check if there's any other information? The question says \"what module does it affect\". The module is Login.\n\nSo I think that's the answer.\n\nFinal answer.\n</think>\n\nBug report BUG-1002 is a duplicate of BUG-1001 and affects the Login module. (Source: BUG-1002, BUG-1001)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8344288,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.767913,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030309988518943745,
+        "vector_score": 0.76787406,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7985173,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "vector_score": 0.7841454,
+        "parent_document_id": 24
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "We are given a question: \"Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nWe have retrieved documents for BUG-1011, BUG-1006, BUG-1024, BUG-1017, and BUG-1002.\n\nLet's break down the question:\n\n1. Is BUG-1011 a duplicate of another open ticket?\n2. If yes, which one?\n3. What module does it affect?\n\nWe are to answer using ONLY the retrieved documents.\n\nFirst, check the retrieved documents for BUG-1011:\n\n[BUG-1011] Duplicate notification bug (doc_type=bug_report, module=Notifications, status=Open)\nDescription: Same as BUG-1006 -- filed independently by another QA engineer who hadn't seen the existing ticket. Recommend closing this as duplicate once confirmed same root cause.\nSteps to reproduce: See BUG-1006.\nRecorded cross-references:\n- BUG-1011 is a duplicate of BUG-1006\n\nAlso, note that the status of BUG-1011 is \"Open\".\n\nNow, we need to check if BUG-1006 is an open ticket? The status of BUG-1006 is \"In Progress\" (from the document).\n\nBut the question asks for \"another open ticket\". So we must check the status of the duplicate.\n\nFrom the retrieved documents:\n\n[BUG-1006] Push notifications sent twice for same order update (doc_type=bug_report, module=Notifications, status=In Progress)\n\nSo BUG-1006 is not open (it's \"In Progress\"), but the question asks for \"open ticket\". However, note that the status of BUG-1011 is \"Open\", and the question says \"a duplicate of another open ticket\". But the duplicate relationship is defined by the system as \"BUG-1011 is a duplicate of BUG-1006\". \n\nBut the question is: is BUG-1011 a duplicate of another open ticket? \n\nWe have two points:\n\na) The system records: BUG-1011 is a duplicate of BUG-1006. So it is a duplicate of BUG-1006.\n\nb) The status of BUG-1006 is \"In Progress\", which is not \"Open\". The status of BUG-1011 is \"Open\".\n\nThe question asks for \"another open ticket\". So we must check: is BUG-1006 open? The answer is no (it's In Progress). Therefore, BUG-1011 is a duplicate of a ticket that is not open.\n\nBut note: the question says \"a duplicate of another open ticket\". So we are to check if the duplicate ticket is open? \n\nHowever, the retrieved documents do not have any other duplicate for BUG-1011. The only duplicate mentioned is BUG-1006.\n\nAlso, note that the status of BUG-1011 is \"Open\", but the duplicate (BUG-1006) is not open.\n\nSo the answer to the first part: \"Is bug report BUG-1011 a duplicate of another open ticket?\" -> No, because the duplicate (BUG-1006) is not open.\n\nBut wait, the question says: \"a duplicate of another open ticket\". So we are looking for a duplicate that is open. Since the only duplicate (BUG-1006) is not open, then BUG-1011 is not a duplicate of an open ticket.\n\nHowever, let's check the entire corpus for any other duplicates? The retrieved documents only show one duplicate for BUG-1011: BUG-1006.\n\nAlso, note that the question says: \"if so which one and what module does it affect?\"\n\nWe have the module for BUG-1011: Notifications (from the document).\n\nBut the question is about the duplicate ticket (if it exists and is open). Since the duplicate ticket (BUG-1006) is not open, we don't have a duplicate that is open.\n\nSo the answer should be: No, BUG-1011 is not a duplicate of another open ticket.\n\nBut let's read the rules carefully.\n\nRule 2: If the question asks SPECIFICALLY about a resolution, root cause, or fix: ... but this question is not about resolution, root cause, or fix. It's about whether it's a duplicate of an open ticket.\n\nRule 3: We have recorded cross-references. For BUG-1011, it says: \"BUG-1011 is a duplicate of BUG-1006\". So we know it's a duplicate of BUG-1006.\n\nBut the question asks for an open ticket. The status of BUG-1006 is \"In Progress\", so it's not open.\n\nTherefore, the answer is: No.\n\nBut note: the question says \"another open ticket\". So we are to check if the duplicate is open? The duplicate (BUG-1006) is not open.\n\nSo the answer: BUG-1011 is a duplicate of BUG-1006, but BUG-1006 is not open (it's In Progress). Therefore, it is not a duplicate of an open ticket.\n\nWe must state the facts from the documents.\n\nAlso, note: the question asks \"what module does it affect?\" - meaning the module of BUG-1011? The module of BUG-1011 is Notifications (from the document).\n\nBut the question says: \"if so which one and what module does it affect?\" - so if it is a duplicate of an open ticket, then we would say the module of that ticket? But in this case, it's not.\n\nSo the answer:\n\nBUG-1011 is a duplicate of BUG-1006 (module: Notifications), but BUG-1006 is not open (status: In Progress). Therefore, BUG-1011 is not a duplicate of an open ticket.\n\nWe must be precise.\n\nLet's write the answer:\n\n\"BUG-1011 is a duplicate of BUG-1006, which affects the Notifications module. However, BUG-1006 is not open (status: In Progress), so BUG-1011 is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\"\n\nBut note: the question asks for the module that the bug report affects. The bug report BUG-1011 is in the Notifications module. The duplicate ticket (BUG-1006) is also in the Notifications module.\n\nSo the module is Notifications.\n\nWe have to be careful: the question says \"what module does it affect?\" - meaning the bug report (BUG-1011) affects the Notifications module.\n\nBut the question is: \"Is bug report BUG-1011 ... a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nSo the \"it\" refers to the bug report (BUG-1011). So the module that BUG-1011 affects is Notifications.\n\nBut the answer to the first part is no.\n\nSo the answer:\n\nNo, BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (which is in the Notifications module) but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\n\nBut note: the question says \"if so which one and what module does it affect?\" - so we are only to say the module if it is a duplicate of an open ticket? Since it's not, we don't have to say the module for the duplicate ticket? Actually, the question asks for the module that the bug report affects (which is Notifications) regardless.\n\nHowever, the question is structured as: \n- Is it a duplicate of an open ticket? \n- If yes, then which one (the ticket) and what module does it affect? (the bug report)\n\nSo the module we are talking about is the module of the bug report (BUG-1011) which is Notifications.\n\nBut the answer to the first part is no.\n\nSo we can write:\n\n\"BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (module: Notifications), but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\"\n\nBut note: the question says \"what module does it affect?\" - the \"it\" here is the bug report (BUG-1011). So we can say: the module that BUG-1011 affects is Notifications.\n\nHowever, the question is a bit ambiguous. But we have the documents.\n\nLet's check the rules for citation: we must cite the source documents.\n\nWe have two documents: BUG-1011 and BUG-1006.\n\nAlso, note: the question says \"another open ticket\". We have to be clear that the duplicate ticket (BUG-1006) is not open.\n\nSo the answer:\n\nBUG-1011 is a duplicate of BUG-1006, which is in the Notifications module. However, BUG-1006 is not open (it is marked as \"In Progress\"), so BUG-1011 is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\n\nBut wait, the question asks: \"what module does it affect?\" - meaning the bug report (BUG-1011) affects the Notifications module. So we can say that.\n\nAlternatively, we can write:\n\nNo, BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (which affects the Notifications module) but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\n\nThis seems clear.\n\nBut note: the question says \"if so which one and what module does it affect?\" - so we are only to provide the module if it is a duplicate of an open ticket? Since it's not, we don't have to say the module for the duplicate ticket? Actually, the question is asking for the module that the bug report affects (which is Notifications) regardless.\n\nHowever, the context of the question: the module that the bug report affects is Notifications. So we can state that.\n\nBut the answer to the question is: it is not a duplicate of an open ticket. The module that BUG-1011 affects is Notifications.\n\nSo we can write:\n\n\"BUG-1011 is not a duplicate of an open ticket. It affects the Notifications module. (Source: BUG-1011)\"\n\nBut the question also asks for the duplicate ticket? The question says: \"if so which one\" - meaning if it is a duplicate of an open ticket, then which one? Since it's not, we don't have to say which one. But we can mention that it is a duplicate of BUG-1006 (which is not open) to be complete.\n\nHowever, the question is: \"Is bug report BUG-1011 ... a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nSo the answer is: No. It is a duplicate of BUG-1006 (which is in the Notifications module) but BUG-1006 is not open.\n\nBut the module that the bug report affects is Notifications.\n\nSo I think the answer should be:\n\n\"BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (which is in the Notifications module), but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\"\n\nThis covers the question.\n\nLet's check the status of BUG-1006: from the document, status is \"In Progress\". So it's not open.\n\nAlso, note: the question says \"another open ticket\". The bug report BUG-1011 itself is open (status: Open). But the duplicate ticket (BUG-1006) is not open.\n\nSo the answer is no.\n\nWe must be precise.\n\nAnother point: the question says \"a duplicate of another open ticket\". The word \"another\" implies that there is a ticket that is open and it is a duplicate. But in this case, the duplicate (BUG-1006) is not open.\n\nSo the answer is no.\n\nTherefore, we write:\n\n\"BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (module: Notifications), but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\"\n\nBut note: the module for BUG-1011 is Notifications (from the document). And the module for BUG-1006 is also Notifications (from the document).\n\nSo we can say: \"module: Notifications\" for both.\n\nHowever, the question asks for the module that the bug report affects (which is Notifications).\n\nSo the answer is as above.\n\nLet's format it.\n\nWe must follow the rules: only use the retrieved documents.\n\nWe have the documents for BUG-1011 and BUG-1006.\n\nSo the answer:\n\nBUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (which affects the Notifications module), but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\n\nBut to be more concise and clear:\n\n\"BUG-1011 is a duplicate of BUG-1006 (module: Notifications), but BUG-1006 is not open (status: In Progress), so it is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\"\n\nThis is clear.\n\nNow, check if there is any other duplicate? The retrieved documents do not show any other duplicate for BUG-1011.\n\nAlso, note: the question says \"another open ticket\". We have to make sure that there isn't a duplicate that is open? But the only duplicate is BUG-1006 and it's not open.\n\nSo the answer is as above.\n\nLet's write it.\n\nFinal answer:\n\nBUG-1011 is a duplicate of BUG-1006 (which affects the Notifications module), but BUG-1006 is not open (status: In Progress). Therefore, BUG-1011 is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\n\nBut note: the question asks \"what module does it affect?\" - the \"it\" refers to the bug report (BUG-1011). So we can say: the module that BUG-1011 affects is Notifications.\n\nBut in the answer, we have already stated that.\n\nAlternatively, we can write:\n\nNo, BUG-1011 is not a duplicate of an open ticket. It affects the Notifications module and is a duplicate of BUG-1006 (which is in the Notifications module but not open). (Source: BUG-1011, BUG-1006)\n\nBut the question is a bit long.\n\nI think the first version is clear.\n\nLet me see if the rules require a specific format.\n\nRule 4: We must not add information not in the documents.\n\nWe have the documents.\n\nSo I'll go with:\n\n\"BUG-1011 is not a duplicate of an open ticket. It is a duplicate of BUG-1006 (module: Notifications), but BUG-1006 is not open (status: In Progress). (Source: BUG-1011, BUG-1006)\"\n\nBut note: the question says \"what module does it affect?\" - the \"it\" is the bug report (BUG-1011). So we can say: the module that BUG-1011 affects is Notifications.\n\nSo we can write:\n\n\"BUG-1011 affects the Notifications module and is a duplicate of BUG-1006. However, BUG-1006 is not open (status: In Progress), so BUG-1011 is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\"\n\nThis is good.\n\nLet's write it.\n\nBut note: the question says \"if so which one and what module does it affect?\" - so we are not to say the module for the duplicate ticket? Actually, the module that the bug report affects is Notifications. So we can state that.\n\nI think this is acceptable.\n\nSo the answer string:\n\n\"BUG-1011 affects the Notifications module and is a duplicate of BUG-1006. However, BUG-1006 is not open (status: In Progress), so BUG-1011 is not a duplicate of an open ticket. (Source: BUG-1011, BUG-1006)\"\n\nBut to be more precise, we can say:\n\n\"BUG-1011 is not a duplicate of an open ticket. It affects the Notifications module and is a duplicate of BUG-1006 (which is not open, status: In Progress). (Source: BUG-1011, BUG-1006)\"\n\nThis is clear.\n\nI think that's the answer.\n\nLet me check the status of BUG-1006: from the document, status is \"In Progress\". So it's not open.\n\nAlso, the module for both is Notifications.\n\nSo we are good.\n\nTherefore, the answer is:\n\nBUG-1011 is not a duplicate of an open ticket. It affects the Notifications module and is a duplicate of BUG-1006 (which is not open, status: In Progress). (Source: BUG-1011, BUG-1006)\n</think>\n\nBUG-1011 is not a duplicate of an open ticket. It affects the Notifications module and is a duplicate of BUG-1006 (which is not open, status: In Progress). (Source: BUG-1011, BUG-1006)",
+    "sources": [
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8518858,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1006",
+        "title": "Push notifications sent twice for same order update",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030621785881252923,
+        "vector_score": 0.76476,
+        "parent_document_id": 6
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.76025003,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02886002886002886,
+        "vector_score": 0.7392467,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.027526395173453996,
+        "vector_score": 0.73115826,
+        "parent_document_id": 2
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "We are given a question: \"Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nWe have retrieved documents for:\n- BUG-1024\n- BUG-1001\n- BUG-1002\n- TC-0142\n- BUG-1011\n\nWe need to check if BUG-1024 is a duplicate of another open ticket (meaning another bug report that is open) and if so, which one and what module.\n\nFirst, note the question asks about a duplicate of \"another open ticket\". In the context of bug reports, \"open ticket\" likely means a bug report that is in the \"Open\" status (as opposed to \"Reopened\" or closed).\n\nLet's look at the status of the bug reports:\n\n- BUG-1024: status = \"Reopened\" (from the first document: [BUG-1024] ... status=Reopened)\n- BUG-1001: status = \"Open\"\n- BUG-1002: status = \"Open\"\n- BUG-1011: status = \"Open\" (but module=Notifications, so not relevant for Login)\n\nThe question is about BUG-1024 being a duplicate of another open ticket. So we are looking for a bug report that is open (status=Open) and that BUG-1024 is a duplicate of.\n\nFrom the retrieved documents, we have the \"Recorded cross-references\" for each bug.\n\nFor BUG-1024:\n- Recorded cross-references:\n  - BUG-1024 is a duplicate of BUG-1001\n  - BUG-1024 is a duplicate of BUG-1002\n\nSo BUG-1024 is a duplicate of both BUG-1001 and BUG-1002.\n\nNow, we need to check the status of BUG-1001 and BUG-1002 to see if they are open.\n\nFrom the documents:\n- BUG-1001: status=Open\n- BUG-1002: status=Open\n\nTherefore, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002.\n\nThe question asks: \"if so which one\" (singular) but note that the recorded cross-references say it is a duplicate of both. So we have two.\n\nAlso, the question asks: \"what module does it affect?\".\n\nLooking at the module for BUG-1024: it's \"Login\" (from the title: \"Login - see BUG-1001, still unresolved\"). Similarly, BUG-1001 and BUG-1002 are both in the \"Login\" module.\n\nSo the answer is: Yes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\n\nBut note: the question says \"another open ticket\" (singular) but we have two. We should report both.\n\nWe must be precise.\n\nLet's check the rules:\n\nRule 3: If a recorded cross-reference exists, report that relationship exactly as recorded.\n\nWe have two recorded cross-references for BUG-1024: duplicates of BUG-1001 and BUG-1002.\n\nAlso, note that the question says \"a duplicate of another open ticket\" (so we are to list the ones that are open). Both BUG-1001 and BUG-1002 are open.\n\nSo the answer:\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\n\nWe must cite the source documents.\n\nThe information comes from the recorded cross-references in the BUG-1024 document and the status of BUG-1001 and BUG-1002.\n\nBut note: the rule says to name the specific document ID(s) it came from.\n\nWe have:\n- For the duplicate relationship: from BUG-1024's Recorded cross-references (so source: BUG-1024)\n- For the status of BUG-1001 and BUG-1002: from their respective documents (BUG-1001 and BUG-1002)\n\nHowever, the question is about BUG-1024 and we are using the recorded cross-references in BUG-1024 to say it's a duplicate of BUG-1001 and BUG-1002. Then we check the status of BUG-1001 and BUG-1002 from their documents.\n\nBut the rule says: \"When you state a fact, name the specific document ID(s) it came from\"\n\nSo we can say:\n\n\"BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\"\n\nBut note: the question asks for the module that BUG-1024 affects. Since BUG-1024 is a Login bug, it affects the Login module.\n\nAlternatively, we can say:\n\n\"BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\"\n\nHowever, the rule says: \"count or list only the retrieved documents provided to you that match\". We are listing two bug reports.\n\nBut note: the question is about BUG-1024 being a duplicate of another open ticket. We have two.\n\nLet's write the answer:\n\n\"BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\"\n\nBut wait: the question says \"a duplicate of another open ticket\" (singular) but we have two. We are being accurate.\n\nAlso, note that the question says \"if so which one\" (so we list both).\n\nWe must check if the module is the same for both. The module for BUG-1001 and BUG-1002 is \"Login\" (from the document titles).\n\nSo the answer is as above.\n\nBut let's see if there's any other information.\n\nThe question also says: \"what module does it affect?\" -> the module for BUG-1024 is Login (as per the title: \"Login - ...\").\n\nSo we are good.\n\nNow, rule 5: we must use the exact citation format.\n\nWe have three sources: BUG-1024 (which we used for the duplicate relationship), and BUG-1001 and BUG-1002 (for the status and module).\n\nBut note: the module for BUG-1024 is also in the title of BUG-1024: \"Login\". So we can say the module is Login.\n\nWe don't need to cite the module from a different source? Actually, the module is stated in the document.\n\nWe are citing the documents that provided the information.\n\nSo the answer:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut note: the rule says \"comma-separated if citing more than one\". So we write: (Source: BUG-1024, BUG-1001, BUG-1002)\n\nHowever, the question asks for the module that BUG-1024 affects. We can say it affects the Login module (which is the same as the module of the duplicates).\n\nBut the question is: \"what module does it affect?\" -> the module for BUG-1024 is Login.\n\nSo we are good.\n\nLet me check if there's any trick.\n\nThe question says: \"Is bug report BUG-1024 ... a duplicate of another open ticket\"\n\nWe have two open tickets that it is a duplicate of.\n\nSo the answer is yes, and they are BUG-1001 and BUG-1002.\n\nWe don't have to say \"another\" because it's two.\n\nSo the answer is:\n\nYes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\n\nBut the question says \"which one\" (singular) but we have two. We'll list both.\n\nAlternatively, we can say: \"BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module.\"\n\nNow, let's write it in the required format.\n\nWe must be careful: the question says \"a duplicate of another open ticket\" (so we are to list the ones that are open). Both are open.\n\nSo:\n\n\"BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\"\n\nBut note: the rule says \"When you state a fact, name the specific document ID(s) it came from\". We are stating the fact that BUG-1024 is a duplicate of BUG-1001 and BUG-1002 (from BUG-1024's document) and that they are open (from BUG-1001 and BUG-1002's documents) and the module (from the module field in the documents).\n\nSo we cite the three.\n\nAlternatively, we can say the module is Login (which is stated in the title of BUG-1024 and also in the other two).\n\nBut the rule doesn't require to cite the module source? We are citing the documents that we used.\n\nI think it's acceptable.\n\nLet me see if the question has any other nuance.\n\nThe question: \"Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket\"\n\nWe have: BUG-1024 is a duplicate of BUG-1001 and BUG-1002 (both open).\n\nSo the answer is yes.\n\nWe don't have to say \"another\" because it's two.\n\nSo the answer:\n\nYes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut note: the rule says \"count or list only the retrieved documents provided to you that match\". We are listing two bug reports.\n\nWe are not listing the module as a document? The module is a field in the document.\n\nSo we are good.\n\nLet's write the answer.\n\nOne more thing: the question says \"what module does it affect?\" -> the module for BUG-1024 is Login (as per the title). So we say Login.\n\nSo:\n\n\"BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\"\n\nBut to be precise, we can say:\n\n\"BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\"\n\nNow, the rule says: \"When you state a fact, name the specific document ID(s) it came from\". We are citing the three documents.\n\nAlternatively, we can note that the module information is in the title of BUG-1024 and the other two. But we are citing the documents.\n\nI think it's acceptable.\n\nLet me check the recorded cross-references again.\n\nIn BUG-1024: \n  \"BUG-1024 is a duplicate of BUG-1001\"\n  \"BUG-1024 is a duplicate of BUG-1002\"\n\nSo we have two.\n\nAlso, the status of BUG-1001 and BUG-1002 are both \"Open\" (as per the documents).\n\nSo the answer is as above.\n\nWe'll write:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut note: the question says \"a duplicate of another open ticket\" (singular) but we have two. We are being accurate.\n\nAlternatively, we can say: \"BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\"\n\nYes.\n\nSo the final answer.\n</think>\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module. This is determined from the recorded cross-references in BUG-1024 (which explicitly state it is a duplicate of both BUG-1001 and BUG-1002) and the status information in BUG-1001 and BUG-1002 (both marked as \"Open\" in their respective documents). The Login module is consistent across all three bug reports as indicated by the module field in the retrieved documents.\n\n(Source: BUG-1024, BUG-1001, BUG-1002)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.80058646,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.72968817,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.7506984,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.02488425925925926,
+        "vector_score": 0.7042736,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238776,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "We are given a question: \"Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nWe have retrieved documents for:\n- BUG-1024\n- BUG-1001\n- BUG-1002\n- TC-0142\n- BUG-1011\n\nWe need to check:\n1. Is BUG-1024 a duplicate of another open ticket?\n2. If yes, which one?\n3. What module does it affect?\n\nFirst, note the module of BUG-1024: from the document, it says \"module=Login\" (in the doc_type=bug_report, module=Login, status=Reopened) for BUG-1024.\n\nNow, let's look at the \"Recorded cross-references\" for BUG-1024:\n\nFrom [BUG-1024] document:\n- BUG-1024 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1002\n\nAlso, from [BUG-1001] document:\n- BUG-1002 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1001\n\nFrom [BUG-1002] document:\n- BUG-1002 is a duplicate of BUG-1001\n- BUG-1024 is a duplicate of BUG-1002\n\nSo, the system has recorded that BUG-1024 is a duplicate of both BUG-1001 and BUG-1002.\n\nNow, we need to check the status of these duplicates to see if they are \"open\" (as per the question: \"another open ticket\").\n\nFrom the retrieved documents:\n\n- BUG-1001: status=Open\n- BUG-1002: status=Open\n- BUG-1024: status=Reopened (but the question is about BUG-1024 being a duplicate of another open ticket, so we don't care about BUG-1024's status for the purpose of the duplicate relationship)\n\nThe question asks: \"a duplicate of another open ticket\". So we are looking for a duplicate that is open.\n\nBoth BUG-1001 and BUG-1002 are open (status=Open). Therefore, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002.\n\nBut note: the question says \"which one\" (singular). However, the system records two duplicates. We must report both.\n\nAlso, the module: all these bugs are in the \"Login\" module (as per the documents: BUG-1001, BUG-1002, BUG-1024 all have module=Login).\n\nSo the answer:\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\n\nBut let's check the exact wording of the question: \"a duplicate of another open ticket, and if so which one and what module does it affect?\"\n\nWe have two duplicates. We should list both.\n\nAlso, note: the question says \"another open ticket\" (singular) but the system shows two. We must be precise.\n\nWe have to state the facts from the retrieved documents.\n\nRule 3: If a recorded cross-reference exists, report that relationship exactly as recorded.\n\nWe see that the recorded cross-references for BUG-1024 are:\n- duplicate of BUG-1001\n- duplicate of BUG-1002\n\nAnd both BUG-1001 and BUG-1002 are open (status=Open).\n\nSo the answer is: Yes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and both affect the Login module.\n\nNow, we must cite the source documents.\n\nWe have:\n- BUG-1024: (Source: BUG-1024)\n- BUG-1001: (Source: BUG-1001)\n- BUG-1002: (Source: BUG-1002)\n\nBut note: the question asks for the module that BUG-1024 affects. The module is Login (as per the documents).\n\nWe can write:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut wait: the question says \"what module does it affect?\" - the module for BUG-1024 is Login (as per the document). Also, the duplicates are in the same module.\n\nLet me check the documents:\n\n- BUG-1024: module=Login\n- BUG-1001: module=Login\n- BUG-1002: module=Login\n\nSo the module is Login.\n\nWe must be careful: the question says \"which one\" (singular) but we have two. We'll list both.\n\nAlso, note: the question says \"a duplicate of another open ticket\" (singular) but the system shows two. We are to report what the retrieved documents say.\n\nRule 2: If the question asks SPECIFICALLY about a resolution, root cause, or fix: ... but this question is not about resolution, so Rule 2 doesn't apply.\n\nRule 3: We have recorded cross-references that state the relationship. We don't have to infer.\n\nSo the answer:\n\nYes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and both affect the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut note: the question says \"which one\" (singular) but we have two. We must be accurate.\n\nAlternatively, we can say: BUG-1024 is a duplicate of BUG-1001 and BUG-1002 (both open) in the Login module.\n\nLet's write the answer in the required format.\n\nWe must not add extra information.\n\nAlso, note: the question says \"if so which one\" - so we are saying yes and then listing both.\n\nWe have to check if the duplicates are open: the documents say status=Open for both.\n\nSo:\n\nAnswer: Yes, BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut wait: the question says \"what module does it affect?\" - the module for BUG-1024 is Login. The duplicates are also in Login.\n\nWe can write:\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and the module affected is Login. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nThis seems clear.\n\nLet me check if there's any other document that might be relevant? The question is about BUG-1024. We have the documents.\n\nAlso, note: the question says \"another open ticket\" - meaning a ticket that is open. Both BUG-1001 and BUG-1002 are open.\n\nSo we are good.\n\nNow, format the answer as per Rule 5: we must have the citation at the end.\n\nWe have three documents: BUG-1024, BUG-1001, BUG-1002.\n\nBut note: the question asks about BUG-1024. The information about the duplicates comes from BUG-1024's cross-references and the status of the duplicates (from their own documents).\n\nSo the source is the three documents.\n\nWe write:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut wait: the question says \"which one\" (singular) but we have two. We are being precise.\n\nAlternatively, we can say: BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both in the Login module.\n\nYes.\n\nLet me see if the system has any other information? The question says \"a duplicate of another open ticket\" - meaning one or more. We report both.\n\nSo the answer is as above.\n\nBut note: the question says \"and if so which one\" - so we are saying yes and then listing both.\n\nWe'll write:\n\nYes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and the module affected is Login. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nHowever, the problem says: \"what module does it affect?\" - the module for BUG-1024 is Login. So we can say \"Login\".\n\nBut note: the question says \"which one\" (the duplicate) and then the module. We are saying the module for the bug report (BUG-1024) is Login.\n\nSo it's clear.\n\nLet's write the answer.\n\nOne more thing: the question says \"BUG-1024 (Login - see BUG-1001, still unresolved)\" - so we are to consider the description. But the system has recorded the duplicates.\n\nWe are confident.\n\nSo:\n\nAnswer: Yes, BUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut to be more precise: the question asks \"which one\" (singular) but we have two. We'll state both.\n\nAlternatively, we can say: BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and the module affected is Login.\n\nYes.\n\nLet me check the status: the question says \"another open ticket\". The documents for BUG-1001 and BUG-1002 say status=Open. So they are open.\n\nSo we are good.\n\nFinal answer:\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and the module affected is Login. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut note: the question says \"what module does it affect?\" - the module for BUG-1024 is Login. So we can say \"Login\".\n\nWe don't need to say \"both\" for the module? The module is the same for all.\n\nSo:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002 (both open) and affects the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nYes.\n\nWe'll write it as:\n\nYes, BUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, and the module affected is Login. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut the problem says: \"if so which one\" - so we are saying yes and then listing both.\n\nI think that's the answer.\n\nLet me see if there's any trick: the question says \"a duplicate of another open ticket\" - meaning one. But the system shows two. We report both.\n\nAlso, note: the question says \"which one\" (singular) but we have two. We are being accurate.\n\nSo we go with that.\n\nNow, write the answer in the required format.\n\nWe must not add extra words.\n\nSo:\n\nBUG-1024 is a duplicate of BUG-1001 and BUG-1002, both of which are open and in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nBut to be concise:\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, affecting the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)\n\nYes.\n\nI think that's it.\n</think>\n\nBUG-1024 is a duplicate of two open tickets: BUG-1001 and BUG-1002, both of which are in the Login module. (Source: BUG-1024, BUG-1001, BUG-1002)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.80058646,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.72968817,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.7506984,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.02488425925925926,
+        "vector_score": 0.7042736,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238776,
+        "parent_document_id": 11
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?",
+    "type": "related_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs, no unqualified duplicate claim",
+    "answer": "We are given a question: \"Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?\"\n\nWe have retrieved documents for BUG-1017 and BUG-1007 (and others, but we focus on the relevant ones).\n\nFirst, note that the question is asking about the relationship between BUG-1017 and another ticket (it says \"connected to another ticket\"). The context provided in the question already says it's a \"follow-up to BUG-1007\", but we need to check the retrieved documents.\n\nLooking at the retrieved documents:\n\nFor BUG-1017:\n- Recorded cross-references: \n    - BUG-1017 is related to (NOT a duplicate of) BUG-1007\n\nFor BUG-1007:\n- Recorded cross-references: \n    - BUG-1017 is related to (NOT a duplicate of) BUG-1007\n\nSo, the recorded cross-reference explicitly states that BUG-1017 is related to BUG-1007 (and not a duplicate).\n\nThe question asks: \"Is bug report BUG-1017 ... connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?\"\n\nFrom the recorded cross-references, we see that BUG-1017 is related to BUG-1007 (and not a duplicate). The relationship type is \"related to\" (not a duplicate). The question also mentions that the bug report is described as a \"follow-up to BUG-1007\", which matches the relationship.\n\nTherefore, the answer is: Yes, BUG-1017 is connected to BUG-1007, and it is a related ticket (not a duplicate) \u2014 specifically, it is a follow-up (as stated in the description of BUG-1017: \"follow-up to BUG-1007\").\n\nWe must state the relationship exactly as recorded: \"related to (NOT a duplicate of)\".\n\nAlso, note that the question says \"if so, is it a duplicate or something else\". We have the recorded relationship: it is related (not a duplicate). So we don't have to say \"follow-up\" because the recorded relationship is \"related to\", and the description of BUG-1017 says it's a follow-up. But the rule says: \"Only infer a relationship from descriptive text when NO recorded cross-reference is present\". Here, we have a recorded cross-reference, so we don't infer. We report the recorded relationship.\n\nSo the answer: BUG-1017 is connected to BUG-1007 and it is related (not a duplicate).\n\nWe must cite the source: the recorded cross-references for BUG-1017 and BUG-1007.\n\nBut note: the rule says to name the specific document ID(s) it came from. We have two documents: BUG-1017 and BUG-1007. However, the recorded cross-reference is stated in both documents? Actually, the cross-references are listed in each bug report. But the rule says: \"name the specific document ID(s) it came from\". We can say the source is the recorded cross-references in BUG-1017 and BUG-1007.\n\nBut the rule 5 example: for a multi-item answer, we use (Source: BUG-XXXX, BUG-XXXX). However, in this case, the information about the relationship is recorded in both BUG-1017 and BUG-1007? Actually, the cross-reference is a link between two bugs. We can say the source is the recorded cross-references for BUG-1017 (which mentions BUG-1007) and also BUG-1007 (which mentions BUG-1017). But the rule says: \"using exactly this format at the end of your answer: (Source: BUG-XXXX) or (Source: TC-XXXX)\".\n\nWe can write: (Source: BUG-1017, BUG-1007)\n\nBut note: the question is about BUG-1017 and its connection. The recorded cross-references for BUG-1017 explicitly state the relationship with BUG-1007. So we can cite BUG-1017 as the source? However, the rule says: \"name the specific document ID(s) it came from\". The information we are using is from the recorded cross-references section of BUG-1017 and also BUG-1007? Actually, the cross-references are bidirectional? But in the retrieved documents, we have:\n\nFor BUG-1017: \"BUG-1017 is related to (NOT a duplicate of) BUG-1007\"\nFor BUG-1007: \"BUG-1017 is related to (NOT a duplicate of) BUG-1007\"\n\nSo both documents have the same cross-reference. We can cite both? But the rule says: \"if citing more than one, comma-separated\". However, the question is about BUG-1017, and the connection is described in BUG-1017's cross-references. Alternatively, we can say the source is BUG-1017 because that's the document that explicitly states the relationship for BUG-1017.\n\nBut to be precise, the rule says: \"state the number as a digit\" for counts, but here we are stating a fact. We'll cite the document that contains the information. Since the question is about BUG-1017, and the cross-references for BUG-1017 are the primary source for the relationship (as it's the bug we are focusing on), we can say (Source: BUG-1017). However, the rule 5 example shows multiple sources. Also, note that the cross-references are recorded in both, but the question is about the connection of BUG-1017.\n\nAlternatively, the rule says: \"name the specific document ID(s) it came from\". The information we are using is from the recorded cross-references of BUG-1017. So we can say (Source: BUG-1017). But the problem is that the cross-references are also listed in BUG-1007. However, the rule doesn't require us to list all documents that have the information? We are to be specific.\n\nGiven the context, I think it's safe to say the source is BUG-1017 because the question is about BUG-1017 and the relationship is stated in BUG-1017's cross-references.\n\nBut note: the rule says \"using exactly this format\". We'll write: (Source: BUG-1017)\n\nHowever, the question also says \"connected to another ticket\", and the other ticket is BUG-1007. But the source of the information is the cross-references in BUG-1017.\n\nLet me re-read the rule: \"When you state a fact, name the specific document ID(s) it came from\". The fact we are stating is: BUG-1017 is related to BUG-1007 (not a duplicate). This fact is stated in the recorded cross-references of BUG-1017. So the source is BUG-1017.\n\nBut also, the same fact is stated in BUG-1007? Actually, in BUG-1007, the recorded cross-references list: \"BUG-1017 is related to (NOT a duplicate of) BUG-1007\". So both have it.\n\nHowever, the rule doesn't require us to list all documents that have the information. We are to name the specific document(s) that provided the information. Since the question is about BUG-1017, and the information about its connection is in BUG-1017, we can cite BUG-1017.\n\nBut to be safe, let's see the example in rule 5: \"if two test cases both qualify, the correct citation is: ... (Source: BUG-XXXX, BUG-XXXX)\". Here, we have one fact that comes from one document? Actually, the fact is stated in two documents. However, the rule says \"the specific document ID(s) it came from\". We can say BUG-1017 because that's the document that we are focusing on and the relationship is described there.\n\nAlternatively, the problem might be that the question is about BUG-1017, so we cite BUG-1017.\n\nI think the intended answer is to cite BUG-1017.\n\nBut note: the question says \"Is bug report BUG-1017 ... connected to another ticket\". So the source of the information about BUG-1017 is BUG-1017.\n\nSo the answer: Yes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate).\n\nWe write:\n\nBUG-1017 is connected to BUG-1007 and it is related (not a duplicate).\n\nBut the question asks: \"is it a duplicate or something else, like a follow-up or resolution?\".\n\nWe have the recorded relationship: \"related to (NOT a duplicate of)\". The description of BUG-1017 says it's a \"follow-up to BUG-1007\", so it's a follow-up. However, the rule says: \"Only infer a relationship from descriptive text when NO recorded cross-reference is present\". Here, we have a recorded cross-reference, so we don't infer. We report the recorded relationship: \"related to (not a duplicate)\".\n\nSo we don't have to say \"follow-up\" because the recorded relationship is \"related to\", and the descriptive text says \"follow-up\", but we are not to infer beyond the recorded cross-references.\n\nTherefore, the answer is: Yes, BUG-1017 is connected to BUG-1:007 and it is related (not a duplicate).\n\nLet's write the answer.\n\nAnswer: Yes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate).\n\nSource: BUG-1017\n\nBut note: the recorded cross-references for BUG-1017 explicitly state the relationship with BUG-1007. So we can say the source is BUG-1017.\n\nAlternatively, we can say the source is the recorded cross-references section of BUG-1017.\n\nI think (Source: BUG-1017) is acceptable.\n\nHowever, the rule says: \"name the specific document ID(s) it came from\". The information came from the document BUG-1017.\n\nSo:\n\nYes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). (Source: BUG-1017)\n\nBut wait, the question also says: \"and if so, is it a duplicate or something else\". We are saying it's not a duplicate, it's related.\n\nLet me check if there's any other connection? The question says \"connected to another ticket\". We have only one connection: BUG-1007.\n\nSo the answer is clear.\n\nWe write:\n\nBUG-1017 is connected to BUG-1007 and it is related (not a duplicate).\n\nBut to be precise, we can say: Yes, BUG-1017 is connected to BUG-1007 and the relationship is \"related\" (not a duplicate).\n\nNow, the format: we must end with (Source: BUG-1017)\n\nBut note: the rule says \"using exactly this format\". So we write: (Source: BUG-1017)\n\nAlternatively, we can write the source as the document that contains the information. Since the information is in BUG-1017, we use that.\n\nLet me see if the problem expects multiple sources? The rule 5 example uses multiple for test cases. Here, we have one fact from one document.\n\nSo:\n\nAnswer: Yes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). (Source: BUG-1017)\n\nBut to be more formal, we can write:\n\nBUG-1017 is connected to BUG-1007 and the relationship is \"related\" (not a duplicate). (Source: BUG-1017)\n\nHowever, the question says: \"Is bug report BUG-1017 ... connected to another ticket\". So we are answering yes and then describing the relationship.\n\nI think that's it.\n\nBut note: the question says \"if so, is it a duplicate or something else\". We are saying it's not a duplicate, it's something else (related).\n\nSo the answer is:\n\nYes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). (Source: BUG-1017)\n\nBut wait, the recorded cross-references for BUG-1017 say: \"BUG-1017 is related to (NOT a duplicate of) BUG-1007\". So we are using that.\n\nLet me write the answer.\n\nFinal answer:\n\nYes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). (Source: BUG-1017)\n\nHowever, note that the question says: \"and if so, is it a duplicate or something else, like a follow-up or resolution?\".\n\nWe are saying it's related (not a duplicate) \u2014 and the description of BUG-1017 says it's a follow-up, but we don't have to say \"follow-up\" because the recorded relationship is \"related\". The rule says not to infer beyond the recorded cross-references.\n\nSo we don't add \"follow-up\" because the recorded relationship is \"related\", and the descriptive text says \"follow-up\", but we are not to infer. We are to report the recorded relationship.\n\nTherefore, the answer is as above.\n\nBut note: the question says \"like a follow-up or resolution\". We are saying it's a follow-up? Actually, the recorded relationship is \"related\", but the context of the bug report (the title) says \"follow-up to BUG-1007\". However, the rule says: \"Only infer a relationship from descriptive text when NO recorded cross-reference is present\". Here, we have a recorded cross-reference, so we don't infer. We report the recorded relationship: \"related\".\n\nSo we don't say \"follow-up\". We say \"related\".\n\nTherefore, the answer is: it is related (not a duplicate).\n\nSo the full answer:\n\nYes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). (Source: BUG-1017)\n\nBut to be precise, the relationship is described as \"related to (not a duplicate of)\".\n\nWe can write: \"it is related (not a duplicate)\".\n\nI think that's the answer.\n\nLet me check if there's any other connection? The question says \"connected to another ticket\". We have only one: BUG-1007.\n\nSo we are good.\n\nWrite the answer.\n</think>\n\nYes, BUG-1017 is connected to BUG-1007 and it is related (not a duplicate). This relationship is explicitly stated in the recorded cross-references for BUG-1017, which indicate that BUG-1017 is \"related to (NOT a duplicate of) BUG-1007\". The description of BUG-1017 as a \"follow-up to BUG-1007\" aligns with this relationship, but the recorded cross-reference type is \"related\" (not a duplicate), so no inference beyond this is made.  \n\n(Source: BUG-1017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8473571,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "vector_score": 0.78281873,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.81892747,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030330882352941176,
+        "vector_score": 0.769634,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-2023",
+        "title": "Admin: Bulk export times out for reports over 39 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.015625,
+        "vector_score": 0.77182287,
+        "parent_document_id": 49
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "PASS",
+    "detail": "contains all IDs in the error-code group",
+    "answer": "3 document(s) are associated with ERR_401_UNAUTH:\n- BUG-1001: Login fails after 3 attempts even with correct password (module=Login, status=Open)\n- BUG-1015: Login session expires mid-checkout without warning (module=Checkout, status=In Progress)\n- BUG-1024: Login - see BUG-1001, still unresolved (module=Login, status=Reopened)\n\nRecorded relationships among these documents:\n- BUG-1024 is a duplicate of BUG-1001\n\nNo other relationships are recorded between them; sharing an error code alone does not establish a common root cause.\n(Source: BUG-1001, BUG-1015, BUG-1024)",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 24
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "PASS",
+    "detail": "contains all IDs in the error-code group",
+    "answer": "5 document(s) are associated with ERR_403_FORBIDDEN:\n- BUG-1012: Admin export ERR_403_FORBIDDEN for sub-admin roles (module=Admin, status=Open)\n- BUG-1019: ERR_403_FORBIDDEN on password change for SSO-linked accounts (module=Login, status=Open)\n- BUG-2042: API: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present (module=API, status=Resolved)\n- BUG-2085: API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present (module=API, status=Closed)\n- BUG-2099: API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present (module=API, status=Resolved)\n\nRecorded relationships among these documents:\n- BUG-2042 is a duplicate of BUG-2085\n- BUG-2042 is a duplicate of BUG-2099\n- BUG-2085 is a duplicate of BUG-2099\n\nNo other relationships are recorded between them; sharing an error code alone does not establish a common root cause.\n(Source: BUG-1012, BUG-1019, BUG-2042, BUG-2085, BUG-2099)",
+    "sources": [
+      {
+        "external_id": "BUG-1012",
+        "title": "Admin export ERR_403_FORBIDDEN for sub-admin roles",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 12
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 19
+      },
+      {
+        "external_id": "BUG-2042",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 68
+      },
+      {
+        "external_id": "BUG-2085",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 111
+      },
+      {
+        "external_id": "BUG-2099",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 125
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Login module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (8)",
+    "answer": "8 document(s) match: BUG-1001, BUG-1002, BUG-1008, BUG-1019, BUG-2024, BUG-2043, BUG-2051, BUG-2108.",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1008",
+        "title": "Password reset email delayed by up to 20 minutes",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2024",
+        "title": "Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2043",
+        "title": "Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 42 seconds",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2051",
+        "title": "Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2108",
+        "title": "Login: User cannot sign in on Edge 127 despite entering the correct password; session times out after 22 seconds",
+        "doc_type": "bug_report"
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Payments module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (5)",
+    "answer": "5 document(s) match: BUG-1004, BUG-1013, BUG-1023, BUG-2038, BUG-2077.",
+    "sources": [
+      {
+        "external_id": "BUG-1004",
+        "title": "Payment declined shows generic error instead of decline reason",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2038",
+        "title": "Payments: Payment confirmation email is delayed by up to 31 minutes after a successful Chrome 128 checkout",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-2077",
+        "title": "Payments: Payment confirmation email is delayed by up to 3 minutes after a successful Chrome 128 checkout",
+        "doc_type": "bug_report"
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "BUG-1003 (Checkout page times out on slow connections)\nSteps to reproduce: 1. Throttle network to Slow 3G 2. Add item to cart 3. Proceed to checkout 4. Submit payment form 5. Wait 30s -> ERR_504_TIMEOUT\n(Source: BUG-1003)",
+    "sources": [
+      {
+        "external_id": "BUG-1003",
+        "title": "Checkout page times out on slow connections",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 3
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "BUG-1023 (Payment retry after decline charges card twice)\nSteps to reproduce: 1. Use a card that gets declined then approved on retry (test processor supports this) 2. Submit payment (declines) 3. Click Retry immediately 4. Check processor dashboard for duplicate charge\n(Source: BUG-1023)",
+    "sources": [
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 23
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "TC-0301 (Search tokenization consistency for hyphenated terms)\nPreconditions: Product catalog contains items with both 'wifi' and 'wi-fi' spellings in titles or descriptions.\n(Source: TC-0301)",
+    "sources": [
+      {
+        "external_id": "TC-0301",
+        "title": "Search tokenization consistency for hyphenated terms",
+        "doc_type": "test_case",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 147
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "TC-0302 (Exact SKU match ranks first in search results)\nPreconditions: A product with a known unique SKU exists in the catalog, along with other products with similar text descriptions.\n(Source: TC-0302)",
+    "sources": [
+      {
+        "external_id": "TC-0302",
+        "title": "Exact SKU match ranks first in search results",
+        "doc_type": "test_case",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 148
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?",
+    "type": "dangling_reference_citation",
+    "result": "PASS",
+    "detail": "mentions TC-0209 and states it is not in the corpus",
+    "answer": "We are given a question: \"What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?\"\n\nFirst, we need to find which test case is referenced in BUG-1013.\n\nLooking at the retrieved documents:\n\n- [BUG-1013] has a \"Recorded cross-references\" line: \"- BUG-1013 cites TC-0209 (not found in corpus)\"\n\nThis tells us that BUG-1013 references TC-0209. However, the note says \"(not found in corpus)\", meaning that TC-0209 is not present in the retrieved corpus.\n\nBut wait, the question asks for the expected result of the test case referenced in BUG-1013. According to the cross-reference, BUG-1013 cites TC-0209. However, TC-0209 is not in the corpus (as per the note).\n\nRule 2b says: \"If the question asks about a test case cited by a bug report, and a 'Recorded cross-references' line shows that citation, but the cited test case's own content was not retrieved (or the citation is marked as not present in the corpus): say so explicitly, naming both IDs, e.g. 'BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus.'\"\n\nSo, we have a citation from BUG-1013 to TC-0209, but TC-0209 is not in the corpus.\n\nTherefore, we cannot answer what the expected result of TC-0209 is because we don't have that test case in the retrieved documents.\n\nLet me check the other test cases to see if there's any other test case that might be referenced? But the cross-reference explicitly says BUG-1013 cites TC-0209 and it's not found.\n\nAlso, note that the question says: \"the test case referenced in bug report BUG-1013\". So we are only concerned with the reference in BUG-1013.\n\nTherefore, the answer should be: BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus.\n\nBut wait, let me double-check the retrieved documents for any other test case that might be referenced? The cross-reference line for BUG-1013 is the only one we have.\n\nAlso, note that the question does not ask for the expected result of the test case that is referenced (which we don't have) but we are to state that the referenced test case is not present.\n\nRule 2b: \"If the question asks about a test case cited by a bug report, and a 'Recorded cross-references' line shows that citation, but the cited test case's own content was not retrieved (or the citation is marked as not present in the corpus): say so explicitly, naming both IDs\"\n\nSo we do exactly that.\n\nWe don't have to look for the expected result of TC-0209 because it's not in the corpus.\n\nTherefore, the answer is: BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus.\n\nNow, we must format the answer with the source.\n\nThe source for this information is the BUG-1013 document, because the cross-reference is in BUG-1013.\n\nSo: (Source: BUG-1013)\n\nBut note: the rule says to use the exact format: (Source: BUG-XXXX) or (Source: TC-XXXX). Here we are citing the bug report that has the cross-reference.\n\nSo the answer: \"BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)\"\n\nHowever, let me check if there's any other test case that might be referenced? The question says \"the test case referenced in bug report BUG-1013\". We have only one reference: TC-0209.\n\nAlso, note that the bug report BUG-1013 itself has a description that says: \"Should fail fast client-side per TC-0209.\" So it's clear that it references TC-0209.\n\nBut the problem is that TC-0209 is not in the corpus.\n\nTherefore, we cannot provide the expected result of TC-0209.\n\nSo the answer is as above.\n\nLet me see if the question might be interpreted differently? The question: \"What is the expected result of the test case referenced in bug report BUG-1013\"\n\nWe don't have the test case, so we can't say what the expected result is.\n\nRule 4: If none of the retrieved documents answer the question at all, say: \"The retrieved documents do not address this question.\" But note: Rule 2b is specifically for this situation and we have a documented citation that is missing.\n\nRule 2b is the one that applies here.\n\nSo we use Rule 2b.\n\nTherefore, the answer is: BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)\n\nBut note: the rule says to name both IDs. We have done that.\n\nAlso, the rule says: \"Do not invent or guess at what the missing test case might say.\" We are not doing that.\n\nSo this is the answer.\n\nLet me check if there's any other test case that might be referenced? The bug report BUG-1013 does not reference any other test case. The cross-reference line is the only one.\n\nTherefore, we output:\n\nBUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)\n\nBut wait, the rule says: \"say so explicitly, naming both IDs\". We have named both: BUG-1013 and TC-0209.\n\nAlso, note that the question says: \"the test case referenced in bug report BUG-1013\". We have found that it references TC-0209, but that test case is not in the corpus.\n\nSo we are good.\n\nOne more thing: the rule says \"the cited test case's own content was not retrieved (or the citation is marked as not present in the corpus)\". Here, the citation is marked as \"not found in corpus\" in the cross-reference line.\n\nSo we are following the rule.\n\nTherefore, the answer is as above.\n\nLet me write it exactly.\n\nAnswer: BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)\n\nBut note: the rule says to use the exact format at the end: (Source: BUG-XXXX) or (Source: TC-XXXX). We have one source: BUG-1013.\n\nSo we write: (Source: BUG-1013)\n\nBut the rule says: \"comma-separated if citing more than one\". Here we have one.\n\nSo the answer string is: \"BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)\"\n\nHowever, the rule also says: \"Do not use outside knowledge\". We are only using the retrieved documents.\n\nWe have the cross-reference line in BUG-1013 that says: \"- BUG-1013 cites TC-0209 (not found in corpus)\"\n\nSo we are safe.\n\nTherefore, the final answer.\n</think>\n\nBUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. (Source: BUG-1013)",
+    "sources": [
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8199965,
+        "parent_document_id": 13
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03128054740957967,
+        "vector_score": 0.76493657,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "TC-2018",
+        "title": "Payments verification case 19",
+        "doc_type": "test_case",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.7630665,
+        "parent_document_id": 167
+      },
+      {
+        "external_id": "TC-2013",
+        "title": "Payments verification case 14",
+        "doc_type": "test_case",
+        "rrf_score": 0.03125,
+        "vector_score": 0.7615678,
+        "parent_document_id": 162
+      },
+      {
+        "external_id": "TC-2007",
+        "title": "Payments verification case 8",
+        "doc_type": "test_case",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.75825083,
+        "parent_document_id": 156
+      }
+    ]
+  },
+  {
+    "question": "What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?",
+    "type": "resolution_in_narrative",
+    "result": "PASS",
+    "detail": "no wrongful abstention, 18 shared content words with real description",
+    "answer": "We are given a question: \"What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?\"\n\nWe have retrieved documents for:\n- BUG-1017\n- BUG-1007\n- BUG-1024\n- BUG-2023\n- BUG-2028\n\nWe are to answer using ONLY the information in the retrieved documents.\n\nStep 1: Check if the question asks specifically about a resolution, root cause, or fix (it does). So we must look for the resolution in the Description or Steps text of the relevant bug report.\n\nThe question is about BUG-1017. We have a document for BUG-1017.\n\nFrom the retrieved document for BUG-1017:\nDescription: \"Root cause of BUG-1007 confirmed: export job loads entire dataset into memory instead of streaming/paginating. Fix deployed using cursor-based pagination in the export query. Verified with 12000-row export in staging.\"\n\nThis description explicitly states the fix: \"Fix deployed using cursor-based pagination in the export query.\"\n\nAlso, note that the Steps to reproduce section says: \"Fix verified against same steps with 12000 rows.\"\n\nSo the resolution for BUG-1017 is described in its own Description.\n\nStep 2: We must not infer or guess. The description is clear.\n\nStep 3: We must cite the source document. The question is about BUG-1017, and the answer comes from the Description of BUG-1017.\n\nStep 4: Format the answer as per Rule 5: state the fact and then add (Source: BUG-1017)\n\nThe answer should be: \n\"The fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\"\n\nBut note: the question says \"resolution or fix\". The description says \"Fix deployed using cursor-based pagination in the export query\". We can rephrase to be clear.\n\nAlso, note that the description says \"Root cause of BUG-1007 confirmed\", but the fix is for BUG-1017 (which is a follow-up to BUG-1007). So the fix is the same as the fix for BUG-1007? Actually, the description of BUG-1017 says it's a follow-up to BUG-1007 and it confirms the root cause of BUG-1007 and then describes the fix.\n\nWe are to answer for BUG-1017.\n\nLet's write the answer:\n\nThe resolution for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12,000-row export in staging. (Source: BUG-1017)\n\nBut note: the original description says \"12000-row\" (without comma) but we can write it as 12,000 for clarity? However, the rule says: use ONLY the information in the retrieved documents. The document says \"12000-row\", so we can write it as \"12000-row\" or \"12,000-row\". Since the document doesn't use a comma, but in English we often use commas for thousands, and the context is clear, I think it's acceptable to write \"12,000\" as it's standard. However, the rule says: do not use outside knowledge. But the document says \"12000\", so we can write it as \"12000\" without comma? Actually, the rule doesn't specify formatting. We'll write it as the document says: \"12000-row\".\n\nBut note: the example in Rule 2 says: \"verified with a 12,000-row export\". So we can use the comma for thousands? However, the rule says: use ONLY the information in the retrieved documents. The document says \"12000\", so we can write it as \"12000\" or \"12,000\". Since the rule doesn't specify, and the example uses a comma, I think it's safe to write it as \"12,000\" (with comma) because that's the standard way to write numbers in English in this context. But to be precise, the document says \"12000\", so we can write it as \"12000\" without comma? \n\nHowever, the rule says: do not use outside knowledge. The document says \"12000\", so we can write it as \"12000\". But in the context of the answer, it's clear. Let's stick to the exact string: \"12000-row\".\n\nBut note: the example in Rule 2 says: \"verified with a 12,000-row export\". So they used a comma. Since the rule doesn't forbid it and it's standard, I'll write it as \"12,000\" (with comma) for readability. However, the rule says: use ONLY the information in the retrieved documents. The document says \"12000\", so we are not adding a comma? Actually, the rule doesn't specify that we must write without commas. We are allowed to write in a natural way as long as we don't add information. \n\nTo be safe, I'll write it as \"12000\" without comma. But the example in Rule 2 uses a comma. Let me see: the rule says \"a resolution IS present in Description text even without a labeled Resolution field\". So we are to extract the text. The text says \"12000-row\". So we can write: \"12000-row\".\n\nAlternatively, we can write: \"12,000\" because in the context of the answer, it's clear and the rule doesn't forbid it. But the rule says: do not use outside knowledge. The number 12000 is written without comma in the document, but in English we often use commas. However, the rule doesn't specify. \n\nGiven the constraints, I'll write it as \"12000\" to be literal.\n\nBut note: the example in Rule 2 says: \"verified with a 12,000-row export\". So they used a comma. I think it's acceptable to use the comma for readability in the answer because it's standard and doesn't change the meaning. However, the rule says: use ONLY the information in the retrieved documents. The document says \"12000\", so we are not adding a comma? \n\nLet me re-read Rule 1: \"Answer using ONLY the information in the retrieved documents provided in the user message.\" So we must not add anything that isn't there. The document says \"12000\", so we write \"12000\". \n\nBut note: the document says \"12000-row\", so we can write \"12000-row\".\n\nSo the answer: \"The fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\"\n\nHowever, the question says \"resolution or fix\". The document says \"Fix deployed\", so we can say \"the resolution was ...\".\n\nBut note: the document also says \"Root cause of BUG-1007 confirmed\", but that's the root cause of the previous bug, not the resolution for BUG-1017. The resolution for BUG-1017 is the fix.\n\nSo we focus on the fix.\n\nStep 5: Check if there's any other document that might have the resolution? The question is about BUG-1017, and we have the document for BUG-1017. The other documents (BUG-1007, BUG-1024, BUG-2023, BUG-2028) are not relevant for the resolution of BUG-1017.\n\nSo we don't need to look elsewhere.\n\nTherefore, the answer is:\n\nThe resolution for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nBut note: the document says \"12000-row\", so we write it as \"12000-row\".\n\nLet me write it exactly as the document says.\n\nAlternatively, we can write: \"Fix deployed using cursor-based pagination in the export query, verified with a 12000-row export in staging.\"\n\nBut the question asks for \"resolution or fix\", so we can say \"the fix was ...\".\n\nI think the above is clear.\n\nFinal answer:\n\nThe fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nBut note: the document says \"12000-row\", so we write it without comma? Yes.\n\nHowever, in the answer, we can write it as \"12,000\" if we want to be standard? But the rule says: use ONLY the information. The information is \"12000\", so we write \"12000\". \n\nBut to be safe, I'll write it as \"12000\" (without comma) because that's what the document says.\n\nLet me check the document: \"Verified with 12000-row export in staging\" -> so it's \"12000-row\".\n\nSo the answer string: \"The fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\"\n\nBut note: the question says \"resolution or fix\". We are saying \"fix\", but the document says \"Fix deployed\". So it's the fix.\n\nAlternatively, we can say: \"The resolution for BUG-1017 was the deployment of cursor-based pagination in the export query, verified with a 12000-row export in staging.\"\n\nBut the document says \"Fix deployed\", so we can use that.\n\nI think it's fine.\n\nLet's write it.\n\nNote: The document also says \"Root cause of BUG-1007 confirmed\", but that's not the resolution for BUG-1017. The resolution for BUG-1017 is the fix that they deployed.\n\nSo we don't need to mention BUG-1007.\n\nTherefore, the answer is:\n\nThe fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nBut to be precise, the document says \"Fix deployed using cursor-based pagination in the export query\". So we can write: \"the deployment of cursor-based pagination in the export query\".\n\nHowever, the rule doesn't require a specific phrasing, just the information.\n\nI think this is acceptable.\n\nLet me see if there's a more concise way.\n\nWe can write: \"cursor-based pagination in the export query, verified with a 12000-row export in staging\"\n\nBut the question asks for the resolution or fix.\n\nSo the full answer.\n\nWe'll go with that.\n\nOne more thing: the document says \"12000-row\", so we write it as \"12000-row\".\n\nSo the answer string:\n\n\"The fix for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\"\n\nBut note: the rule says \"Answer using ONLY the information in the retrieved documents\". We are not adding anything. We are just rephrasing the information from the document.\n\nWe are not adding \"the fix for BUG-1017 was to deploy\" because that's a natural way to phrase it? Actually, the document says \"Fix deployed using ...\", so we are saying what the fix was.\n\nI think it's acceptable.\n\nAlternatively, we can write: \"Fix deployed using cursor-based pagination in the export query, verified with a 12000-row export in staging.\"\n\nBut the question asks for \"what was the resolution or fix\", so we can say: \"cursor-based pagination in the export query, verified with a 12000-row export in staging\"\n\nBut to be complete, we'll write a full sentence.\n\nGiven the above, I think the answer is:\n\nThe resolution for BUG-1017 was the deployment of cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nBut note: the document says \"Fix deployed\", so it's a deployment. We can say \"the deployment of cursor-based pagination\".\n\nHowever, the rule doesn't require a specific verb. We can use the phrase from the document.\n\nI think it's fine.\n\nLet me write the answer as:\n\nThe fix for BUG-1017 was the deployment of cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nBut the document says \"Fix deployed using cursor-based pagination\", so it's a bit different. We can say: \"cursor-based pagination in the export query\" as the fix.\n\nTo be precise, we'll write:\n\nThe resolution for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)\n\nYes.\n\nSo final answer.\n</think>\n\nThe resolution for BUG-1017 was to deploy cursor-based pagination in the export query, verified with a 12000-row export in staging. (Source: BUG-1017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8521698,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.76551723,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "vector_score": 0.75189257,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-2023",
+        "title": "Admin: Bulk export times out for reports over 39 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03036576949620428,
+        "vector_score": 0.75532544,
+        "parent_document_id": 49
+      },
+      {
+        "external_id": "BUG-2028",
+        "title": "Admin: Bulk export times out for reports over 17 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.029910714285714284,
+        "vector_score": 0.7545394,
+        "parent_document_id": 54
+      }
+    ]
+  },
+  {
+    "question": "What's the weather like today?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  },
+  {
+    "question": "What is the capital of France?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  },
+  {
+    "question": "How do I bake a chocolate cake?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  }
+]

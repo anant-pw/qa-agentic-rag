@@ -1,0 +1,18 @@
+[1/12] P01 PASS  route=semantic  187.8s
+[2/12] P02 PASS  route=semantic  234.7s
+[3/12] P03 PASS  route=semantic  326.2s
+[4/12] P04 PASS  route=semantic  235.7s
+[5/12] P05 PASS  route=semantic  368.3s
+[6/12] P06 PASS  route=semantic  292.6s
+[7/12] P07 PASS  route=semantic  304.8s
+[8/12] P08 PASS  route=semantic  510.3s
+[9/12] G01 PASS  route=semantic  296.0s
+[10/12] G02 PASS  route=semantic  243.4s
+[11/12] G03 PASS  route=semantic  242.5s
+[12/12] F03 PASS  route=semantic  279.6s
+
+=== phi4-14b: 12/12 PASS ===
+  paraphrase_single_doc            7/7
+  paraphrase_multi_doc             1/1
+  filtered_semantic                3/3
+  false_premise                    1/1

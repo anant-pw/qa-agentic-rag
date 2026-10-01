@@ -1,0 +1,19 @@
+[1/12] A01 FAIL  route=semantic  633.6s  ["missing 'BUG-2039'"]
+[2/12] A02 FAIL  route=semantic  277.2s  ["only 2/3 of ['BUG-2024', 'BUG-2043', 'BUG-2051', 'BUG-2108'] (['BUG-2024', 'BUG-2051'])"]
+[3/12] U02 FAIL  route=semantic  263.4s  ["none of ['open', 'not been fixed', 'no fix', 'not fixed']"]
+[4/12] F01 PASS  route=semantic  186.4s
+[5/12] F04 PASS  route=semantic  255.9s
+[6/12] S04 FAIL  route=semantic  316.0s  ["missing 'BUG-1017'", "none of ['cursor', 'pagination', 'resolved']"]
+[7/12] U01 PASS  route=semantic  182.1s
+[8/12] U03 PASS  route=semantic  187.7s
+[9/12] U04 PASS  route=semantic  136.4s
+[10/12] U05 PASS  route=semantic  245.9s
+[11/12] N01 PASS  route=semantic  330.0s
+[12/12] N02 PASS  route=semantic  276.0s
+
+=== phi4-14b: 8/12 PASS ===
+  aggregation_open_set             0/2
+  unanswerable                     4/5
+  false_premise                    2/2
+  short_messy_input                0/1
+  near_duplicate_discrimination    2/2

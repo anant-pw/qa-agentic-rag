@@ -1,0 +1,350 @@
+{
+  "label": "phi4-14b",
+  "results": [
+    {
+      "id": "A01",
+      "category": "aggregation_open_set",
+      "question": "List the bug reports about scheduled reports failing to send after a DST change on Safari 17.",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "missing 'BUG-2039'"
+      ],
+      "route": "semantic",
+      "wall_s": 633.6,
+      "first_token_s": 535.2441,
+      "output_tokens": 111,
+      "context_ids": [
+        "BUG-2006",
+        "BUG-2039",
+        "BUG-2091",
+        "BUG-2052",
+        "BUG-2001"
+      ],
+      "answer": "The retrieved documents that mention scheduled reports failing to send after a DST change on Safari 17 are:\n\n1. **BUG-2006**: Scheduled report fails to send on Safari 17-generated schedules created after a DST change. (Source: BUG-2006)\n2. **BUG-2091**: Scheduled report fails to send on Safari 17-generated schedules created after a DST change. (Source: BUG-2091)\n\nThere are 2 bug reports that match this condition. (Source: BUG-2006, BUG-2091)",
+      "sources": [
+        "BUG-2006",
+        "BUG-2039",
+        "BUG-2091",
+        "BUG-2052",
+        "BUG-2001"
+      ],
+      "truth": "BUG-2006, BUG-2039, BUG-2091 (the only Safari 17 ones)."
+    },
+    {
+      "id": "A02",
+      "category": "aggregation_open_set",
+      "question": "Which open bugs involve users who cannot sign in despite entering the correct password?",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "only 2/3 of ['BUG-2024', 'BUG-2043', 'BUG-2051', 'BUG-2108'] (['BUG-2024', 'BUG-2051'])"
+      ],
+      "route": "semantic",
+      "wall_s": 277.2,
+      "first_token_s": 181.2514,
+      "output_tokens": 129,
+      "context_ids": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2095",
+        "BUG-1002",
+        "BUG-2051"
+      ],
+      "answer": "The open bugs that involve users who cannot sign in despite entering the correct password are:\n\n1. **BUG-2024**: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds. (Source: BUG-2024)\n2. **BUG-2051**: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds. (Source: BUG-2051)\n\nThese bugs are currently open and describe the issue of users being unable to sign in despite entering the correct password. (Source: BUG-2024, BUG-2051)",
+      "sources": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2095",
+        "BUG-1002",
+        "BUG-2051"
+      ],
+      "truth": "Open: BUG-2024, 2043, 2051, 2108 (BUG-2030 Resolved, BUG-2095 Closed). Retrieval top-5 limit may cap this."
+    },
+    {
+      "id": "U02",
+      "category": "unanswerable",
+      "question": "When was BUG-1009 fixed?",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "none of ['open', 'not been fixed', 'no fix', 'not fixed']"
+      ],
+      "route": "semantic",
+      "wall_s": 263.4,
+      "first_token_s": 184.1828,
+      "output_tokens": 23,
+      "context_ids": [
+        "BUG-1009",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2066"
+      ],
+      "answer": "The retrieved documents do not state a resolution for BUG-1009. (Source: BUG-1009)",
+      "sources": [
+        "BUG-1009",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2066"
+      ],
+      "truth": "Status Open; no fix recorded."
+    },
+    {
+      "id": "F01",
+      "category": "false_premise",
+      "question": "Why was BUG-1025 fixed so quickly?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 186.4,
+      "first_token_s": 141.8005,
+      "output_tokens": 62,
+      "context_ids": [
+        "BUG-1025",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "answer": "The question as written does not appear to be a complete, answerable question. The retrieved documents do not state that BUG-1025 was fixed; instead, it is marked with a status of \"Won't Fix,\" indicating that no resolution or fix was applied. (Source: BUG-1025)",
+      "sources": [
+        "BUG-1025",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "truth": "BUG-1025 is Won't Fix (cosmetic)."
+    },
+    {
+      "id": "F04",
+      "category": "false_premise",
+      "question": "What does TC-0142 say about the 10-minute cooldown?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 255.9,
+      "first_token_s": 152.0645,
+      "output_tokens": 64,
+      "context_ids": [
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1002",
+        "TC-2013",
+        "BUG-2020"
+      ],
+      "answer": "TC-0142 specifies a 5-minute cooldown period after an account is locked due to failed login attempts. After this period, the account should unlock, allowing a successful login with the correct password. There is no mention of a 10-minute cooldown in TC-0142.\n\n(Source: TC-0142)",
+      "sources": [
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1002",
+        "TC-2013",
+        "BUG-2020"
+      ],
+      "truth": "The cooldown is 5 minutes, not 10."
+    },
+    {
+      "id": "S04",
+      "category": "short_messy_input",
+      "question": "export broke >5000 rows fixed??",
+      "filters": {},
+      "result": "FAIL",
+      "problems": [
+        "missing 'BUG-1017'",
+        "none of ['cursor', 'pagination', 'resolved']"
+      ],
+      "route": "semantic",
+      "wall_s": 316.0,
+      "first_token_s": 239.6344,
+      "output_tokens": 88,
+      "context_ids": [
+        "BUG-1007",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2022",
+        "BUG-2008"
+      ],
+      "answer": "The question as written does not appear to be a complete, answerable question. It seems to be asking about the resolution of a bug related to exporting more than 5000 rows, but it is not clearly stated.\n\nThe retrieved documents do not state a resolution for BUG-1007, which is the bug report related to the admin panel bulk export crashing on more than 5000 rows. (Source: BUG-1007)",
+      "sources": [
+        "BUG-1007",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2022",
+        "BUG-2008"
+      ],
+      "truth": "BUG-1007 crash; fixed per BUG-1017 (cursor-based pagination)."
+    },
+    {
+      "id": "U01",
+      "category": "unanswerable",
+      "question": "Who is assigned to BUG-1023?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 182.1,
+      "first_token_s": 115.6057,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1023",
+        "BUG-1017",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1023)",
+      "sources": [
+        "BUG-1023",
+        "BUG-1017",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "truth": "No assignee field exists."
+    },
+    {
+      "id": "U03",
+      "category": "unanswerable",
+      "question": "What severity level was assigned to BUG-2077?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 187.7,
+      "first_token_s": 158.8911,
+      "output_tokens": 28,
+      "context_ids": [
+        "BUG-2077",
+        "BUG-2102",
+        "BUG-2117",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-2077, BUG-2102, BUG-2117)",
+      "sources": [
+        "BUG-2077",
+        "BUG-2102",
+        "BUG-2117",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "truth": "No severity field."
+    },
+    {
+      "id": "U04",
+      "category": "unanswerable",
+      "question": "Which release version introduced BUG-1004?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 136.4,
+      "first_token_s": 109.131,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1004",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1004)",
+      "sources": [
+        "BUG-1004",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "truth": "No version field."
+    },
+    {
+      "id": "U05",
+      "category": "unanswerable",
+      "question": "How many story points was BUG-1018 estimated at?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 245.9,
+      "first_token_s": 141.2821,
+      "output_tokens": 18,
+      "context_ids": [
+        "BUG-1018",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "answer": "The retrieved documents do not address this question. (Source: BUG-1018)",
+      "sources": [
+        "BUG-1018",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-2026"
+      ],
+      "truth": "No estimate field."
+    },
+    {
+      "id": "N01",
+      "category": "near_duplicate_discrimination",
+      "question": "Which bug report describes cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 330.0,
+      "first_token_s": 271.7215,
+      "output_tokens": 70,
+      "context_ids": [
+        "BUG-2032",
+        "BUG-2065",
+        "BUG-2110",
+        "BUG-2112",
+        "BUG-2066"
+      ],
+      "answer": "The bug report that describes the cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29 is [BUG-2032]. The description specifically mentions this condition: \"Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 29.\" (Source: BUG-2032)",
+      "sources": [
+        "BUG-2032",
+        "BUG-2065",
+        "BUG-2110",
+        "BUG-2112",
+        "BUG-2066"
+      ],
+      "truth": "BUG-2032 (Safari 17, above 29). BUG-2065/2110/2112 are Safari 17 with other thresholds."
+    },
+    {
+      "id": "N02",
+      "category": "near_duplicate_discrimination",
+      "question": "Profile photo upload fails silently on Firefox 130 for files over 40MB. What is the ticket ID and its current status?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 276.0,
+      "first_token_s": 229.794,
+      "output_tokens": 47,
+      "context_ids": [
+        "BUG-2119",
+        "BUG-2046",
+        "BUG-2074",
+        "BUG-2055",
+        "BUG-2027"
+      ],
+      "answer": "The ticket ID for the issue where the profile photo upload fails silently on Firefox 130 for files over 40MB is BUG-2119. The current status of this ticket is Open. (Source: BUG-2119)",
+      "sources": [
+        "BUG-2119",
+        "BUG-2046",
+        "BUG-2074",
+        "BUG-2055",
+        "BUG-2027"
+      ],
+      "truth": "BUG-2119, Open."
+    }
+  ]
+}

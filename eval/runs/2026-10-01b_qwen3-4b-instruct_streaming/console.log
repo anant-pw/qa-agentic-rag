@@ -1,0 +1,86 @@
+[1/20] START (cross_reference_bug_to_test_case): What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?
+[1/20] DONE PASS in 52.8s
+[2/20] START (cross_reference_bug_to_test_case): What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?
+[2/20] DONE PASS in 48.2s
+[3/20] START (duplicate_resolution): Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?
+[3/20] DONE PASS in 18.3s
+[4/20] START (duplicate_resolution): Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?
+[4/20] DONE PASS in 41.3s
+[5/20] START (duplicate_resolution): Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?
+[5/20] DONE PASS in 45.5s
+[6/20] START (duplicate_resolution): Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?
+[6/20] DONE PASS in 11.6s
+[7/20] START (related_resolution): Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?
+[7/20] DONE PASS in 55.1s
+[8/20] START (error_code_aggregation): Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?
+[8/20] DONE PASS in 0.1s
+[9/20] START (error_code_aggregation): Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?
+[9/20] DONE PASS in 0.1s
+[10/20] START (structured_filter): How many bugs are currently Open in the Login module?
+[10/20] DONE PASS in 0.2s
+[11/20] START (structured_filter): How many bugs are currently Open in the Payments module?
+[11/20] DONE PASS in 0.2s
+[12/20] START (single_doc_factual): What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?
+[12/20] DONE MANUAL_REQUIRED in 0.1s
+[13/20] START (single_doc_factual): What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?
+[13/20] DONE MANUAL_REQUIRED in 0.1s
+[14/20] START (single_doc_factual): What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?
+[14/20] DONE MANUAL_REQUIRED in 0.1s
+[15/20] START (single_doc_factual): What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?
+[15/20] DONE MANUAL_REQUIRED in 0.1s
+[16/20] START (dangling_reference_citation): What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?
+[16/20] DONE PASS in 32.7s
+[17/20] START (resolution_in_narrative): What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?
+[17/20] DONE PASS in 59.0s
+[18/20] START (out_of_domain): What's the weather like today?
+[18/20] DONE PASS in 0.2s
+[19/20] START (out_of_domain): What is the capital of France?
+[19/20] DONE PASS in 0.2s
+[20/20] START (out_of_domain): How do I bake a chocolate cake?
+[20/20] DONE PASS in 0.3s
+
+============================================================
+TIER A DETERMINISTIC RESULTS: 16 PASS / 0 FAIL / 4 MANUAL_REQUIRED / 0 ERROR (of 20)
+============================================================
+[PASS          ] (cross_reference_bug_to_test_case) What is the expected result of the test case referenced in bug report 
+                 -> contains required source and target IDs
+[PASS          ] (cross_reference_bug_to_test_case) What is the expected result of the test case referenced in bug report 
+                 -> contains required source and target IDs
+[PASS          ] (duplicate_resolution) Is bug report BUG-1002 (Account lockout not clearing after correct pas
+                 -> contains required IDs and 'duplicate' language
+[PASS          ] (duplicate_resolution) Is bug report BUG-1011 (Duplicate notification bug) a duplicate of ano
+                 -> contains required IDs and 'duplicate' language
+[PASS          ] (duplicate_resolution) Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a dupl
+                 -> contains required IDs and 'duplicate' language
+[PASS          ] (duplicate_resolution) Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a dupl
+                 -> contains required IDs and 'duplicate' language
+[PASS          ] (related_resolution) Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG
+                 -> contains required IDs, no unqualified duplicate claim
+[PASS          ] (error_code_aggregation) Which bug reports are associated with ERR_401_UNAUTH, and do any of th
+                 -> contains all IDs in the error-code group
+[PASS          ] (error_code_aggregation) Which bug reports are associated with ERR_403_FORBIDDEN, and do any of
+                 -> contains all IDs in the error-code group
+[PASS          ] (structured_filter) How many bugs are currently Open in the Login module?
+                 -> answer contains the correct live count (8)
+[PASS          ] (structured_filter) How many bugs are currently Open in the Payments module?
+                 -> answer contains the correct live count (5)
+[MANUAL_REQUIRED] (single_doc_factual) What are the steps to reproduce BUG-1003 (Checkout page times out on s
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the steps to reproduce BUG-1023 (Payment retry after decline 
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the preconditions for TC-0301 (Search tokenization consistenc
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the preconditions for TC-0302 (Exact SKU match ranks first in
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[PASS          ] (dangling_reference_citation) What is the expected result of the test case referenced in bug report 
+                 -> mentions TC-0209 and states it is not in the corpus
+[PASS          ] (resolution_in_narrative) What was the resolution or fix for BUG-1017 (Admin bulk export - resol
+                 -> no wrongful abstention, 16 shared content words with real description
+[PASS          ] (out_of_domain) What's the weather like today?
+                 -> correctly rejected, no document ID cited
+[PASS          ] (out_of_domain) What is the capital of France?
+                 -> correctly rejected, no document ID cited
+[PASS          ] (out_of_domain) How do I bake a chocolate cake?
+                 -> correctly rejected, no document ID cited
+
+Full results (including raw answers/sources) written to eval/runs/2026-10-01b_qwen3-4b-instruct_streaming\run_eval_generation_results.json

@@ -1,0 +1,341 @@
+{
+  "label": "phi4-14b",
+  "results": [
+    {
+      "id": "N03",
+      "category": "near_duplicate_discrimination",
+      "question": "What is the status of the bug where applying a promo code leaves the cart total off by $4 on Safari 17?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 458.0,
+      "first_token_s": 335.6258,
+      "output_tokens": 74,
+      "context_ids": [
+        "BUG-2053",
+        "BUG-2106",
+        "BUG-2029",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "answer": "The status of the bug where applying a promo code leaves the cart total off by $4 on Safari 17 is \"Closed.\" This information is found in the description of [BUG-2053], which states that the cart total fails to update by $4.00 when a promo code is applied on Safari 17. (Source: BUG-2053)",
+      "sources": [
+        "BUG-2053",
+        "BUG-2106",
+        "BUG-2029",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "truth": "BUG-2053, Closed."
+    },
+    {
+      "id": "N04",
+      "category": "near_duplicate_discrimination",
+      "question": "Which ticket reports push notifications being delivered twice on Firefox 130, 27 seconds apart?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 304.5,
+      "first_token_s": 273.7572,
+      "output_tokens": 35,
+      "context_ids": [
+        "BUG-2090",
+        "BUG-2061",
+        "BUG-2019",
+        "BUG-2012",
+        "BUG-2025"
+      ],
+      "answer": "The ticket that reports push notifications being delivered twice on Firefox 130, 27 seconds apart, is [BUG-2090]. (Source: BUG-2090)",
+      "sources": [
+        "BUG-2090",
+        "BUG-2061",
+        "BUG-2019",
+        "BUG-2012",
+        "BUG-2025"
+      ],
+      "truth": "BUG-2090."
+    },
+    {
+      "id": "N05",
+      "category": "near_duplicate_discrimination",
+      "question": "Bulk export times out for reports over 44 rows when run from Safari 17. Which bug is that and which module is it in?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 420.4,
+      "first_token_s": 370.269,
+      "output_tokens": 44,
+      "context_ids": [
+        "BUG-2056",
+        "BUG-2005",
+        "BUG-2071",
+        "BUG-2028",
+        "BUG-2010"
+      ],
+      "answer": "The issue of bulk export timing out for reports over 44 rows when run from Safari 17 is described in [BUG-2056]. This bug is in the Admin module.\n\n(Source: BUG-2056)",
+      "sources": [
+        "BUG-2056",
+        "BUG-2005",
+        "BUG-2071",
+        "BUG-2028",
+        "BUG-2010"
+      ],
+      "truth": "BUG-2056, Admin, Closed."
+    },
+    {
+      "id": "N06",
+      "category": "near_duplicate_discrimination",
+      "question": "According to its title, on which browser does the sign-in failure in BUG-2024 happen, and after how many seconds does the session time out?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 234.6,
+      "first_token_s": 207.2072,
+      "output_tokens": 39,
+      "context_ids": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2043",
+        "BUG-2051",
+        "BUG-2095"
+      ],
+      "answer": "According to its title, the sign-in failure in BUG-2024 happens on Firefox 130, and the session times out after 6 seconds. (Source: BUG-2024)",
+      "sources": [
+        "BUG-2024",
+        "BUG-2030",
+        "BUG-2043",
+        "BUG-2051",
+        "BUG-2095"
+      ],
+      "truth": "Firefox 130, 6 seconds (its steps mention Safari 17 -- generator inconsistency; the title is the asked source)."
+    },
+    {
+      "id": "N07",
+      "category": "near_duplicate_discrimination",
+      "question": "Payment confirmation emails were delayed by up to 31 minutes after a successful Chrome 128 checkout. Which bug is that?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 403.2,
+      "first_token_s": 368.7509,
+      "output_tokens": 39,
+      "context_ids": [
+        "BUG-2038",
+        "BUG-2045",
+        "BUG-2000",
+        "BUG-2077",
+        "BUG-2076"
+      ],
+      "answer": "The bug report that describes payment confirmation emails being delayed by up to 31 minutes after a successful Chrome 128 checkout is [BUG-2038]. (Source: BUG-2038)",
+      "sources": [
+        "BUG-2038",
+        "BUG-2045",
+        "BUG-2000",
+        "BUG-2077",
+        "BUG-2076"
+      ],
+      "truth": "BUG-2038."
+    },
+    {
+      "id": "M01",
+      "category": "multi_hop",
+      "question": "Which module is the test case cited by BUG-1002 in, and what are its preconditions?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 233.1,
+      "first_token_s": 196.0633,
+      "output_tokens": 59,
+      "context_ids": [
+        "BUG-1002",
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1024",
+        "BUG-1011"
+      ],
+      "answer": "The test case cited by BUG-1002 is TC-0142, which is in the Login module. The preconditions for TC-0142 are that a registered user account exists with a known correct password, and the user is logged out. \n\n(Source: TC-0142)",
+      "sources": [
+        "BUG-1002",
+        "TC-0142",
+        "BUG-1001",
+        "BUG-1024",
+        "BUG-1011"
+      ],
+      "truth": "TC-0142, Login; preconditions: registered account with known correct password, user logged out."
+    },
+    {
+      "id": "M02",
+      "category": "multi_hop",
+      "question": "BUG-1024 is a duplicate of which tickets, and what error code do those tickets report?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 324.2,
+      "first_token_s": 232.6893,
+      "output_tokens": 133,
+      "context_ids": [
+        "BUG-1024",
+        "BUG-1001",
+        "BUG-1002",
+        "BUG-1011",
+        "BUG-1017"
+      ],
+      "answer": "BUG-1024 is a duplicate of BUG-1001 and BUG-1002. Both of these tickets report the error code ERR_401_UNAUTH. \n\n- BUG-1001 describes a situation where after exactly 3 failed login attempts, the account gets locked, and on the 4th attempt with the correct password, login still fails with ERR_401_UNAUTH.\n- BUG-1002 mentions a similar issue where the lockout mechanism doesn't release even when the correct credentials are used, potentially due to the same root cause as BUG-1001.\n\n(Source: BUG-1024, BUG-1001, BUG-1002)",
+      "sources": [
+        "BUG-1024",
+        "BUG-1001",
+        "BUG-1002",
+        "BUG-1011",
+        "BUG-1017"
+      ],
+      "truth": "BUG-1001 and BUG-1002; ERR_401_UNAUTH (stated in BUG-1001)."
+    },
+    {
+      "id": "M03",
+      "category": "multi_hop",
+      "question": "What was the original bug that BUG-1017 followed up on, and what error code did that original bug report?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 210.0,
+      "first_token_s": 148.5664,
+      "output_tokens": 46,
+      "context_ids": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "answer": "The original bug that BUG-1017 followed up on is BUG-1007. The error code reported in BUG-1007 is ERR_500_INTERNAL. \n\n(Source: BUG-1017, BUG-1007)",
+      "sources": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1007, ERR_500_INTERNAL."
+    },
+    {
+      "id": "M04",
+      "category": "multi_hop",
+      "question": "BUG-1013 cites a test case. What are that test case's steps?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 138.1,
+      "first_token_s": 113.6638,
+      "output_tokens": 45,
+      "context_ids": [
+        "BUG-1013",
+        "TC-2018",
+        "TC-2007",
+        "TC-2013",
+        "BUG-1011"
+      ],
+      "answer": "BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus. Therefore, the steps for the cited test case cannot be provided. (Source: BUG-1013)",
+      "sources": [
+        "BUG-1013",
+        "TC-2018",
+        "TC-2007",
+        "TC-2013",
+        "BUG-1011"
+      ],
+      "truth": "TC-0209 is cited but not in the corpus; steps unknown."
+    },
+    {
+      "id": "A03",
+      "category": "aggregation_open_set",
+      "question": "Which bugs involve the admin panel bulk export crashing on large exports, and has any of them been fixed?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 751.0,
+      "first_token_s": 421.0464,
+      "output_tokens": 367,
+      "context_ids": [
+        "BUG-1007",
+        "BUG-1017",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2010"
+      ],
+      "answer": "The bugs involving the admin panel bulk export crashing on large exports are:\n\n1. **BUG-1007**: This bug reports that exporting a user list to CSV from the admin panel throws an ERR_500_INTERNAL error when the row count exceeds approximately 5000. It is currently open. (Source: BUG-1007)\n\n2. **BUG-1017**: This bug is a follow-up to BUG-1007 and confirms that the root cause was the export job loading the entire dataset into memory instead of streaming/paginating. A fix was deployed using cursor-based pagination, and it has been verified with a 12,000-row export in staging. This bug is resolved. (Source: BUG-1017)\n\n3. **BUG-2028**: This bug reports that the bulk export times out for reports over 17 rows when run from Chrome 128. It is resolved. (Source: BUG-2028)\n\n4. **BUG-2023**: This bug reports that the bulk export times out for reports over 39 rows when run from Chrome 128. It is currently in progress. (Source: BUG-2023)\n\n5. **BUG-2010**: This bug reports that the bulk export times out for reports over 16 rows when run from Chrome 128. It is resolved. (Source: BUG-2010)\n\nIn summary, the bugs involving the admin panel bulk export crashing on large exports are BUG-1007, BUG-1017, BUG-2028, BUG-2023, and BUG-2010. Among these, BUG-1017, BUG-2028, and BUG-2010 have been fixed. (Source: BUG-1007, BUG-1017, BUG-2028, BUG-2023, BUG-2010)",
+      "sources": [
+        "BUG-1007",
+        "BUG-1017",
+        "BUG-2028",
+        "BUG-2023",
+        "BUG-2010"
+      ],
+      "truth": "BUG-1007 (Open, ERR_500_INTERNAL >5000 rows); BUG-1017 Resolved: cursor-based pagination fix."
+    },
+    {
+      "id": "A04",
+      "category": "compare_two_docs",
+      "question": "Compare BUG-1003 and BUG-1015: which error code does each report and which module is each in?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 537.9,
+      "first_token_s": 403.0942,
+      "output_tokens": 67,
+      "context_ids": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "answer": "- **BUG-1003** reports the error code **ERR_504_TIMEOUT** and is in the **Checkout** module.\n- **BUG-1015** reports the error code **ERR_401_UNAUTH** and is also in the **Checkout** module.\n\n(Source: BUG-1003, BUG-1015)",
+      "sources": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-1011",
+        "BUG-1017",
+        "BUG-1024"
+      ],
+      "truth": "BUG-1003: ERR_504_TIMEOUT, Checkout. BUG-1015: ERR_401_UNAUTH, Checkout."
+    },
+    {
+      "id": "A05",
+      "category": "compare_two_docs",
+      "question": "Do BUG-1006 and BUG-1011 describe the same problem?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 346.4,
+      "first_token_s": 276.3549,
+      "output_tokens": 108,
+      "context_ids": [
+        "BUG-1006",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "answer": "Yes, BUG-1006 and BUG-1011 describe the same problem. Both bug reports address the issue of duplicate push notifications being sent for the same order status change. The description in BUG-1011 explicitly states that it is the same as BUG-1006, and it recommends closing BUG-1011 as a duplicate once the same root cause is confirmed. The recorded cross-references also indicate that BUG-1011 is a duplicate of BUG-1006.\n\n(Source: BUG-1006, BUG-1011)",
+      "sources": [
+        "BUG-1006",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1017",
+        "BUG-1002"
+      ],
+      "truth": "Yes: BUG-1011 is recorded as a duplicate of BUG-1006."
+    }
+  ]
+}

@@ -36,6 +36,12 @@ eval/run_eval_generation.py can point at this endpoint with only a URL
 change -- no parsing logic changes needed to compare this against the
 Phase 6 baseline on the same eval set.
 
+UPDATE 2026-10-01: token streaming is now implemented behind
+settings.agentic_token_streaming (default on) -- run_semantic_generate()
+emits tokens through LangGraph's get_stream_writer() and the route consumes
+graph.stream(stream_mode=["custom", "values"]). The original v1 note is
+kept below for history; it describes the flag-off behaviour.
+
 REAL, FLAGGED SIMPLIFICATION (v1, not hidden): unlike /generate, tokens
 are NOT streamed to the client as they're generated. stream_chat() is
 still called and still streams internally, but this endpoint accumulates
@@ -77,6 +83,7 @@ import psycopg2
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from langgraph.config import get_stream_writer
 from langgraph.graph import StateGraph, END
 
 from app.config import settings
@@ -405,9 +412,12 @@ def run_error_code_lookup(state: AgenticState) -> dict:
 def run_semantic_generate(state: AgenticState) -> dict:
     """Same context-assembly and generation logic as /generate --
     fetch_structured_fields, fetch_references, build_messages,
-    stream_chat -- called identically, just accumulated into one string
-    instead of yielded token-by-token (see module docstring)."""
+    stream_chat -- called identically. Tokens are accumulated into the
+    final answer AND, when settings.agentic_token_streaming is on, emitted
+    through LangGraph's custom stream so the route can forward them to the
+    client as they arrive (see generate_agentic())."""
     top_hits = state["top_hits"]
+    write = get_stream_writer() if settings.agentic_token_streaming else (lambda _chunk: None)
 
     pg_conn = _get_pg_connection()
     try:
@@ -441,6 +451,7 @@ def run_semantic_generate(state: AgenticState) -> dict:
 
     accumulated: list[str] = []
     gen_start = time.time()
+    first_token_at = None
     generation_failed = False
     done_chunk = None
     try:
@@ -456,19 +467,26 @@ def run_semantic_generate(state: AgenticState) -> dict:
             wall_clock_timeout=settings.ollama_chat_wall_clock_timeout,
         ):
             accumulated.append(content)
+            if content:
+                if first_token_at is None:
+                    first_token_at = time.time()
+                write({"token": content})
             if maybe_done_chunk is not None:
                 done_chunk = maybe_done_chunk
     except GenerationError as e:
         generation_failed = True
         print(f"[generation] ERROR: Ollama chat request failed: {e}")
-        accumulated.append(
+        message = (
             "\n\n[This question took too long to answer, or the local model "
             "is temporarily unreachable. Try a shorter or more specific "
             "question, or try again in a moment.]"
         )
+        accumulated.append(message)
+        write({"token": message})
 
     gen_span = {
         "latency_s": round(time.time() - gen_start, 4),
+        "first_token_s": round(first_token_at - gen_start, 4) if first_token_at else None,
         "token_count": len("".join(accumulated).split()),
         "model": settings.ollama_chat_model,
         "path": "semantic",
@@ -549,28 +567,58 @@ def generate_agentic(req: AgenticGenerateRequest):
         "module": req.module,
         "status": req.status,
     }
-    final_state = compiled_agentic_graph.invoke(initial_state)
+    def finish(final_state: dict) -> tuple[str, list]:
+        """Cache + log once the graph has finished; returns (answer, sources)."""
+        answer = final_state.get("answer", "")
+        sources = final_state.get("sources", [])
+        decision = final_state.get("decision", "unknown")
+        error = final_state.get("error")
 
-    answer = final_state.get("answer", "")
-    sources = final_state.get("sources", [])
-    decision = final_state.get("decision", "unknown")
-    error = final_state.get("error")
+        # Cache ONLY the semantic path's real generation output -- see module
+        # docstring for why reject/deterministic are never cached.
+        if decision == "semantic" and not req.no_cache and not error:
+            set_cached(redis_client, cache_key, {"answer": answer, "sources": sources})
 
-    # Cache ONLY the semantic path's real generation output -- see module
-    # docstring for why reject/deterministic are never cached.
-    if decision == "semantic" and not req.no_cache and not error:
-        set_cached(redis_client, cache_key, {"answer": answer, "sources": sources})
+        log_generation_event(
+            question=req.question,
+            doc_type=req.doc_type,
+            module=req.module,
+            status=req.status,
+            retrieval_span=final_state.get("retrieval_span", {}),
+            generation_span=final_state.get("generation_span", {"path": decision, "llm_calls": 0}),
+            cache_hit=False,
+            error=error,
+        )
+        return answer, sources
 
-    log_generation_event(
-        question=req.question,
-        doc_type=req.doc_type,
-        module=req.module,
-        status=req.status,
-        retrieval_span=final_state.get("retrieval_span", {}),
-        generation_span=final_state.get("generation_span", {"path": decision, "llm_calls": 0}),
-        cache_hit=False,
-        error=error,
-    )
+    if settings.agentic_token_streaming:
+        # Same wire contract as before (answer text, then ---SOURCES---, then
+        # JSON), but semantic-path tokens are forwarded as stream_chat()
+        # produces them instead of after the whole answer. The graph itself
+        # is unchanged: run_semantic_generate() emits tokens through
+        # get_stream_writer() ("custom" mode) and "values" carries the final
+        # state. Routes with no LLM call emit nothing on "custom" and are
+        # sent whole at the end, exactly as before.
+        def token_stream():
+            final_state: dict = {}
+            streamed_any = False
+            for mode, chunk in compiled_agentic_graph.stream(
+                initial_state, stream_mode=["custom", "values"]
+            ):
+                if mode == "custom":
+                    streamed_any = True
+                    yield chunk["token"]
+                else:
+                    final_state = chunk
+            answer, sources = finish(final_state)
+            if not streamed_any:
+                yield answer
+            yield "\n\n---SOURCES---\n"
+            yield json.dumps(sources, indent=2)
+
+        return StreamingResponse(token_stream(), media_type="text/plain")
+
+    answer, sources = finish(compiled_agentic_graph.invoke(initial_state))
 
     def event_stream():
         yield answer

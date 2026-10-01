@@ -60,6 +60,10 @@ class Settings(BaseSettings):
     # documents it references (cited test case first) to the context.
     # See fetch_reference_targets() in app/generation/context.py.
     reference_expansion: bool = True
+    # /generate/agentic: forward LLM tokens to the client as they are
+    # generated (same wire contract). See generate_agentic() in
+    # app/routers/generate_agentic.py.
+    agentic_token_streaming: bool = True
     
     # Phase 6: Redis response cache for /generate. Containerized (unlike
     # Ollama) since there's no GPU/acceleration reason to run it natively,

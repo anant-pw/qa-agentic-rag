@@ -1,0 +1,18 @@
+[1/12] N03 PASS  route=semantic  458.0s
+[2/12] N04 PASS  route=semantic  304.5s
+[3/12] N05 PASS  route=semantic  420.4s
+[4/12] N06 PASS  route=semantic  234.6s
+[5/12] N07 PASS  route=semantic  403.2s
+[6/12] M01 PASS  route=semantic  233.1s
+[7/12] M02 PASS  route=semantic  324.2s
+[8/12] M03 PASS  route=semantic  210.0s
+[9/12] M04 PASS  route=semantic  138.1s
+[10/12] A03 PASS  route=semantic  751.0s
+[11/12] A04 PASS  route=semantic  537.9s
+[12/12] A05 PASS  route=semantic  346.4s
+
+=== phi4-14b: 12/12 PASS ===
+  near_duplicate_discrimination    5/5
+  multi_hop                        4/4
+  aggregation_open_set             1/1
+  compare_two_docs                 2/2

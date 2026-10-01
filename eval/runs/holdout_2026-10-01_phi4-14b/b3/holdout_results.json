@@ -1,0 +1,341 @@
+{
+  "label": "phi4-14b",
+  "results": [
+    {
+      "id": "P01",
+      "category": "paraphrase_single_doc",
+      "question": "Why do some customers get charged twice when they hit retry right after a card decline?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 187.8,
+      "first_token_s": 118.0745,
+      "output_tokens": 79,
+      "context_ids": [
+        "BUG-1023",
+        "BUG-1004",
+        "BUG-1013",
+        "BUG-1006",
+        "BUG-1002"
+      ],
+      "answer": "The issue of customers being charged twice when they hit \"Retry\" after a card decline is described in [BUG-1023]. The root cause is suspected to be the absence of an idempotency key on the retry request. This leads to both the original attempt and the retry being processed by the payment processor, resulting in a double charge. (Source: BUG-1023)",
+      "sources": [
+        "BUG-1023",
+        "BUG-1004",
+        "BUG-1013",
+        "BUG-1006",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1023: suspected missing idempotency key on retry."
+    },
+    {
+      "id": "P02",
+      "category": "paraphrase_single_doc",
+      "question": "Searching for wi-fi gives nothing but wifi works. Is this a known problem, and what is the suspected cause?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 234.7,
+      "first_token_s": 123.2609,
+      "output_tokens": 109,
+      "context_ids": [
+        "BUG-1005",
+        "TC-0301",
+        "BUG-1024",
+        "TC-0142",
+        "BUG-1010"
+      ],
+      "answer": "The issue of searching for \"wi-fi\" returning zero results while \"wifi\" works is a known problem. This is documented in [BUG-1005], where the problem is described as the tokenizer inconsistently splitting on hyphens between indexing and query time. This inconsistency leads to \"wi-fi\" not matching the indexed terms, even though products containing \"wifi\" or \"wi-fi\" are present in the catalog. The suspected cause is related to the tokenizer's handling of hyphens. (Source: BUG-1005)",
+      "sources": [
+        "BUG-1005",
+        "TC-0301",
+        "BUG-1024",
+        "TC-0142",
+        "BUG-1010"
+      ],
+      "truth": "BUG-1005: tokenizer splits on hyphen inconsistently between index and query time."
+    },
+    {
+      "id": "P03",
+      "category": "paraphrase_single_doc",
+      "question": "An admin role lost some permissions after someone edited and saved it. Which ticket covers that?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 326.2,
+      "first_token_s": 77.8296,
+      "output_tokens": 74,
+      "context_ids": [
+        "BUG-1022",
+        "BUG-1012",
+        "TC-2021",
+        "TC-2003",
+        "TC-2016"
+      ],
+      "answer": "The ticket that covers the issue of an admin role losing some permissions after editing and saving it is [BUG-1022]. The description states that editing a user's admin role via the paginated permissions UI and saving will silently remove permissions that exist in the database but weren't rendered on the currently visible page of the form. (Source: BUG-1022)",
+      "sources": [
+        "BUG-1022",
+        "BUG-1012",
+        "TC-2021",
+        "TC-2003",
+        "TC-2016"
+      ],
+      "truth": "BUG-1022: paginated permissions UI drops permissions not on the visible page."
+    },
+    {
+      "id": "P04",
+      "category": "paraphrase_single_doc",
+      "question": "Is there a known bug that lets people make an order total go below zero?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 235.7,
+      "first_token_s": 167.7254,
+      "output_tokens": 87,
+      "context_ids": [
+        "BUG-1009",
+        "BUG-2009",
+        "BUG-2014",
+        "BUG-1011",
+        "BUG-1024"
+      ],
+      "answer": "Yes, there is a known bug that allows the order total to go below zero. The bug is documented in [BUG-1009], which describes a security/validation gap where manually editing the quantity parameter in the checkout URL to a negative number (e.g., qty=-5) is accepted by the backend, resulting in the order total going below zero. This issue is considered high severity. (Source: BUG-1009)",
+      "sources": [
+        "BUG-1009",
+        "BUG-2009",
+        "BUG-2014",
+        "BUG-1011",
+        "BUG-1024"
+      ],
+      "truth": "BUG-1009: negative qty via URL manipulation."
+    },
+    {
+      "id": "P05",
+      "category": "paraphrase_single_doc",
+      "question": "Password reset emails take ages to arrive. What do we know about it?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 368.3,
+      "first_token_s": 132.7976,
+      "output_tokens": 84,
+      "context_ids": [
+        "BUG-1008",
+        "BUG-1002",
+        "BUG-1001",
+        "BUG-2030",
+        "BUG-2095"
+      ],
+      "answer": "The retrieved documents address the issue of delayed password reset emails. According to [BUG-1008], password reset emails sometimes take 15-20 minutes to arrive instead of near-instant delivery. The issue might be related to a downstream email provider queue, rather than a problem with the code itself. Further investigation is needed before reassigning the issue to the infrastructure team. (Source: BUG-1008)",
+      "sources": [
+        "BUG-1008",
+        "BUG-1002",
+        "BUG-1001",
+        "BUG-2030",
+        "BUG-2095"
+      ],
+      "truth": "BUG-1008: 15-20 min delay, possibly downstream email provider queue."
+    },
+    {
+      "id": "P06",
+      "category": "paraphrase_single_doc",
+      "question": "Shoppers lose the shipping details they typed if they take a long time on the checkout form. What causes this?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 292.6,
+      "first_token_s": 131.3065,
+      "output_tokens": 107,
+      "context_ids": [
+        "BUG-1015",
+        "BUG-1013",
+        "TC-0301",
+        "BUG-1003",
+        "BUG-2041"
+      ],
+      "answer": "The issue of shoppers losing their shipping details when they take a long time on the checkout form is caused by the expiration of the user's session token. According to [BUG-1015], if a user's session token expires while they are on the checkout page, the submission fails with an error (ERR_401_UNAUTH), and they lose their entered shipping and payment information. There is no warning before the session expires, nor is there an autosave feature to preserve the entered data. (Source: BUG-1015)",
+      "sources": [
+        "BUG-1015",
+        "BUG-1013",
+        "TC-0301",
+        "BUG-1003",
+        "BUG-2041"
+      ],
+      "truth": "BUG-1015: session token expires (30 min TTL), ERR_401_UNAUTH, no autosave."
+    },
+    {
+      "id": "P07",
+      "category": "paraphrase_single_doc",
+      "question": "Which bug says that using two discount codes gives a total off by a few cents, and why does it happen?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 304.8,
+      "first_token_s": 237.6247,
+      "output_tokens": 75,
+      "context_ids": [
+        "BUG-1018",
+        "BUG-2014",
+        "BUG-2009",
+        "BUG-2018",
+        "BUG-2017"
+      ],
+      "answer": "The bug report that mentions the issue of the checkout total being off by a few cents when using two discount codes is [BUG-1018]. The description indicates that the problem arises due to a rounding order issue, specifically because the percentage discount is applied before the flat discount, leading to a discrepancy when compared to a manual calculation. \n\n(Source: BUG-1018)",
+      "sources": [
+        "BUG-1018",
+        "BUG-2014",
+        "BUG-2009",
+        "BUG-2018",
+        "BUG-2017"
+      ],
+      "truth": "BUG-1018: rounding order issue between percentage and flat discount."
+    },
+    {
+      "id": "P08",
+      "category": "paraphrase_multi_doc",
+      "question": "Exact SKU searches do not come first in results. Which bug reports this and which test case checks the expected behaviour?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 510.3,
+      "first_token_s": 107.7918,
+      "output_tokens": 207,
+      "context_ids": [
+        "TC-0302",
+        "BUG-1020",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "answer": "The issue of exact SKU searches not appearing first in search results is addressed in the following bug report:\n\n- **BUG-1020**: This bug report describes the problem where searching for an exact SKU code results in the exact match appearing 4th or 5th in the results, behind fuzzy/partial text matches. The description indicates that the relevance scoring seems to incorrectly weight text similarity over exact identifier matches. (Source: BUG-1020)\n\nThe expected behavior for exact SKU searches is checked by the following test case:\n\n- **TC-0302**: This test case specifies that when searching for an exact SKU string, the exact SKU match must appear as the first result. Fuzzy or partial text matches on unrelated fields must not outrank an exact identifier match. (Source: TC-0302)\n\nTherefore, the bug report addressing the issue is **BUG-1020**, and the test case checking the expected behavior is **TC-0302**. (Source: BUG-1020, TC-0302)",
+      "sources": [
+        "TC-0302",
+        "BUG-1020",
+        "BUG-1024",
+        "BUG-1011",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1020 (bug) and TC-0302 (test case); no recorded link between them."
+    },
+    {
+      "id": "G01",
+      "category": "filtered_semantic",
+      "question": "Which bugs mention timeouts?",
+      "filters": {
+        "module": "Checkout"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 296.0,
+      "first_token_s": 198.008,
+      "output_tokens": 91,
+      "context_ids": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-2053",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "answer": "The following bugs mention timeouts:\n\n1. **[BUG-1003]**: The checkout page times out on slow connections, specifically on 3G/throttled connections, resulting in a 30-second hang and an ERR_504_TIMEOUT error. (Source: BUG-1003)\n\nThe other retrieved documents do not mention timeouts. (Source: BUG-1015, BUG-2053, BUG-2044, BUG-2084)",
+      "sources": [
+        "BUG-1003",
+        "BUG-1015",
+        "BUG-2053",
+        "BUG-2044",
+        "BUG-2084"
+      ],
+      "truth": "BUG-1003 (ERR_504_TIMEOUT) in Checkout."
+    },
+    {
+      "id": "G02",
+      "category": "filtered_semantic",
+      "question": "What problems are being reported?",
+      "filters": {
+        "module": "Profile",
+        "status": "Open"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 243.4,
+      "first_token_s": 127.8829,
+      "output_tokens": 166,
+      "context_ids": [
+        "BUG-2027",
+        "BUG-2119",
+        "BUG-2046"
+      ],
+      "answer": "The retrieved documents report the following problems related to profile photo uploads:\n\n1. **BUG-2027**: Profile photo upload silently fails on Edge 127 for files over 5MB, with no error shown. (Source: BUG-2027)\n\n2. **BUG-2119**: Profile photo upload silently fails on Firefox 130 for files over 40MB, with no error shown. (Source: BUG-2119)\n\n3. **BUG-2046**: Profile photo upload silently fails on Firefox 130 for files over 4MB, with no error shown. (Source: BUG-2046)\n\nThese issues are all related to the Profile module and involve silent failures during photo uploads without any error messages being displayed. (Source: BUG-2027, BUG-2119, BUG-2046)",
+      "sources": [
+        "BUG-2027",
+        "BUG-2119",
+        "BUG-2046"
+      ],
+      "truth": "Open Profile bugs: BUG-2027, BUG-2046, BUG-2119."
+    },
+    {
+      "id": "G03",
+      "category": "filtered_semantic",
+      "question": "Describe what these test cases verify.",
+      "filters": {
+        "doc_type": "test_case",
+        "module": "Payments"
+      },
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 242.5,
+      "first_token_s": 39.4179,
+      "output_tokens": 135,
+      "context_ids": [
+        "TC-2007",
+        "TC-2013",
+        "TC-2018"
+      ],
+      "answer": "These test cases verify the timing of the arrival of a confirmation email after a successful charge during the checkout process. Specifically, they check that the confirmation email is received within a specified time frame after completing a transaction using a test card in a sandbox mode payment processor. The expected time frames for the confirmation email to arrive are as follows:\n\n1. TC-2007 expects the confirmation email to arrive within 7 minutes.\n2. TC-2013 expects the confirmation email to arrive within 10 minutes.\n3. TC-2018 expects the confirmation email to arrive within 4 minutes.\n\n(Source: TC-2007, TC-2013, TC-2018)",
+      "sources": [
+        "TC-2007",
+        "TC-2013",
+        "TC-2018"
+      ],
+      "truth": "TC-2007 (7 min), TC-2013 (10 min), TC-2018 (4 min) confirmation email timing."
+    },
+    {
+      "id": "F03",
+      "category": "false_premise",
+      "question": "Since BUG-1017 is a duplicate of BUG-1007, can it be closed as a duplicate?",
+      "filters": {},
+      "result": "PASS",
+      "problems": [],
+      "route": "semantic",
+      "wall_s": 279.6,
+      "first_token_s": 109.627,
+      "output_tokens": 55,
+      "context_ids": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "answer": "The question contains a misunderstanding. According to the retrieved documents, BUG-1017 is related to, but not a duplicate of, BUG-1007. Therefore, it cannot be closed as a duplicate. (Source: BUG-1017, BUG-1007)",
+      "sources": [
+        "BUG-1017",
+        "BUG-1007",
+        "BUG-1011",
+        "BUG-1024",
+        "BUG-1002"
+      ],
+      "truth": "BUG-1017 is related_to BUG-1007, NOT a duplicate; it is the resolved follow-up."
+    }
+  ]
+}
