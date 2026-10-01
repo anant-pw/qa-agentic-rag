@@ -1,0 +1,5 @@
+restore: 1.05 s {'id_slot': 0, 'filename': 'cag_qwen3_4b_instruct.bin', 'n_restored': 19446, 'n_read': 1523633900, 'timings': {'restore_ms': 1017.562}}
+A02 PASS {'first_token_s': 17.6, 'total_s': 302.7, 'prompt_n': 20, 'cache_n': 19433, 'predicted_n': 297, 'predicted_ms': 285092.137} []
+    The open bugs that involve users who cannot sign in despite entering the correct password are:  - BUG-2024: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds (Source: BUG-2024) - BUG-2051: User cannot sign in on Firefox 130 despite entering t
+N01 PASS {'first_token_s': 23.8, 'total_s': 64.39, 'prompt_n': 30, 'cache_n': 19434, 'predicted_n': 44, 'predicted_ms': 40594.816} []
+    The bug report that describes cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29 is BUG-2032.  (Source: BUG-2032)

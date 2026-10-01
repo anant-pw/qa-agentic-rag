@@ -1,0 +1,26 @@
+[
+  {
+    "answer": "The open bugs that involve users who cannot sign in despite entering the correct password are:\n\n- BUG-2024: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds (Source: BUG-2024)\n- BUG-2051: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds (Source: BUG-2051)\n- BUG-2095: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 19 seconds (Source: BUG-2095)\n- BUG-2108: User cannot sign in on Edge 127 despite entering the correct password; session times out after 22 seconds (Source: BUG-2108)\n\nNote: BUG-2024, BUG-2051, and BUG-2095 are explicitly described as involving users who cannot sign in despite entering the correct password. BUG-2108 is also relevant as it describes a similar issue on Edge 127. All these bugs are in the \"Login\" module and are marked as \"Open\" in status. (Source: BUG-2024, BUG-2051, BUG-2095, BUG-2108)",
+    "first_token_s": 17.6,
+    "total_s": 302.7,
+    "prompt_n": 20,
+    "prompt_ms": 17530.148,
+    "predicted_n": 297,
+    "predicted_ms": 285092.137,
+    "cache_n": 19433,
+    "id": "A02",
+    "problems": []
+  },
+  {
+    "answer": "The bug report that describes cart item quantity resetting to 1 on Safari 17 when the quantity was set above 29 is BUG-2032.\n\n(Source: BUG-2032)",
+    "first_token_s": 23.8,
+    "total_s": 64.39,
+    "prompt_n": 30,
+    "prompt_ms": 23739.187,
+    "predicted_n": 44,
+    "predicted_ms": 40594.816,
+    "cache_n": 19434,
+    "id": "N01",
+    "problems": []
+  }
+]

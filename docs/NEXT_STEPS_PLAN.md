@@ -113,7 +113,7 @@ Retrieval is not the bottleneck (median 0.16 s). The time goes into the LLM read
 
 Ruled out: TurboRAG / CacheBlend / LMCache (GPU serving stacks; TurboRAG also needs a fine-tuned model) and llama-server `--cache-reuse` (strict prefix only).
 
-**Being tried first:** ideas 1 + 5 as one bounded experiment (see `docs/CAG_EXPERIMENT_2026-10-01.md`).
+**Ideas 1 + 5 tried 2026-10-01: rejected on this hardware** (`docs/CAG_EXPERIMENT_2026-10-01.md`). Priming 19.4k tokens took 1 h 51 min. Answers took 64–303 s, because writing runs at ~1 tok/s with the long context. The first token improved only to 18–24 s. A01 regressed, though A02 improved. Save/restore of the 1.5 GB cache works (2.4 s / 1.0 s). Next best candidates: 2 (phi4 answer bank), 4 (prefill while typing), and 5 applied to RAG contexts.
 
 ## Not planned (researched, poor fit for this machine)
 

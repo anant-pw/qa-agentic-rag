@@ -1,0 +1,646 @@
+[BUG-1001] Login fails after 3 attempts even with correct password (doc_type=bug_report, module=Login, status=Open)
+Description: User reports that after exactly 3 failed login attempts, the account gets locked. On the 4th attempt with the CORRECT password, login still fails with ERR_401_UNAUTH. Expected: account should unlock after cooldown per TC-0142.
+Steps to reproduce: 1. Go to /login 2. Enter wrong password 3 times 3. Enter correct password on 4th try 4. Observe ERR_401_UNAUTH instead of successful login
+Recorded cross-reference: BUG-1001 cites TC-0142
+
+[BUG-1002] Account lockout not clearing after correct password entry (doc_type=bug_report, module=Login, status=Open)
+Description: Similar to earlier reports -- lockout mechanism doesn't release even when the right creds are used. Might be same root cause as BUG-1001, filed separately by support team without cross-checking.
+Steps to reproduce: Same as BUG-1001. See TC-0142 for expected lockout/cooldown behavior.
+Recorded cross-reference: BUG-1002 is a duplicate of BUG-1001
+Recorded cross-reference: BUG-1002 cites TC-0142
+
+[BUG-1003] Checkout page times out on slow connections (doc_type=bug_report, module=Checkout, status=In Progress)
+Description: On 3G/throttled connections, checkout submission hangs for 30s then returns ERR_504_TIMEOUT . No retry mechanism exists. Customer lost cart contents.
+Steps to reproduce: 1. Throttle network to Slow 3G 2. Add item to cart 3. Proceed to checkout 4. Submit payment form 5. Wait 30s -> ERR_504_TIMEOUT
+
+[BUG-1004] Payment declined shows generic error instead of decline reason (doc_type=bug_report, module=Payments, status=Open)
+Description: When a card is declined by the processor, UI shows "Something went wrong" instead of the actual decline reason (insufficient funds, expired card, etc). Backend receives proper decline codes from processor but frontend swallows them.
+Steps to reproduce: 1. Use test card 4000000000000002 (generic decline) 2. Attempt payment 3. Observe generic error message
+
+[BUG-1005] Search returns zero results for queries with hyphens (doc_type=bug_report, module=Search, status=Open)
+Description: Searching for "wi-fi" returns 0 results even though 40+ products contain "wifi" or "wi-fi" in title. Tokenizer appears to split on hyphen inconsistently between indexing and query time.
+Steps to reproduce: 1. Go to search bar 2. Type 'wi-fi' 3. Submit 4. Compare to searching 'wifi' (returns results)
+
+[BUG-1006] Push notifications sent twice for same order update (doc_type=bug_report, module=Notifications, status=In Progress)
+Description: Users report receiving duplicate push notifications for the same order status change (e.g. 'Order Shipped' twice within seconds). Suspect race condition in notification queue worker.
+Steps to reproduce: 1. Place an order 2. Trigger status change to 'Shipped' via admin panel 3. Observe 2 identical push notifications on device
+
+[BUG-1007] Admin panel bulk export crashes on >5000 rows (doc_type=bug_report, module=Admin, status=Open)
+Description: Exporting user list to CSV from admin panel throws ERR_500_INTERNAL when row count exceeds ~5000. Works fine under that threshold. Likely a memory issue in the export job, not a timeout (job dies immediately at high volume, not after a delay).
+Steps to reproduce: 1. Log in as admin 2. Go to Users > Export 3. Select 'All users' (>5000 in prod) 4. Click export 5. ERR_500_INTERNAL after ~2s
+
+[BUG-1008] Password reset email delayed by up to 20 minutes (doc_type=bug_report, module=Login, status=Open)
+Description: Password reset emails sometimes take 15-20 min to arrive instead of near-instant delivery. No errors logged on the sending side. Might be a downstream email provider queue issue, not our code -- needs investigation before reassigning to infra team.
+Steps to reproduce: 1. Go to /forgot-password 2. Submit valid email 3. Time until email arrives (observed 18 min in one case)
+
+[BUG-1009] Checkout allows negative quantity via URL manipulation (doc_type=bug_report, module=Checkout, status=Open)
+Description: Manually editing the quantity param in the checkout URL to a negative number (e.g. qty=-5) is accepted by the backend and reduces order total below zero. Security/validation gap -- should be treated as high severity even though not yet seen in the wild.
+Steps to reproduce: 1. Add item to cart 2. Go to checkout, note URL params 3. Edit qty param to -5 4. Resubmit 5. Order total goes negative, payment step behaves unpredictably
+
+[BUG-1010] Search autocomplete lags 2-3s on mobile (doc_type=bug_report, module=Search, status=Open)
+Description: Autocomplete suggestions in search bar take 2-3 seconds to appear on mobile devices (tested iOS Safari, Android Chrome). Desktop is near-instant. Not a backend latency issue per API logs (responses <200ms) -- likely a frontend debounce/render issue on mobile specifically.
+Steps to reproduce: 1. Open site on mobile 2. Tap search bar 3. Type a query character by character 4. Note delay before suggestions render
+
+[BUG-1011] Duplicate notification bug (doc_type=bug_report, module=Notifications, status=Open)
+Description: Same as BUG-1006 -- filed independently by another QA engineer who hadn't seen the existing ticket. Recommend closing this as duplicate once confirmed same root cause.
+Steps to reproduce: See BUG-1006.
+Recorded cross-reference: BUG-1011 is a duplicate of BUG-1006
+
+[BUG-1012] Admin export ERR_403_FORBIDDEN for sub-admin roles (doc_type=bug_report, module=Admin, status=Open)
+Description: Users with 'sub-admin' role (not full admin) get ERR_403_FORBIDDEN when attempting export, even though the role config in the DB shows export permission = true. Permission check logic may not match the DB schema after last week's roles migration.
+Steps to reproduce: 1. Log in as sub-admin test account 2. Go to Users > Export 3. Click export 4. ERR_403_FORBIDDEN despite permission flag being true
+
+[BUG-1013] Payment form accepts expired card without client-side warning (doc_type=bug_report, module=Payments, status=Open)
+Description: Entering an expiry date in the past doesn't trigger a validation error until form submission, at which point it round-trips to the processor and comes back declined. Should fail fast client-side per TC-0209.
+Steps to reproduce: 1. Go to checkout payment step 2. Enter card with expiry 01/20 (past date) 3. Submit 4. No client-side warning; waits for processor round-trip
+Recorded cross-reference: BUG-1013 cites TC-0209 (not found in corpus)
+
+[BUG-1014] Search filter by module doesn't persist on page refresh (doc_type=bug_report, module=Search, status=Open)
+Description: Applying a module filter (e.g. filter to 'Electronics') and then refreshing the page resets the filter to 'All'. Filter state isn't stored in URL params or session -- lives only in frontend component state.
+Steps to reproduce: 1. Search for any term 2. Apply module filter 3. Refresh page (F5) 4. Filter resets to 'All'
+
+[BUG-1015] Login session expires mid-checkout without warning (doc_type=bug_report, module=Checkout, status=In Progress)
+Description: If a user's session token expires while they're on the checkout page (long form-fill time), submission fails with ERR_401_UNAUTH and they LOSE their entered shipping/payment info. No warning before expiry, no autosave.
+Steps to reproduce: 1. Log in, add item to cart 2. Start checkout, leave form open ~35 min (session TTL is 30 min) 3. Fill remaining fields 4. Submit -> ERR_401_UNAUTH, form data lost
+
+[BUG-1016] Notification preferences toggle doesn't save (doc_type=bug_report, module=Notifications, status=Open)
+Description: Toggling 'Order updates' notification preference off in account settings appears to save (UI shows success toast) but reverts to ON after logout/login. Backend PATCH request returns 200 but doesn't appear to persist.
+Steps to reproduce: 1. Go to Account > Notifications 2. Toggle 'Order updates' off 3. See success toast 4. Log out, log back in 5. Setting is back to ON
+
+[BUG-1017] Admin bulk export - resolved, follow-up to BUG-1007 (doc_type=bug_report, module=Admin, status=Resolved)
+Description: Root cause of BUG-1007 confirmed: export job loads entire dataset into memory instead of streaming/paginating. Fix deployed using cursor-based pagination in the export query. Verified with 12000-row export in staging.
+Steps to reproduce: See BUG-1007 for original repro. Fix verified against same steps with 12000 rows.
+Recorded cross-reference: BUG-1017 is related to (NOT a duplicate of) BUG-1007
+
+[BUG-1018] Checkout total miscalculates with multiple discount codes (doc_type=bug_report, module=Checkout, status=Open)
+Description: Applying two stackable discount codes results in a total that's off by a few cents compared to manual calculation -- looks like a rounding order issue (percentage discount applied before vs after flat discount).
+Steps to reproduce: 1. Add $50 item to cart 2. Apply code SAVE10 (10% off) 3. Apply code FLAT5 ($5 off) 4. Compare displayed total to manual calc
+
+[BUG-1019] ERR_403_FORBIDDEN on password change for SSO-linked accounts (doc_type=bug_report, module=Login, status=Open)
+Description: Accounts linked via SSO (Google/Microsoft) shouldn't have a local password-change option at all, but currently show the form and fail with ERR_403_FORBIDDEN on submit instead of hiding the option. Confusing UX, not a security bug per se.
+Steps to reproduce: 1. Log in via SSO-linked account 2. Go to Account > Security > Change Password 3. Fill form and submit 4. ERR_403_FORBIDDEN with no explanation shown to user
+
+[BUG-1020] Search relevance ranks exact SKU match below fuzzy matches (doc_type=bug_report, module=Search, status=Open)
+Description: Searching for an exact SKU code (e.g. "SKU-88213") returns the exact match 4th or 5th in results instead of first, behind fuzzy/partial text matches. Relevance scoring seems to weight text similarity over exact identifier match.
+Steps to reproduce: 1. Search for exact SKU 'SKU-88213' 2. Observe ranking position of the exact match vs fuzzy matches
+
+[BUG-1021] Notifications - push token not refreshed after app update (doc_type=bug_report, module=Notifications, status=Open)
+Description: After a mobile app update, the device's push token changes but the backend isn't notified, so notifications silently stop working until the user logs out and back in. No error shown to user -- notifications just stop.
+Steps to reproduce: 1. Have app installed with notifications working 2. Update app to new version 3. Trigger a notification-worthy event 4. No notification received
+
+[BUG-1022] Admin role edit form silently drops permissions not in current view (doc_type=bug_report, module=Admin, status=Open)
+Description: Editing a user's admin role via the paginated permissions UI and saving will silently REMOVE permissions that exist in the DB but weren't rendered on the currently visible page of the form. Data loss bug, not just cosmetic.
+Steps to reproduce: 1. Create role with permissions spanning 2+ pages of the permissions UI 2. Edit role, only view/change page 1 3. Save 4. Check DB -- permissions from page 2 are gone
+
+[BUG-1023] Payment retry after decline charges card twice (doc_type=bug_report, module=Payments, status=Open)
+Description: If a payment is declined and the user clicks 'Retry' quickly, occasionally BOTH the original attempt and the retry go through to the processor, resulting in a double charge. Suspect missing idempotency key on retry request. HIGH severity -- real money impact.
+Steps to reproduce: 1. Use a card that gets declined then approved on retry (test processor supports this) 2. Submit payment (declines) 3. Click Retry immediately 4. Check processor dashboard for duplicate charge
+
+[BUG-1024] Login - see BUG-1001, still unresolved (doc_type=bug_report, module=Login, status=Reopened)
+Description: Support flagged this is still happening in prod as of this week. Escalating priority. Same lockout/ERR_401_UNAUTH pattern as BUG-1001 and BUG-1002.
+Steps to reproduce: Same as BUG-1001.
+Recorded cross-reference: BUG-1024 is a duplicate of BUG-1001, BUG-1002
+
+[BUG-1025] Checkout page - minor CSS misalignment on Safari (doc_type=bug_report, module=Checkout, status=Won't Fix)
+Description: Submit button is 4px lower than surrounding elements on Safari 17 only. Purely cosmetic, no functional impact.
+Steps to reproduce: 1. Open checkout page in Safari 17 2. Compare submit button alignment to Chrome/Firefox
+
+[BUG-2000] Payments: Payment confirmation email is delayed by up to 19 minutes after a successful Chrome 128 checkout (doc_type=bug_report, module=Payments, status=In Progress)
+Recorded cross-reference: BUG-2000 is a duplicate of BUG-2020, BUG-2038, BUG-2041, BUG-2045, BUG-2068, BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2001] Reports: Scheduled report fails to send on Chrome 128-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Open)
+Recorded cross-reference: BUG-2001 is a duplicate of BUG-2006, BUG-2039, BUG-2052, BUG-2082, BUG-2088, BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2002] Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen (doc_type=bug_report, module=Search, status=In Progress)
+Recorded cross-reference: BUG-2002 is a duplicate of BUG-2004, BUG-2007, BUG-2011, BUG-2013, BUG-2031, BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2003] Notifications: Push notification is delivered twice for the same event on Chrome 128, 12 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2003 is a duplicate of BUG-2012, BUG-2015, BUG-2016, BUG-2019, BUG-2025, BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2004] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Open)
+Recorded cross-reference: BUG-2004 is a duplicate of BUG-2007, BUG-2011, BUG-2013, BUG-2031, BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2005] Admin: Bulk export times out for reports over 4 rows when run from Safari 17 (doc_type=bug_report, module=Admin, status=Open)
+Recorded cross-reference: BUG-2005 is a duplicate of BUG-2008, BUG-2010, BUG-2022, BUG-2023, BUG-2028, BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2006] Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=In Progress)
+Recorded cross-reference: BUG-2006 is a duplicate of BUG-2039, BUG-2052, BUG-2082, BUG-2088, BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2007] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Resolved)
+Recorded cross-reference: BUG-2007 is a duplicate of BUG-2011, BUG-2013, BUG-2031, BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2008] Admin: Bulk export times out for reports over 25 rows when run from Firefox 130 (doc_type=bug_report, module=Admin, status=Closed)
+Recorded cross-reference: BUG-2008 is a duplicate of BUG-2010, BUG-2022, BUG-2023, BUG-2028, BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2009] Checkout: Cart total fails to update when a promo code is applied on Firefox 130, off by $12 (doc_type=bug_report, module=Checkout, status=Closed)
+Description: Cart total fails to update when a promo code is applied on Firefox 130, off by $12.00.
+Recorded cross-reference: BUG-2009 is a duplicate of BUG-2014, BUG-2017, BUG-2018, BUG-2029, BUG-2035, BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2010] Admin: Bulk export times out for reports over 16 rows when run from Chrome 128 (doc_type=bug_report, module=Admin, status=Resolved)
+Recorded cross-reference: BUG-2010 is a duplicate of BUG-2022, BUG-2023, BUG-2028, BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2011] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Resolved)
+Recorded cross-reference: BUG-2011 is a duplicate of BUG-2013, BUG-2031, BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2012] Notifications: Push notification is delivered twice for the same event on Firefox 130, 17 seconds apart (doc_type=bug_report, module=Notifications, status=Resolved)
+Recorded cross-reference: BUG-2012 is a duplicate of BUG-2015, BUG-2016, BUG-2019, BUG-2025, BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2013] Search: Search results ignore the selected category filter on Firefox 130 when query contains a hyphen (doc_type=bug_report, module=Search, status=Open)
+Recorded cross-reference: BUG-2013 is a duplicate of BUG-2031, BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2014] Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $40 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Edge 127, off by $40.00.
+Recorded cross-reference: BUG-2014 is a duplicate of BUG-2017, BUG-2018, BUG-2029, BUG-2035, BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2015] Notifications: Push notification is delivered twice for the same event on Chrome 128, 45 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2015 is a duplicate of BUG-2016, BUG-2019, BUG-2025, BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2016] Notifications: Push notification is delivered twice for the same event on Edge 127, 12 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2016 is a duplicate of BUG-2019, BUG-2025, BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2017] Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $42 (doc_type=bug_report, module=Checkout, status=In Progress)
+Description: Cart total fails to update when a promo code is applied on Chrome 128, off by $42.00.
+Recorded cross-reference: BUG-2017 is a duplicate of BUG-2018, BUG-2029, BUG-2035, BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2018] Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $40 (doc_type=bug_report, module=Checkout, status=Open)
+Description: Cart total fails to update when a promo code is applied on Chrome 128, off by $40.00.
+Recorded cross-reference: BUG-2018 is a duplicate of BUG-2029, BUG-2035, BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2019] Notifications: Push notification is delivered twice for the same event on Firefox 130, 5 seconds apart (doc_type=bug_report, module=Notifications, status=Open)
+Recorded cross-reference: BUG-2019 is a duplicate of BUG-2025, BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2020] Payments: Payment confirmation email is delayed by up to 10 minutes after a successful Firefox 130 checkout (doc_type=bug_report, module=Payments, status=In Progress)
+Recorded cross-reference: BUG-2020 is a duplicate of BUG-2038, BUG-2041, BUG-2045, BUG-2068, BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2021] API: API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Closed)
+Recorded cross-reference: BUG-2021 is a duplicate of BUG-2034, BUG-2042, BUG-2054, BUG-2062, BUG-2080, BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2022] Admin: Bulk export times out for reports over 35 rows when run from Edge 127 (doc_type=bug_report, module=Admin, status=In Progress)
+Recorded cross-reference: BUG-2022 is a duplicate of BUG-2023, BUG-2028, BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2023] Admin: Bulk export times out for reports over 39 rows when run from Chrome 128 (doc_type=bug_report, module=Admin, status=In Progress)
+Recorded cross-reference: BUG-2023 is a duplicate of BUG-2028, BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2024] Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds (doc_type=bug_report, module=Login, status=Open)
+Recorded cross-reference: BUG-2024 is a duplicate of BUG-2030, BUG-2043, BUG-2051, BUG-2095, BUG-2108
+
+[BUG-2025] Notifications: Push notification is delivered twice for the same event on Edge 127, 15 seconds apart (doc_type=bug_report, module=Notifications, status=Resolved)
+Recorded cross-reference: BUG-2025 is a duplicate of BUG-2061, BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2026] Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 14 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2026 is a duplicate of BUG-2032, BUG-2050, BUG-2065, BUG-2066, BUG-2067, BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2027] Profile: Profile photo upload silently fails on Edge 127 for files over 5MB, no error shown (doc_type=bug_report, module=Profile, status=Open)
+Recorded cross-reference: BUG-2027 is a duplicate of BUG-2046, BUG-2055, BUG-2057, BUG-2059, BUG-2069, BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2028] Admin: Bulk export times out for reports over 17 rows when run from Chrome 128 (doc_type=bug_report, module=Admin, status=Resolved)
+Recorded cross-reference: BUG-2028 is a duplicate of BUG-2037, BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2029] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $31 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $31.00.
+Recorded cross-reference: BUG-2029 is a duplicate of BUG-2035, BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2030] Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds (doc_type=bug_report, module=Login, status=Resolved)
+Recorded cross-reference: BUG-2030 is a duplicate of BUG-2043, BUG-2051, BUG-2095, BUG-2108
+
+[BUG-2031] Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen (doc_type=bug_report, module=Search, status=Open)
+Recorded cross-reference: BUG-2031 is a duplicate of BUG-2033, BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2032] Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 29 (doc_type=bug_report, module=Cart, status=In Progress)
+Recorded cross-reference: BUG-2032 is a duplicate of BUG-2050, BUG-2065, BUG-2066, BUG-2067, BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2033] Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen (doc_type=bug_report, module=Search, status=Closed)
+Recorded cross-reference: BUG-2033 is a duplicate of BUG-2036, BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2034] API: API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Open)
+Recorded cross-reference: BUG-2034 is a duplicate of BUG-2042, BUG-2054, BUG-2062, BUG-2080, BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2035] Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $40 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Chrome 128, off by $40.00.
+Recorded cross-reference: BUG-2035 is a duplicate of BUG-2040, BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2036] Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen (doc_type=bug_report, module=Search, status=Closed)
+Recorded cross-reference: BUG-2036 is a duplicate of BUG-2047, BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2037] Admin: Bulk export times out for reports over 18 rows when run from Firefox 130 (doc_type=bug_report, module=Admin, status=Closed)
+Recorded cross-reference: BUG-2037 is a duplicate of BUG-2056, BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2038] Payments: Payment confirmation email is delayed by up to 31 minutes after a successful Chrome 128 checkout (doc_type=bug_report, module=Payments, status=Open)
+Recorded cross-reference: BUG-2038 is a duplicate of BUG-2041, BUG-2045, BUG-2068, BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2039] Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=In Progress)
+Recorded cross-reference: BUG-2039 is a duplicate of BUG-2052, BUG-2082, BUG-2088, BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2040] Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $36 (doc_type=bug_report, module=Checkout, status=Open)
+Description: Cart total fails to update when a promo code is applied on Edge 127, off by $36.00.
+Recorded cross-reference: BUG-2040 is a duplicate of BUG-2044, BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2041] Payments: Payment confirmation email is delayed by up to 18 minutes after a successful Firefox 130 checkout (doc_type=bug_report, module=Payments, status=In Progress)
+Recorded cross-reference: BUG-2041 is a duplicate of BUG-2045, BUG-2068, BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2042] API: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Resolved)
+Recorded cross-reference: BUG-2042 is a duplicate of BUG-2054, BUG-2062, BUG-2080, BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2043] Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 42 seconds (doc_type=bug_report, module=Login, status=Open)
+Recorded cross-reference: BUG-2043 is a duplicate of BUG-2051, BUG-2095, BUG-2108
+
+[BUG-2044] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $12 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $12.00.
+Recorded cross-reference: BUG-2044 is a duplicate of BUG-2048, BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2045] Payments: Payment confirmation email is delayed by up to 11 minutes after a successful Chrome 128 checkout (doc_type=bug_report, module=Payments, status=Closed)
+Recorded cross-reference: BUG-2045 is a duplicate of BUG-2068, BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2046] Profile: Profile photo upload silently fails on Firefox 130 for files over 4MB, no error shown (doc_type=bug_report, module=Profile, status=Open)
+Recorded cross-reference: BUG-2046 is a duplicate of BUG-2055, BUG-2057, BUG-2059, BUG-2069, BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2047] Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen (doc_type=bug_report, module=Search, status=In Progress)
+Recorded cross-reference: BUG-2047 is a duplicate of BUG-2049, BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2048] Checkout: Cart total fails to update when a promo code is applied on Firefox 130, off by $28 (doc_type=bug_report, module=Checkout, status=Closed)
+Description: Cart total fails to update when a promo code is applied on Firefox 130, off by $28.00.
+Recorded cross-reference: BUG-2048 is a duplicate of BUG-2053, BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2049] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Resolved)
+Recorded cross-reference: BUG-2049 is a duplicate of BUG-2063, BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2050] Cart: Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 14 (doc_type=bug_report, module=Cart, status=Closed)
+Recorded cross-reference: BUG-2050 is a duplicate of BUG-2065, BUG-2066, BUG-2067, BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2051] Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds (doc_type=bug_report, module=Login, status=Open)
+Recorded cross-reference: BUG-2051 is a duplicate of BUG-2095, BUG-2108
+
+[BUG-2052] Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Open)
+Recorded cross-reference: BUG-2052 is a duplicate of BUG-2082, BUG-2088, BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2053] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $4 (doc_type=bug_report, module=Checkout, status=Closed)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $4.00.
+Recorded cross-reference: BUG-2053 is a duplicate of BUG-2058, BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2054] API: API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Closed)
+Recorded cross-reference: BUG-2054 is a duplicate of BUG-2062, BUG-2080, BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2055] Profile: Profile photo upload silently fails on Chrome 128 for files over 35MB, no error shown (doc_type=bug_report, module=Profile, status=Closed)
+Recorded cross-reference: BUG-2055 is a duplicate of BUG-2057, BUG-2059, BUG-2069, BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2056] Admin: Bulk export times out for reports over 44 rows when run from Safari 17 (doc_type=bug_report, module=Admin, status=Closed)
+Recorded cross-reference: BUG-2056 is a duplicate of BUG-2071, BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2057] Profile: Profile photo upload silently fails on Safari 17 for files over 37MB, no error shown (doc_type=bug_report, module=Profile, status=Resolved)
+Recorded cross-reference: BUG-2057 is a duplicate of BUG-2059, BUG-2069, BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2058] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $27 (doc_type=bug_report, module=Checkout, status=Closed)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $27.00.
+Recorded cross-reference: BUG-2058 is a duplicate of BUG-2060, BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2059] Profile: Profile photo upload silently fails on Safari 17 for files over 31MB, no error shown (doc_type=bug_report, module=Profile, status=In Progress)
+Recorded cross-reference: BUG-2059 is a duplicate of BUG-2069, BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2060] Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $20 (doc_type=bug_report, module=Checkout, status=Open)
+Description: Cart total fails to update when a promo code is applied on Chrome 128, off by $20.00.
+Recorded cross-reference: BUG-2060 is a duplicate of BUG-2064, BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2061] Notifications: Push notification is delivered twice for the same event on Firefox 130, 14 seconds apart (doc_type=bug_report, module=Notifications, status=Open)
+Recorded cross-reference: BUG-2061 is a duplicate of BUG-2090, BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2062] API: API returns a ERR_504_TIMEOUT for a valid request on Chrome 128-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Resolved)
+Recorded cross-reference: BUG-2062 is a duplicate of BUG-2080, BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2063] Search: Search results ignore the selected category filter on Firefox 130 when query contains a hyphen (doc_type=bug_report, module=Search, status=Open)
+Recorded cross-reference: BUG-2063 is a duplicate of BUG-2075, BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2064] Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $5 (doc_type=bug_report, module=Checkout, status=Open)
+Description: Cart total fails to update when a promo code is applied on Edge 127, off by $5.00.
+Recorded cross-reference: BUG-2064 is a duplicate of BUG-2078, BUG-2084, BUG-2106
+
+[BUG-2065] Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 30 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2065 is a duplicate of BUG-2066, BUG-2067, BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2066] Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 18 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2066 is a duplicate of BUG-2067, BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2067] Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 20 (doc_type=bug_report, module=Cart, status=Closed)
+Recorded cross-reference: BUG-2067 is a duplicate of BUG-2073, BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2068] Payments: Payment confirmation email is delayed by up to 11 minutes after a successful Firefox 130 checkout (doc_type=bug_report, module=Payments, status=In Progress)
+Recorded cross-reference: BUG-2068 is a duplicate of BUG-2076, BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2069] Profile: Profile photo upload silently fails on Edge 127 for files over 23MB, no error shown (doc_type=bug_report, module=Profile, status=Resolved)
+Recorded cross-reference: BUG-2069 is a duplicate of BUG-2070, BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2070] Profile: Profile photo upload silently fails on Edge 127 for files over 39MB, no error shown (doc_type=bug_report, module=Profile, status=Resolved)
+Recorded cross-reference: BUG-2070 is a duplicate of BUG-2072, BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2071] Admin: Bulk export times out for reports over 26 rows when run from Safari 17 (doc_type=bug_report, module=Admin, status=Resolved)
+Recorded cross-reference: BUG-2071 is a duplicate of BUG-2079, BUG-2097, BUG-2111
+
+[BUG-2072] Profile: Profile photo upload silently fails on Edge 127 for files over 3MB, no error shown (doc_type=bug_report, module=Profile, status=Resolved)
+Recorded cross-reference: BUG-2072 is a duplicate of BUG-2074, BUG-2083, BUG-2119
+
+[BUG-2073] Cart: Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 41 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2073 is a duplicate of BUG-2086, BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2074] Profile: Profile photo upload silently fails on Firefox 130 for files over 31MB, no error shown (doc_type=bug_report, module=Profile, status=Closed)
+Recorded cross-reference: BUG-2074 is a duplicate of BUG-2083, BUG-2119
+
+[BUG-2075] Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen (doc_type=bug_report, module=Search, status=Closed)
+Recorded cross-reference: BUG-2075 is a duplicate of BUG-2087, BUG-2089, BUG-2114
+
+[BUG-2076] Payments: Payment confirmation email is delayed by up to 3 minutes after a successful Edge 127 checkout (doc_type=bug_report, module=Payments, status=Closed)
+Recorded cross-reference: BUG-2076 is a duplicate of BUG-2077, BUG-2102, BUG-2117
+
+[BUG-2077] Payments: Payment confirmation email is delayed by up to 3 minutes after a successful Chrome 128 checkout (doc_type=bug_report, module=Payments, status=Open)
+Recorded cross-reference: BUG-2077 is a duplicate of BUG-2102, BUG-2117
+
+[BUG-2078] Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $44 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Edge 127, off by $44.00.
+Recorded cross-reference: BUG-2078 is a duplicate of BUG-2084, BUG-2106
+
+[BUG-2079] Admin: Bulk export times out for reports over 40 rows when run from Firefox 130 (doc_type=bug_report, module=Admin, status=In Progress)
+Recorded cross-reference: BUG-2079 is a duplicate of BUG-2097, BUG-2111
+
+[BUG-2080] API: API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Resolved)
+Recorded cross-reference: BUG-2080 is a duplicate of BUG-2081, BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2081] API: API returns a ERR_409_CONFLICT for a valid request on Firefox 130-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Open)
+Recorded cross-reference: BUG-2081 is a duplicate of BUG-2085, BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2082] Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Closed)
+Recorded cross-reference: BUG-2082 is a duplicate of BUG-2088, BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2083] Profile: Profile photo upload silently fails on Edge 127 for files over 8MB, no error shown (doc_type=bug_report, module=Profile, status=Resolved)
+Recorded cross-reference: BUG-2083 is a duplicate of BUG-2119
+
+[BUG-2084] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $41 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $41.00.
+Recorded cross-reference: BUG-2084 is a duplicate of BUG-2106
+
+[BUG-2085] API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Closed)
+Recorded cross-reference: BUG-2085 is a duplicate of BUG-2099, BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2086] Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 23 (doc_type=bug_report, module=Cart, status=Closed)
+Recorded cross-reference: BUG-2086 is a duplicate of BUG-2096, BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2087] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Closed)
+Recorded cross-reference: BUG-2087 is a duplicate of BUG-2089, BUG-2114
+
+[BUG-2088] Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Resolved)
+Recorded cross-reference: BUG-2088 is a duplicate of BUG-2091, BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2089] Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen (doc_type=bug_report, module=Search, status=Resolved)
+Recorded cross-reference: BUG-2089 is a duplicate of BUG-2114
+
+[BUG-2090] Notifications: Push notification is delivered twice for the same event on Firefox 130, 27 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2090 is a duplicate of BUG-2092, BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2091] Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Closed)
+Recorded cross-reference: BUG-2091 is a duplicate of BUG-2093, BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2092] Notifications: Push notification is delivered twice for the same event on Safari 17, 16 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2092 is a duplicate of BUG-2094, BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2093] Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Closed)
+Recorded cross-reference: BUG-2093 is a duplicate of BUG-2100, BUG-2105, BUG-2115
+
+[BUG-2094] Notifications: Push notification is delivered twice for the same event on Chrome 128, 14 seconds apart (doc_type=bug_report, module=Notifications, status=Closed)
+Recorded cross-reference: BUG-2094 is a duplicate of BUG-2107, BUG-2113, BUG-2118
+
+[BUG-2095] Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 19 seconds (doc_type=bug_report, module=Login, status=Closed)
+Recorded cross-reference: BUG-2095 is a duplicate of BUG-2108
+
+[BUG-2096] Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 2 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2096 is a duplicate of BUG-2098, BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2097] Admin: Bulk export times out for reports over 5 rows when run from Firefox 130 (doc_type=bug_report, module=Admin, status=Open)
+Recorded cross-reference: BUG-2097 is a duplicate of BUG-2111
+
+[BUG-2098] Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 38 (doc_type=bug_report, module=Cart, status=In Progress)
+Recorded cross-reference: BUG-2098 is a duplicate of BUG-2103, BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2099] API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Resolved)
+Recorded cross-reference: BUG-2099 is a duplicate of BUG-2101, BUG-2109, BUG-2116
+
+[BUG-2100] Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Resolved)
+Recorded cross-reference: BUG-2100 is a duplicate of BUG-2105, BUG-2115
+
+[BUG-2101] API: API returns a ERR_409_CONFLICT for a valid request on Chrome 128-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=In Progress)
+Recorded cross-reference: BUG-2101 is a duplicate of BUG-2109, BUG-2116
+
+[BUG-2102] Payments: Payment confirmation email is delayed by up to 17 minutes after a successful Firefox 130 checkout (doc_type=bug_report, module=Payments, status=In Progress)
+Recorded cross-reference: BUG-2102 is a duplicate of BUG-2117
+
+[BUG-2103] Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 20 (doc_type=bug_report, module=Cart, status=Closed)
+Recorded cross-reference: BUG-2103 is a duplicate of BUG-2104, BUG-2110, BUG-2112
+
+[BUG-2104] Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 45 (doc_type=bug_report, module=Cart, status=In Progress)
+Recorded cross-reference: BUG-2104 is a duplicate of BUG-2110, BUG-2112
+
+[BUG-2105] Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=In Progress)
+Recorded cross-reference: BUG-2105 is a duplicate of BUG-2115
+
+[BUG-2106] Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $40 (doc_type=bug_report, module=Checkout, status=Resolved)
+Description: Cart total fails to update when a promo code is applied on Safari 17, off by $40.00.
+
+[BUG-2107] Notifications: Push notification is delivered twice for the same event on Edge 127, 19 seconds apart (doc_type=bug_report, module=Notifications, status=Resolved)
+Recorded cross-reference: BUG-2107 is a duplicate of BUG-2113, BUG-2118
+
+[BUG-2108] Login: User cannot sign in on Edge 127 despite entering the correct password; session times out after 22 seconds (doc_type=bug_report, module=Login, status=Open)
+
+[BUG-2109] API: API returns a ERR_500_INTERNAL for a valid request on Chrome 128-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=In Progress)
+Recorded cross-reference: BUG-2109 is a duplicate of BUG-2116
+
+[BUG-2110] Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 13 (doc_type=bug_report, module=Cart, status=Resolved)
+Recorded cross-reference: BUG-2110 is a duplicate of BUG-2112
+
+[BUG-2111] Admin: Bulk export times out for reports over 23 rows when run from Edge 127 (doc_type=bug_report, module=Admin, status=In Progress)
+
+[BUG-2112] Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 44 (doc_type=bug_report, module=Cart, status=Resolved)
+
+[BUG-2113] Notifications: Push notification is delivered twice for the same event on Safari 17, 9 seconds apart (doc_type=bug_report, module=Notifications, status=Resolved)
+Recorded cross-reference: BUG-2113 is a duplicate of BUG-2118
+
+[BUG-2114] Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen (doc_type=bug_report, module=Search, status=Open)
+
+[BUG-2115] Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Open)
+
+[BUG-2116] API: API returns a ERR_500_INTERNAL for a valid request on Firefox 130-originated calls when a trailing slash is present (doc_type=bug_report, module=API, status=Resolved)
+
+[BUG-2117] Payments: Payment confirmation email is delayed by up to 9 minutes after a successful Edge 127 checkout (doc_type=bug_report, module=Payments, status=Resolved)
+
+[BUG-2118] Notifications: Push notification is delivered twice for the same event on Edge 127, 32 seconds apart (doc_type=bug_report, module=Notifications, status=Resolved)
+
+[BUG-2119] Profile: Profile photo upload silently fails on Firefox 130 for files over 40MB, no error shown (doc_type=bug_report, module=Profile, status=Open)
+
+[TC-0142] Account lockout and cooldown after failed login attempts (doc_type=test_case, module=Login, status=None)
+Preconditions: A registered user account exists with a known correct password. User is logged out.
+Steps: 1. Navigate to /login
+2. Enter the correct username with an incorrect password
+3. Repeat step 2 two more times (3 total failed attempts)
+4. Immediately attempt to log in with the CORRECT password
+5. Wait for the defined cooldown period (5 minutes) to elapse
+6. Attempt login again with the correct password
+Expected result: After 3 failed attempts, the account is locked and step 4 must fail regardless of correct credentials, returning a clear lockout message (not a generic auth error). After the 5-minute cooldown, step 6 must succeed with the correct password.
+
+[TC-0301] Search tokenization consistency for hyphenated terms (doc_type=test_case, module=Search, status=None)
+Preconditions: Product catalog contains items with both 'wifi' and 'wi-fi' spellings in titles or descriptions.
+Steps: 1. Search for 'wifi'
+2. Note the result count and items returned
+3. Clear search, search for 'wi-fi'
+4. Compare result count and items returned to step 2
+Expected result: Both queries should return the same (or substantially overlapping) result set, since they represent the same search intent. A hyphen should not cause tokenization to diverge between index time and query time.
+
+[TC-0302] Exact SKU match ranks first in search results (doc_type=test_case, module=Search, status=None)
+Preconditions: A product with a known unique SKU exists in the catalog, along with other products with similar text descriptions.
+Steps: 1. Search for the exact SKU string (e.g. 'SKU-88213')
+2. Observe the ranking position of the exact match in the results list
+Expected result: The exact SKU match must appear as the first result. Fuzzy or partial text matches on unrelated fields must not outrank an exact identifier match.
+
+[TC-2000] Login verification case 1 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 6 seconds.
+
+[TC-2001] Search verification case 2 (doc_type=test_case, module=Search, status=None)
+Preconditions: The catalog contains items with hyphenated terms in the title.
+Steps: 1. Search using a hyphenated query.
+2. Apply a category filter.
+Expected result: Results respect both the query and the selected filter.
+
+[TC-2002] Search verification case 3 (doc_type=test_case, module=Search, status=None)
+Preconditions: The catalog contains items with hyphenated terms in the title.
+Steps: 1. Search using a hyphenated query.
+2. Apply a category filter.
+Expected result: Results respect both the query and the selected filter.
+
+[TC-2003] Admin verification case 4 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 15 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2004] Checkout verification case 5 (doc_type=test_case, module=Checkout, status=None)
+Preconditions: A valid promo code exists in the promotions table.
+Steps: 1. Add an item to cart.
+2. Apply the promo code at checkout.
+Expected result: Cart total reflects the discount immediately, no page reload required.
+
+[TC-2005] Search verification case 6 (doc_type=test_case, module=Search, status=None)
+Preconditions: The catalog contains items with hyphenated terms in the title.
+Steps: 1. Search using a hyphenated query.
+2. Apply a category filter.
+Expected result: Results respect both the query and the selected filter.
+
+[TC-2006] Login verification case 7 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 14 seconds.
+
+[TC-2007] Payments verification case 8 (doc_type=test_case, module=Payments, status=None)
+Preconditions: A test payment processor is configured in sandbox mode.
+Steps: 1. Add an item to cart.
+2. Complete checkout with a test card.
+Expected result: Confirmation email arrives within 7 minutes of a successful charge.
+
+[TC-2008] Admin verification case 9 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 17 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2009] Search verification case 10 (doc_type=test_case, module=Search, status=None)
+Preconditions: The catalog contains items with hyphenated terms in the title.
+Steps: 1. Search using a hyphenated query.
+2. Apply a category filter.
+Expected result: Results respect both the query and the selected filter.
+
+[TC-2010] Admin verification case 11 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 7 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2011] Login verification case 12 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 20 seconds.
+
+[TC-2012] Login verification case 13 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 3 seconds.
+
+[TC-2013] Payments verification case 14 (doc_type=test_case, module=Payments, status=None)
+Preconditions: A test payment processor is configured in sandbox mode.
+Steps: 1. Add an item to cart.
+2. Complete checkout with a test card.
+Expected result: Confirmation email arrives within 10 minutes of a successful charge.
+
+[TC-2014] Login verification case 15 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 5 seconds.
+
+[TC-2015] Admin verification case 16 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 3 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2016] Admin verification case 17 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 16 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2017] Checkout verification case 18 (doc_type=test_case, module=Checkout, status=None)
+Preconditions: A valid promo code exists in the promotions table.
+Steps: 1. Add an item to cart.
+2. Apply the promo code at checkout.
+Expected result: Cart total reflects the discount immediately, no page reload required.
+
+[TC-2018] Payments verification case 19 (doc_type=test_case, module=Payments, status=None)
+Preconditions: A test payment processor is configured in sandbox mode.
+Steps: 1. Add an item to cart.
+2. Complete checkout with a test card.
+Expected result: Confirmation email arrives within 4 minutes of a successful charge.
+
+[TC-2019] Checkout verification case 20 (doc_type=test_case, module=Checkout, status=None)
+Preconditions: A valid promo code exists in the promotions table.
+Steps: 1. Add an item to cart.
+2. Apply the promo code at checkout.
+Expected result: Cart total reflects the discount immediately, no page reload required.
+
+[TC-2020] Checkout verification case 21 (doc_type=test_case, module=Checkout, status=None)
+Preconditions: A valid promo code exists in the promotions table.
+Steps: 1. Add an item to cart.
+2. Apply the promo code at checkout.
+Expected result: Cart total reflects the discount immediately, no page reload required.
+
+[TC-2021] Admin verification case 22 (doc_type=test_case, module=Admin, status=None)
+Preconditions: An admin account exists with export permissions.
+Steps: 1. Navigate to Reports.
+2. Trigger a bulk export over 4 rows.
+Expected result: Export completes and downloads without timing out.
+
+[TC-2022] Login verification case 23 (doc_type=test_case, module=Login, status=None)
+Preconditions: An account exists with a known valid password.
+Steps: 1. Enter valid credentials.
+2. Submit the login form.
+Expected result: User is redirected to the dashboard within 17 seconds.
+
+[TC-2023] Checkout verification case 24 (doc_type=test_case, module=Checkout, status=None)
+Preconditions: A valid promo code exists in the promotions table.
+Steps: 1. Add an item to cart.
+2. Apply the promo code at checkout.
+Expected result: Cart total reflects the discount immediately, no page reload required.
+
+[TC-2024] Search verification case 25 (doc_type=test_case, module=Search, status=None)
+Preconditions: The catalog contains items with hyphenated terms in the title.
+Steps: 1. Search using a hyphenated query.
+2. Apply a category filter.
+Expected result: Results respect both the query and the selected filter.

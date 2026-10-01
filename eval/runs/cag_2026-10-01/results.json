@@ -1,0 +1,46 @@
+{
+  "corpus_tokens": 18019,
+  "system_tokens": 1400,
+  "prime": {
+    "answer": "OK (",
+    "first_token_s": 6638.36,
+    "total_s": 6639.28,
+    "prompt_n": 19445,
+    "prompt_ms": 6638319.58,
+    "predicted_n": 2,
+    "predicted_ms": 900.872,
+    "cache_n": 0
+  },
+  "slot_save": {
+    "wall_s": 2.41,
+    "response": {
+      "id_slot": 0,
+      "filename": "cag_qwen3_4b_instruct.bin",
+      "n_saved": 19446,
+      "n_written": 1523633900,
+      "timings": {
+        "save_ms": 2392.338
+      }
+    }
+  },
+  "holdout": [
+    {
+      "answer": "The bug reports about scheduled reports failing to send after a DST change on Safari 17 are:\n\n- BUG-2006: Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=In Progress)  \n- BUG-2001: Reports: Scheduled report fails to send on Chrome 128-generated schedules created after a DST change (doc_type=bug_report, module=Reports, status=Open) — *Note: This is on Chrome 128, not Safari 17*  \n- BUG-2006 is the only one explicitly about Safari 17-generated schedules after DST change.\n\nHowever, upon closer inspection of the cross-references and descriptions:\n\n- BUG-2006: \"Scheduled report fails to send on Safari 17-generated schedules created after a DST change\" — this matches the query exactly.\n- BUG-2001: \"Scheduled report fails to send on Chrome 128-generated schedules\" — not Safari 17.\n- BUG-2006 is the only one that specifies Safari 17 and DST change.\n\nThus, only one bug report matches the query.\n\n(Source: BUG-2006)",
+      "first_token_s": 19.58,
+      "total_s": 266.1,
+      "prompt_n": 25,
+      "prompt_ms": 19450.456,
+      "predicted_n": 268,
+      "predicted_ms": 246518.372,
+      "cache_n": 19433,
+      "id": "A01",
+      "category": "aggregation_open_set",
+      "problems": [
+        "missing 'BUG-2039'",
+        "missing 'BUG-2091'",
+        "contains forbidden 'BUG-2001'"
+      ],
+      "result": "FAIL"
+    }
+  ]
+}

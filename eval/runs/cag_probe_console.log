@@ -1,0 +1,73 @@
+corpus: 55,902 chars, 18,019 tokens; system prompt 1,400 tokens
+prime: {'answer': 'OK (', 'first_token_s': 6638.36, 'total_s': 6639.28, 'prompt_n': 19445, 'prompt_ms': 6638319.58, 'predicted_n': 2, 'predicted_ms': 900.872, 'cache_n': 0}
+slot save: {'wall_s': 2.41, 'response': {'id_slot': 0, 'filename': 'cag_qwen3_4b_instruct.bin', 'n_saved': 19446, 'n_written': 1523633900, 'timings': {'save_ms': 2392.338}}}
+[holdout 1/36] A01 FAIL ttft=19.58s total=266.1s prefill=25 cached=19433 ["missing 'BUG-2039'", "missing 'BUG-2091'", "contains forbidden 'BUG-2001'"]
+Traceback (most recent call last):
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 127, in __iter__
+    for part in self._httpcore_stream:
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 407, in __iter__
+    raise exc from None
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 403, in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 342, in __iter__
+    raise exc
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 334, in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 203, in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+        self.READ_NUM_BYTES, timeout=timeout
+    )
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_backends\sync.py", line 126, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\anant\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\qa-agentic-rag\diagnostics\cag_probe.py", line 221, in <module>
+    main()
+    ~~~~^^
+  File "D:\qa-agentic-rag\diagnostics\cag_probe.py", line 191, in main
+    res = ask(client, messages_for(corpus, item["question"], item.get("filters")))
+  File "D:\qa-agentic-rag\diagnostics\cag_probe.py", line 138, in ask
+    for line in r.iter_lines():
+                ~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 929, in iter_lines
+    for text in self.iter_text():
+                ~~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 916, in iter_text
+    for byte_content in self.iter_bytes():
+                        ~~~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 897, in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 951, in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_client.py", line 153, in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 126, in __iter__
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\anant\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError: [WinError 10054] An existing connection was forcibly closed by the remote host
