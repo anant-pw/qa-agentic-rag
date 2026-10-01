@@ -1,0 +1,446 @@
+id,title,description,steps_to_reproduce,status,module,date_created
+BUG-1001,Login fails after 3 attempts even with correct password,"User reports that after exactly 3 failed login attempts, the account gets locked. On the 4th attempt with the CORRECT password, login still fails with ERR_401_UNAUTH. Expected: account should unlock after cooldown per TC-0142.","1. Go to /login
+2. Enter wrong password 3 times
+3. Enter correct password on 4th try
+4. Observe ERR_401_UNAUTH instead of successful login",Open,Login,2026-06-02
+BUG-1002,Account lockout not clearing after correct password entry,"Similar to earlier reports -- lockout mechanism doesn't release even when the right creds are used. Might be same root cause as BUG-1001, filed separately by support team without cross-checking.",Same as BUG-1001. See TC-0142 for expected lockout/cooldown behavior.,Open,Login,2026-06-03
+BUG-1003,Checkout page times out on slow connections,"<p>On 3G/throttled connections, checkout submission hangs for 30s then returns <b>ERR_504_TIMEOUT</b>.</p> No retry mechanism exists. &nbsp; Customer lost cart contents.","1. Throttle network to Slow 3G
+2. Add item to cart
+3. Proceed to checkout
+4. Submit payment form
+5. Wait 30s -> ERR_504_TIMEOUT",In Progress,Checkout,2026-06-05
+BUG-1004,Payment declined shows generic error instead of decline reason,"When a card is declined by the processor, UI shows ""Something went wrong"" instead of the actual decline reason (insufficient funds, expired card, etc). Backend receives proper decline codes from processor but frontend swallows them.","1. Use test card 4000000000000002 (generic decline)
+2. Attempt payment
+3. Observe generic error message",Open,Payments,2026-06-06
+BUG-1005,Search returns zero results for queries with hyphens,"Searching for ""wi-fi"" returns 0 results even though 40+ products contain ""wifi"" or ""wi-fi"" in title. Tokenizer appears to split on hyphen inconsistently between indexing and query time.","1. Go to search bar
+2. Type 'wi-fi'
+3. Submit
+4. Compare to searching 'wifi' (returns results)",Open,Search,2026-06-07
+BUG-1006,Push notifications sent twice for same order update,Users report receiving duplicate push notifications for the same order status change (e.g. 'Order Shipped' twice within seconds). Suspect race condition in notification queue worker.,"1. Place an order
+2. Trigger status change to 'Shipped' via admin panel
+3. Observe 2 identical push notifications on device",In Progress,Notifications,2026-06-08
+BUG-1007,Admin panel bulk export crashes on >5000 rows,"Exporting user list to CSV from admin panel throws ERR_500_INTERNAL when row count exceeds ~5000. Works fine under that threshold. Likely a memory issue in the export job, not a timeout (job dies immediately at high volume, not after a delay).","1. Log in as admin
+2. Go to Users > Export
+3. Select 'All users' (>5000 in prod)
+4. Click export
+5. ERR_500_INTERNAL after ~2s",Open,Admin,2026-06-09
+BUG-1008,Password reset email delayed by up to 20 minutes,"Password reset emails sometimes take 15-20 min to arrive instead of near-instant delivery. No errors logged on the sending side. Might be a downstream email provider queue issue, not our code -- needs investigation before reassigning to infra team.","1. Go to /forgot-password
+2. Submit valid email
+3. Time until email arrives (observed 18 min in one case)",Open,Login,2026-06-10
+BUG-1009,Checkout allows negative quantity via URL manipulation,Manually editing the quantity param in the checkout URL to a negative number (e.g. qty=-5) is accepted by the backend and reduces order total below zero. Security/validation gap -- should be treated as high severity even though not yet seen in the wild.,"1. Add item to cart
+2. Go to checkout, note URL params
+3. Edit qty param to -5
+4. Resubmit
+5. Order total goes negative, payment step behaves unpredictably",Open,Checkout,2026-06-11
+BUG-1010,Search autocomplete lags 2-3s on mobile,"Autocomplete suggestions in search bar take 2-3 seconds to appear on mobile devices (tested iOS Safari, Android Chrome). Desktop is near-instant. Not a backend latency issue per API logs (responses <200ms) -- likely a frontend debounce/render issue on mobile specifically.","1. Open site on mobile
+2. Tap search bar
+3. Type a query character by character
+4. Note delay before suggestions render",Open,Search,2026-06-12
+BUG-1011,Duplicate notification bug,Same as BUG-1006 -- filed independently by another QA engineer who hadn't seen the existing ticket. Recommend closing this as duplicate once confirmed same root cause.,See BUG-1006.,Open,Notifications,2026-06-12
+BUG-1012,Admin export ERR_403_FORBIDDEN for sub-admin roles,"Users with 'sub-admin' role (not full admin) get ERR_403_FORBIDDEN when attempting export, even though the role config in the DB shows export permission = true. Permission check logic may not match the DB schema after last week's roles migration.","1. Log in as sub-admin test account
+2. Go to Users > Export
+3. Click export
+4. ERR_403_FORBIDDEN despite permission flag being true",Open,Admin,2026-06-13
+BUG-1013,Payment form accepts expired card without client-side warning,"Entering an expiry date in the past doesn't trigger a validation error until form submission, at which point it round-trips to the processor and comes back declined. Should fail fast client-side per TC-0209.","1. Go to checkout payment step
+2. Enter card with expiry 01/20 (past date)
+3. Submit
+4. No client-side warning; waits for processor round-trip",Open,Payments,2026-06-14
+BUG-1014,Search filter by module doesn't persist on page refresh,Applying a module filter (e.g. filter to 'Electronics') and then refreshing the page resets the filter to 'All'. Filter state isn't stored in URL params or session -- lives only in frontend component state.,"1. Search for any term
+2. Apply module filter
+3. Refresh page (F5)
+4. Filter resets to 'All'",Open,Search,2026-06-15
+BUG-1015,Login session expires mid-checkout without warning,"If a user's session token expires while they're on the checkout page (long form-fill time), submission fails with ERR_401_UNAUTH and they LOSE their entered shipping/payment info. No warning before expiry, no autosave.","1. Log in, add item to cart
+2. Start checkout, leave form open ~35 min (session TTL is 30 min)
+3. Fill remaining fields
+4. Submit -> ERR_401_UNAUTH, form data lost",In Progress,Checkout,2026-06-16
+BUG-1016,Notification preferences toggle doesn't save,Toggling 'Order updates' notification preference off in account settings appears to save (UI shows success toast) but reverts to ON after logout/login. Backend PATCH request returns 200 but doesn't appear to persist.,"1. Go to Account > Notifications
+2. Toggle 'Order updates' off
+3. See success toast
+4. Log out, log back in
+5. Setting is back to ON",Open,Notifications,2026-06-17
+BUG-1017,"Admin bulk export - resolved, follow-up to BUG-1007",Root cause of BUG-1007 confirmed: export job loads entire dataset into memory instead of streaming/paginating. Fix deployed using cursor-based pagination in the export query. Verified with 12000-row export in staging.,See BUG-1007 for original repro. Fix verified against same steps with 12000 rows.,Resolved,Admin,2026-06-20
+BUG-1018,Checkout total miscalculates with multiple discount codes,Applying two stackable discount codes results in a total that's off by a few cents compared to manual calculation -- looks like a rounding order issue (percentage discount applied before vs after flat discount).,"1. Add $50 item to cart
+2. Apply code SAVE10 (10% off)
+3. Apply code FLAT5 ($5 off)
+4. Compare displayed total to manual calc",Open,Checkout,2026-06-21
+BUG-1019,ERR_403_FORBIDDEN on password change for SSO-linked accounts,"Accounts linked via SSO (Google/Microsoft) shouldn't have a local password-change option at all, but currently show the form and fail with ERR_403_FORBIDDEN on submit instead of hiding the option. Confusing UX, not a security bug per se.","1. Log in via SSO-linked account
+2. Go to Account > Security > Change Password
+3. Fill form and submit
+4. ERR_403_FORBIDDEN with no explanation shown to user",Open,Login,2026-06-22
+BUG-1020,Search relevance ranks exact SKU match below fuzzy matches,"Searching for an exact SKU code (e.g. ""SKU-88213"") returns the exact match 4th or 5th in results instead of first, behind fuzzy/partial text matches. Relevance scoring seems to weight text similarity over exact identifier match.","1. Search for exact SKU 'SKU-88213'
+2. Observe ranking position of the exact match vs fuzzy matches",Open,Search,2026-06-23
+BUG-1021,Notifications - push token not refreshed after app update,"After a mobile app update, the device's push token changes but the backend isn't notified, so notifications silently stop working until the user logs out and back in. No error shown to user -- notifications just stop.","1. Have app installed with notifications working
+2. Update app to new version
+3. Trigger a notification-worthy event
+4. No notification received",Open,Notifications,2026-06-24
+BUG-1022,Admin role edit form silently drops permissions not in current view,"Editing a user's admin role via the paginated permissions UI and saving will silently REMOVE permissions that exist in the DB but weren't rendered on the currently visible page of the form. Data loss bug, not just cosmetic.","1. Create role with permissions spanning 2+ pages of the permissions UI
+2. Edit role, only view/change page 1
+3. Save
+4. Check DB -- permissions from page 2 are gone",Open,Admin,2026-06-25
+BUG-1023,Payment retry after decline charges card twice,"If a payment is declined and the user clicks 'Retry' quickly, occasionally BOTH the original attempt and the retry go through to the processor, resulting in a double charge. Suspect missing idempotency key on retry request. HIGH severity -- real money impact.","1. Use a card that gets declined then approved on retry (test processor supports this)
+2. Submit payment (declines)
+3. Click Retry immediately
+4. Check processor dashboard for duplicate charge",Open,Payments,2026-06-26
+BUG-1024,"Login - see BUG-1001, still unresolved",Support flagged this is still happening in prod as of this week. Escalating priority. Same lockout/ERR_401_UNAUTH pattern as BUG-1001 and BUG-1002.,Same as BUG-1001.,Reopened,Login,2026-06-27
+BUG-1025,Checkout page - minor CSS misalignment on Safari,"Submit button is 4px lower than surrounding elements on Safari 17 only. Purely cosmetic, no functional impact.","1. Open checkout page in Safari 17
+2. Compare submit button alignment to Chrome/Firefox",Won't Fix,Checkout,2026-06-28
+BUG-2000,Payments: Payment confirmation email is delayed by up to 19 minutes after a successful Chrome 128 checkout,Payment confirmation email is delayed by up to 19 minutes after a successful Chrome 128 checkout.,"1. Open the Payments page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Payments,2026-02-22
+BUG-2001,Reports: Scheduled report fails to send on Chrome 128-generated schedules created after a DST change,Scheduled report fails to send on Chrome 128-generated schedules created after a DST change.,"1. Open the Reports page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Reports,2026-02-07
+BUG-2002,Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen,Search results ignore the selected category filter on Chrome 128 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Search,2026-08-19
+BUG-2003,"Notifications: Push notification is delivered twice for the same event on Chrome 128, 12 seconds apart","Push notification is delivered twice for the same event on Chrome 128, 12 seconds apart.","1. Open the Notifications page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-05-05
+BUG-2004,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Search,2026-06-28
+BUG-2005,Admin: Bulk export times out for reports over 4 rows when run from Safari 17,Bulk export times out for reports over 4 rows when run from Safari 17.,"1. Open the Admin page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Admin,2026-07-03
+BUG-2006,Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change,Scheduled report fails to send on Safari 17-generated schedules created after a DST change.,"1. Open the Reports page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Reports,2026-02-02
+BUG-2007,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Search,2026-05-15
+BUG-2008,Admin: Bulk export times out for reports over 25 rows when run from Firefox 130,Bulk export times out for reports over 25 rows when run from Firefox 130.,"1. Open the Admin page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Admin,2026-02-20
+BUG-2009,"Checkout: Cart total fails to update when a promo code is applied on Firefox 130, off by $12","Cart total fails to update when a promo code is applied on Firefox 130, off by $12.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Checkout,2026-09-08
+BUG-2010,Admin: Bulk export times out for reports over 16 rows when run from Chrome 128,Bulk export times out for reports over 16 rows when run from Chrome 128.,"1. Open the Admin page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Admin,2026-05-03
+BUG-2011,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Search,2026-08-05
+BUG-2012,"Notifications: Push notification is delivered twice for the same event on Firefox 130, 17 seconds apart","Push notification is delivered twice for the same event on Firefox 130, 17 seconds apart.","1. Open the Notifications page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Notifications,2026-07-12
+BUG-2013,Search: Search results ignore the selected category filter on Firefox 130 when query contains a hyphen,Search results ignore the selected category filter on Firefox 130 when query contains a hyphen.,"1. Open the Search page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Search,2026-02-05
+BUG-2014,"Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $40","Cart total fails to update when a promo code is applied on Edge 127, off by $40.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-08-17
+BUG-2015,"Notifications: Push notification is delivered twice for the same event on Chrome 128, 45 seconds apart","Push notification is delivered twice for the same event on Chrome 128, 45 seconds apart.","1. Open the Notifications page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-06-04
+BUG-2016,"Notifications: Push notification is delivered twice for the same event on Edge 127, 12 seconds apart","Push notification is delivered twice for the same event on Edge 127, 12 seconds apart.","1. Open the Notifications page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-09-25
+BUG-2017,"Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $42","Cart total fails to update when a promo code is applied on Chrome 128, off by $42.00.","1. Open the Checkout page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Checkout,2026-06-25
+BUG-2018,"Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $40","Cart total fails to update when a promo code is applied on Chrome 128, off by $40.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Checkout,2026-02-12
+BUG-2019,"Notifications: Push notification is delivered twice for the same event on Firefox 130, 5 seconds apart","Push notification is delivered twice for the same event on Firefox 130, 5 seconds apart.","1. Open the Notifications page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Notifications,2026-08-27
+BUG-2020,Payments: Payment confirmation email is delayed by up to 10 minutes after a successful Firefox 130 checkout,Payment confirmation email is delayed by up to 10 minutes after a successful Firefox 130 checkout.,"1. Open the Payments page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Payments,2026-05-17
+BUG-2021,API: API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present,API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present.,"1. Open the API page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,API,2026-07-22
+BUG-2022,Admin: Bulk export times out for reports over 35 rows when run from Edge 127,Bulk export times out for reports over 35 rows when run from Edge 127.,"1. Open the Admin page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Admin,2026-04-03
+BUG-2023,Admin: Bulk export times out for reports over 39 rows when run from Chrome 128,Bulk export times out for reports over 39 rows when run from Chrome 128.,"1. Open the Admin page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Admin,2026-01-03
+BUG-2024,Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds,User cannot sign in on Firefox 130 despite entering the correct password; session times out after 6 seconds.,"1. Open the Login page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Login,2026-09-08
+BUG-2025,"Notifications: Push notification is delivered twice for the same event on Edge 127, 15 seconds apart","Push notification is delivered twice for the same event on Edge 127, 15 seconds apart.","1. Open the Notifications page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Notifications,2026-04-26
+BUG-2026,Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 14,Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 14.,"1. Open the Cart page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-06-14
+BUG-2027,"Profile: Profile photo upload silently fails on Edge 127 for files over 5MB, no error shown","Profile photo upload silently fails on Edge 127 for files over 5MB, no error shown.","1. Open the Profile page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Profile,2026-07-24
+BUG-2028,Admin: Bulk export times out for reports over 17 rows when run from Chrome 128,Bulk export times out for reports over 17 rows when run from Chrome 128.,"1. Open the Admin page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Admin,2026-03-14
+BUG-2029,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $31","Cart total fails to update when a promo code is applied on Safari 17, off by $31.00.","1. Open the Checkout page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-09-04
+BUG-2030,Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds,User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds.,"1. Open the Login page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Login,2026-08-16
+BUG-2031,Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen,Search results ignore the selected category filter on Edge 127 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Search,2026-07-09
+BUG-2032,Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 29,Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 29.,"1. Open the Cart page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Cart,2026-04-10
+BUG-2033,Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen,Search results ignore the selected category filter on Chrome 128 when query contains a hyphen.,"1. Open the Search page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Search,2026-01-02
+BUG-2034,API: API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present,API returns a ERR_422_VALIDATION for a valid request on Edge 127-originated calls when a trailing slash is present.,"1. Open the API page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,API,2026-09-03
+BUG-2035,"Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $40","Cart total fails to update when a promo code is applied on Chrome 128, off by $40.00.","1. Open the Checkout page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-02-19
+BUG-2036,Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen,Search results ignore the selected category filter on Chrome 128 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Search,2026-05-07
+BUG-2037,Admin: Bulk export times out for reports over 18 rows when run from Firefox 130,Bulk export times out for reports over 18 rows when run from Firefox 130.,"1. Open the Admin page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Admin,2026-08-11
+BUG-2038,Payments: Payment confirmation email is delayed by up to 31 minutes after a successful Chrome 128 checkout,Payment confirmation email is delayed by up to 31 minutes after a successful Chrome 128 checkout.,"1. Open the Payments page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Payments,2026-09-07
+BUG-2039,Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change,Scheduled report fails to send on Safari 17-generated schedules created after a DST change.,"1. Open the Reports page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Reports,2026-06-10
+BUG-2040,"Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $36","Cart total fails to update when a promo code is applied on Edge 127, off by $36.00.","1. Open the Checkout page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Checkout,2026-09-10
+BUG-2041,Payments: Payment confirmation email is delayed by up to 18 minutes after a successful Firefox 130 checkout,Payment confirmation email is delayed by up to 18 minutes after a successful Firefox 130 checkout.,"1. Open the Payments page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Payments,2026-05-10
+BUG-2042,API: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present,API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present.,"1. Open the API page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,API,2026-05-28
+BUG-2043,Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 42 seconds,User cannot sign in on Chrome 128 despite entering the correct password; session times out after 42 seconds.,"1. Open the Login page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Login,2026-01-11
+BUG-2044,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $12","Cart total fails to update when a promo code is applied on Safari 17, off by $12.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-09-01
+BUG-2045,Payments: Payment confirmation email is delayed by up to 11 minutes after a successful Chrome 128 checkout,Payment confirmation email is delayed by up to 11 minutes after a successful Chrome 128 checkout.,"1. Open the Payments page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Payments,2026-09-05
+BUG-2046,"Profile: Profile photo upload silently fails on Firefox 130 for files over 4MB, no error shown","Profile photo upload silently fails on Firefox 130 for files over 4MB, no error shown.","1. Open the Profile page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Profile,2026-06-07
+BUG-2047,Search: Search results ignore the selected category filter on Chrome 128 when query contains a hyphen,Search results ignore the selected category filter on Chrome 128 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Search,2026-04-28
+BUG-2048,"Checkout: Cart total fails to update when a promo code is applied on Firefox 130, off by $28","Cart total fails to update when a promo code is applied on Firefox 130, off by $28.00.","1. Open the Checkout page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Checkout,2026-07-26
+BUG-2049,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Search,2026-01-28
+BUG-2050,Cart: Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 14,Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 14.,"1. Open the Cart page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Cart,2026-04-08
+BUG-2051,Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds,User cannot sign in on Firefox 130 despite entering the correct password; session times out after 27 seconds.,"1. Open the Login page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Login,2026-05-12
+BUG-2052,Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change,Scheduled report fails to send on Edge 127-generated schedules created after a DST change.,"1. Open the Reports page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Reports,2026-02-09
+BUG-2053,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $4","Cart total fails to update when a promo code is applied on Safari 17, off by $4.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Checkout,2026-06-14
+BUG-2054,API: API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present,API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present.,"1. Open the API page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,API,2026-01-23
+BUG-2055,"Profile: Profile photo upload silently fails on Chrome 128 for files over 35MB, no error shown","Profile photo upload silently fails on Chrome 128 for files over 35MB, no error shown.","1. Open the Profile page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Profile,2026-07-03
+BUG-2056,Admin: Bulk export times out for reports over 44 rows when run from Safari 17,Bulk export times out for reports over 44 rows when run from Safari 17.,"1. Open the Admin page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Admin,2026-07-11
+BUG-2057,"Profile: Profile photo upload silently fails on Safari 17 for files over 37MB, no error shown","Profile photo upload silently fails on Safari 17 for files over 37MB, no error shown.","1. Open the Profile page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Profile,2026-07-22
+BUG-2058,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $27","Cart total fails to update when a promo code is applied on Safari 17, off by $27.00.","1. Open the Checkout page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Checkout,2026-05-07
+BUG-2059,"Profile: Profile photo upload silently fails on Safari 17 for files over 31MB, no error shown","Profile photo upload silently fails on Safari 17 for files over 31MB, no error shown.","1. Open the Profile page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Profile,2026-09-16
+BUG-2060,"Checkout: Cart total fails to update when a promo code is applied on Chrome 128, off by $20","Cart total fails to update when a promo code is applied on Chrome 128, off by $20.00.","1. Open the Checkout page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Checkout,2026-04-22
+BUG-2061,"Notifications: Push notification is delivered twice for the same event on Firefox 130, 14 seconds apart","Push notification is delivered twice for the same event on Firefox 130, 14 seconds apart.","1. Open the Notifications page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Notifications,2026-04-16
+BUG-2062,API: API returns a ERR_504_TIMEOUT for a valid request on Chrome 128-originated calls when a trailing slash is present,API returns a ERR_504_TIMEOUT for a valid request on Chrome 128-originated calls when a trailing slash is present.,"1. Open the API page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,API,2026-08-13
+BUG-2063,Search: Search results ignore the selected category filter on Firefox 130 when query contains a hyphen,Search results ignore the selected category filter on Firefox 130 when query contains a hyphen.,"1. Open the Search page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Search,2026-07-08
+BUG-2064,"Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $5","Cart total fails to update when a promo code is applied on Edge 127, off by $5.00.","1. Open the Checkout page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Checkout,2026-08-05
+BUG-2065,Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 30,Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 30.,"1. Open the Cart page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-03-24
+BUG-2066,Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 18,Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 18.,"1. Open the Cart page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-04-09
+BUG-2067,Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 20,Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 20.,"1. Open the Cart page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Cart,2026-06-18
+BUG-2068,Payments: Payment confirmation email is delayed by up to 11 minutes after a successful Firefox 130 checkout,Payment confirmation email is delayed by up to 11 minutes after a successful Firefox 130 checkout.,"1. Open the Payments page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Payments,2026-04-03
+BUG-2069,"Profile: Profile photo upload silently fails on Edge 127 for files over 23MB, no error shown","Profile photo upload silently fails on Edge 127 for files over 23MB, no error shown.","1. Open the Profile page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Profile,2026-01-07
+BUG-2070,"Profile: Profile photo upload silently fails on Edge 127 for files over 39MB, no error shown","Profile photo upload silently fails on Edge 127 for files over 39MB, no error shown.","1. Open the Profile page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Profile,2026-08-01
+BUG-2071,Admin: Bulk export times out for reports over 26 rows when run from Safari 17,Bulk export times out for reports over 26 rows when run from Safari 17.,"1. Open the Admin page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Admin,2026-04-09
+BUG-2072,"Profile: Profile photo upload silently fails on Edge 127 for files over 3MB, no error shown","Profile photo upload silently fails on Edge 127 for files over 3MB, no error shown.","1. Open the Profile page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Profile,2026-03-27
+BUG-2073,Cart: Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 41,Item quantity resets to 1 after page refresh on Firefox 130 when quantity was set above 41.,"1. Open the Cart page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-01-03
+BUG-2074,"Profile: Profile photo upload silently fails on Firefox 130 for files over 31MB, no error shown","Profile photo upload silently fails on Firefox 130 for files over 31MB, no error shown.","1. Open the Profile page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Profile,2026-07-11
+BUG-2075,Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen,Search results ignore the selected category filter on Edge 127 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Search,2026-07-09
+BUG-2076,Payments: Payment confirmation email is delayed by up to 3 minutes after a successful Edge 127 checkout,Payment confirmation email is delayed by up to 3 minutes after a successful Edge 127 checkout.,"1. Open the Payments page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Payments,2026-04-21
+BUG-2077,Payments: Payment confirmation email is delayed by up to 3 minutes after a successful Chrome 128 checkout,Payment confirmation email is delayed by up to 3 minutes after a successful Chrome 128 checkout.,"1. Open the Payments page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Payments,2026-03-08
+BUG-2078,"Checkout: Cart total fails to update when a promo code is applied on Edge 127, off by $44","Cart total fails to update when a promo code is applied on Edge 127, off by $44.00.","1. Open the Checkout page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-05-25
+BUG-2079,Admin: Bulk export times out for reports over 40 rows when run from Firefox 130,Bulk export times out for reports over 40 rows when run from Firefox 130.,"1. Open the Admin page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Admin,2026-05-04
+BUG-2080,API: API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present,API returns a ERR_422_VALIDATION for a valid request on Chrome 128-originated calls when a trailing slash is present.,"1. Open the API page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,API,2026-04-03
+BUG-2081,API: API returns a ERR_409_CONFLICT for a valid request on Firefox 130-originated calls when a trailing slash is present,API returns a ERR_409_CONFLICT for a valid request on Firefox 130-originated calls when a trailing slash is present.,"1. Open the API page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,API,2026-01-12
+BUG-2082,Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change,Scheduled report fails to send on Edge 127-generated schedules created after a DST change.,"1. Open the Reports page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Reports,2026-01-28
+BUG-2083,"Profile: Profile photo upload silently fails on Edge 127 for files over 8MB, no error shown","Profile photo upload silently fails on Edge 127 for files over 8MB, no error shown.","1. Open the Profile page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Profile,2026-03-14
+BUG-2084,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $41","Cart total fails to update when a promo code is applied on Safari 17, off by $41.00.","1. Open the Checkout page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-07-27
+BUG-2085,API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present,API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present.,"1. Open the API page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,API,2026-08-08
+BUG-2086,Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 23,Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 23.,"1. Open the Cart page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Cart,2026-03-16
+BUG-2087,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Search,2026-09-01
+BUG-2088,Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change,Scheduled report fails to send on Firefox 130-generated schedules created after a DST change.,"1. Open the Reports page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Reports,2026-09-25
+BUG-2089,Search: Search results ignore the selected category filter on Edge 127 when query contains a hyphen,Search results ignore the selected category filter on Edge 127 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Search,2026-01-03
+BUG-2090,"Notifications: Push notification is delivered twice for the same event on Firefox 130, 27 seconds apart","Push notification is delivered twice for the same event on Firefox 130, 27 seconds apart.","1. Open the Notifications page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-06-16
+BUG-2091,Reports: Scheduled report fails to send on Safari 17-generated schedules created after a DST change,Scheduled report fails to send on Safari 17-generated schedules created after a DST change.,"1. Open the Reports page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Reports,2026-08-09
+BUG-2092,"Notifications: Push notification is delivered twice for the same event on Safari 17, 16 seconds apart","Push notification is delivered twice for the same event on Safari 17, 16 seconds apart.","1. Open the Notifications page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-02-24
+BUG-2093,Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change,Scheduled report fails to send on Firefox 130-generated schedules created after a DST change.,"1. Open the Reports page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Reports,2026-09-20
+BUG-2094,"Notifications: Push notification is delivered twice for the same event on Chrome 128, 14 seconds apart","Push notification is delivered twice for the same event on Chrome 128, 14 seconds apart.","1. Open the Notifications page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Notifications,2026-03-10
+BUG-2095,Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 19 seconds,User cannot sign in on Firefox 130 despite entering the correct password; session times out after 19 seconds.,"1. Open the Login page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Login,2026-03-21
+BUG-2096,Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 2,Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 2.,"1. Open the Cart page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-08-15
+BUG-2097,Admin: Bulk export times out for reports over 5 rows when run from Firefox 130,Bulk export times out for reports over 5 rows when run from Firefox 130.,"1. Open the Admin page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Admin,2026-02-13
+BUG-2098,Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 38,Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 38.,"1. Open the Cart page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Cart,2026-03-26
+BUG-2099,API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present,API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present.,"1. Open the API page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,API,2026-04-25
+BUG-2100,Reports: Scheduled report fails to send on Edge 127-generated schedules created after a DST change,Scheduled report fails to send on Edge 127-generated schedules created after a DST change.,"1. Open the Reports page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Reports,2026-05-19
+BUG-2101,API: API returns a ERR_409_CONFLICT for a valid request on Chrome 128-originated calls when a trailing slash is present,API returns a ERR_409_CONFLICT for a valid request on Chrome 128-originated calls when a trailing slash is present.,"1. Open the API page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,API,2026-04-09
+BUG-2102,Payments: Payment confirmation email is delayed by up to 17 minutes after a successful Firefox 130 checkout,Payment confirmation email is delayed by up to 17 minutes after a successful Firefox 130 checkout.,"1. Open the Payments page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Payments,2026-01-14
+BUG-2103,Cart: Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 20,Item quantity resets to 1 after page refresh on Edge 127 when quantity was set above 20.,"1. Open the Cart page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Closed,Cart,2026-05-23
+BUG-2104,Cart: Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 45,Item quantity resets to 1 after page refresh on Chrome 128 when quantity was set above 45.,"1. Open the Cart page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Cart,2026-07-04
+BUG-2105,Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change,Scheduled report fails to send on Firefox 130-generated schedules created after a DST change.,"1. Open the Reports page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Reports,2026-02-02
+BUG-2106,"Checkout: Cart total fails to update when a promo code is applied on Safari 17, off by $40","Cart total fails to update when a promo code is applied on Safari 17, off by $40.00.","1. Open the Checkout page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Checkout,2026-02-15
+BUG-2107,"Notifications: Push notification is delivered twice for the same event on Edge 127, 19 seconds apart","Push notification is delivered twice for the same event on Edge 127, 19 seconds apart.","1. Open the Notifications page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Notifications,2026-02-20
+BUG-2108,Login: User cannot sign in on Edge 127 despite entering the correct password; session times out after 22 seconds,User cannot sign in on Edge 127 despite entering the correct password; session times out after 22 seconds.,"1. Open the Login page on Safari 17.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Login,2026-02-08
+BUG-2109,API: API returns a ERR_500_INTERNAL for a valid request on Chrome 128-originated calls when a trailing slash is present,API returns a ERR_500_INTERNAL for a valid request on Chrome 128-originated calls when a trailing slash is present.,"1. Open the API page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,API,2026-08-17
+BUG-2110,Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 13,Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 13.,"1. Open the Cart page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-02-16
+BUG-2111,Admin: Bulk export times out for reports over 23 rows when run from Edge 127,Bulk export times out for reports over 23 rows when run from Edge 127.,"1. Open the Admin page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",In Progress,Admin,2026-06-14
+BUG-2112,Cart: Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 44,Item quantity resets to 1 after page refresh on Safari 17 when quantity was set above 44.,"1. Open the Cart page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Cart,2026-02-11
+BUG-2113,"Notifications: Push notification is delivered twice for the same event on Safari 17, 9 seconds apart","Push notification is delivered twice for the same event on Safari 17, 9 seconds apart.","1. Open the Notifications page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Notifications,2026-07-02
+BUG-2114,Search: Search results ignore the selected category filter on Safari 17 when query contains a hyphen,Search results ignore the selected category filter on Safari 17 when query contains a hyphen.,"1. Open the Search page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Search,2026-04-09
+BUG-2115,Reports: Scheduled report fails to send on Firefox 130-generated schedules created after a DST change,Scheduled report fails to send on Firefox 130-generated schedules created after a DST change.,"1. Open the Reports page on Edge 127.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Reports,2026-01-21
+BUG-2116,API: API returns a ERR_500_INTERNAL for a valid request on Firefox 130-originated calls when a trailing slash is present,API returns a ERR_500_INTERNAL for a valid request on Firefox 130-originated calls when a trailing slash is present.,"1. Open the API page on Chrome 128.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,API,2026-02-08
+BUG-2117,Payments: Payment confirmation email is delayed by up to 9 minutes after a successful Edge 127 checkout,Payment confirmation email is delayed by up to 9 minutes after a successful Edge 127 checkout.,"1. Open the Payments page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Payments,2026-05-17
+BUG-2118,"Notifications: Push notification is delivered twice for the same event on Edge 127, 32 seconds apart","Push notification is delivered twice for the same event on Edge 127, 32 seconds apart.","1. Open the Notifications page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Resolved,Notifications,2026-09-05
+BUG-2119,"Profile: Profile photo upload silently fails on Firefox 130 for files over 40MB, no error shown","Profile photo upload silently fails on Firefox 130 for files over 40MB, no error shown.","1. Open the Profile page on Firefox 130.
+2. Reproduce the condition described above.
+3. Observe the incorrect behavior.",Open,Profile,2026-05-25

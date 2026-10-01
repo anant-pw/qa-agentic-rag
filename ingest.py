@@ -297,12 +297,33 @@ def find_duplicate_bugs(conn, bugs, id_map, ollama_confirm_fn=None):
     conn.commit()
 
 
-def run(conn_params):
+SCHEMA_SQL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.sql")
+
+
+def run(conn_params, reset: bool = False):
     bugs = parse_bug_reports_csv(BUG_CSV)
     test_cases = parse_test_cases_md(TC_DIR)
 
     conn = psycopg2.connect(**conn_params)
     try:
+        # Re-runnable (2026-10-01): a second run used to die with
+        # UniqueViolation on documents(doc_type, external_id). --reset
+        # applies schema.sql, which DROPs and recreates every table, so a
+        # reload is one command; without it, refuse clearly instead.
+        with conn.cursor() as cur:
+            if reset:
+                with open(SCHEMA_SQL, encoding="utf-8") as f:
+                    cur.execute(f.read())
+                conn.commit()
+                print("Applied schema.sql (all tables dropped and recreated).")
+            else:
+                cur.execute("SELECT to_regclass('public.documents') IS NOT NULL")
+                if not cur.fetchone()[0]:
+                    raise SystemExit("Table 'documents' does not exist -- run with --reset to apply schema.sql.")
+                cur.execute("SELECT count(*) FROM documents")
+                if cur.fetchone()[0]:
+                    raise SystemExit("Database already loaded -- rerun with --reset to drop and reload "
+                                     "(then rebuild the index: python -m scripts.build_index).")
         id_map = load_documents(conn, bugs, test_cases)
         resolve_test_case_refs(conn, bugs, id_map)
         resolve_explicit_bug_mentions(conn, bugs, id_map)
@@ -313,6 +334,12 @@ def run(conn_params):
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Load data/ into Postgres.")
+    parser.add_argument("--reset", action="store_true",
+                        help="apply schema.sql first (drops and recreates all tables)")
+    args = parser.parse_args()
     run(dict(
         dbname=os.environ.get("POSTGRES_DB", "rag_db"),
         user=os.environ.get("POSTGRES_USER", "rag_user"),
@@ -322,4 +349,4 @@ if __name__ == "__main__":
         # unrelated Postgres instance (e.g. a native service) instead of
         # Docker's IPv4 port mapping. Forcing IPv4 removes the ambiguity.
         port=os.environ.get("POSTGRES_PORT", "5433"),
-    ))
+    ), reset=args.reset)

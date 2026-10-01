@@ -1,4 +1,17 @@
+# secrets
 .env
-data/
-.zip
-/__pycache__
+
+# archives / build artefacts (previous patterns ".zip" and "/__pycache__"
+# only matched a file literally named .zip and the root __pycache__)
+*.zip
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# runtime logs (the directory is bind-mounted by docker-compose)
+logs/*
+!logs/.gitkeep
+
+# local backups of data files
+data/*.bak-*

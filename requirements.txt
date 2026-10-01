@@ -1,10 +1,11 @@
-fastapi
-uvicorn[standard]
-psycopg2-binary
-httpx
-pydantic-settings
-scikit-learn
+# Pinned 2026-10-01 from the working rag-fastapi container (python 3.12.14).
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+psycopg2-binary==2.9.13
+httpx==0.28.1
+pydantic-settings==2.15.0
+scikit-learn==1.9.1
 opensearch-py==2.7.1
-redis
-requests
-langgraph
+redis==8.1.0
+requests==2.34.2
+langgraph==1.2.11

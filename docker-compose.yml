@@ -126,6 +126,15 @@ services:
       AGENTIC_TOKEN_STREAMING: ${AGENTIC_TOKEN_STREAMING:-true}
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    healthcheck:
+      # Liveness only ("/" is static). /health is deliberately NOT used here:
+      # it returns 503 whenever Ollama (a host process) is down, which would
+      # mark this container unhealthy for an upstream outage.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     extra_hosts:
       - "host.docker.internal:host-gateway"  # required on Linux; no-op on Mac/Windows
     ports:
