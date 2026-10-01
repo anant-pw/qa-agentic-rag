@@ -97,6 +97,24 @@ Machine B has a Core Ultra 7 155U with an Arc iGPU and an NPU. Machine A's Iris 
 - Pin `requirements.txt` from the working container. Add a README with the verified bootstrap. Make `ingest.py` re-runnable.
 - `pytest` unit tests for the pure functions added this week: `requested_fields`, `error_code_question`, `fetch_reference_targets` ordering, `ollama_timings`. Add GitHub Actions for the unit tier.
 
+## Step 9: Latency research shortlist (2026-10-01; estimates, not measurements)
+
+Retrieval is not the bottleneck (median 0.16 s). The time goes into the LLM reading ~700 tokens of context (~25–80 s) and writing (~10–15 s). Most ideas below are only viable because this corpus is tiny: 173 docs, ~67k characters.
+
+| # | Idea | Expected effect | Cost / risk |
+|---|---|---|---|
+| 1 | **Cache-augmented generation (CAG):** put the whole corpus in a persistent KV cache once; per question, only the question is prefilled ([hhhuang/CAG](https://github.com/hhhuang/CAG)) | Corpus ≈ 17–18k tokens → KV ≈ 2.6 GB f16 / 1.3 GB q8 for qwen3-4b (36 layers × 8 KV heads × 128). First token ~27 s → ~1–2 s (estimate) | Needs `llama-server` (`--slot-save-path`; Ollama cannot persist a slot). Quality risk on near-duplicate docs over a long context |
+| 2 | **phi4 answer bank:** generate likely questions per doc offline (HyPE/doc2query), answer them overnight with phi4:14b, serve them by embedding match | phi4 quality at ~0.2 s for covered questions; phi4 never runs at request time | Match threshold must be strict; invalidate on index change (the cache key already includes the index) |
+| 3 | **n-gram speculative decoding** (`--spec-type ngram-simple` in llama.cpp) | Faster writing for extractive answers that copy IDs, titles and fields; no extra RAM | Unmeasured on this CPU; some reports of slowdowns |
+| 4 | **Prefill while typing:** the UI sends the partial question; the server retrieves and prefills system + docs while the user types | Hides most of the context prefill behind typing time | Wasted work when the final retrieval differs (costs the same as today) |
+| 5 | **Context compaction:** drop the synthetic docs' boilerplate steps (~3.5k tokens corpus-wide) and the description when it repeats the title | ~30–40% shorter contexts for synthetic-heavy questions; also shrinks idea 1's cache | Must not drop real content (original docs keep everything) |
+| 6 | **In-process query embedding** (FastEmbed ONNX nomic, 130 MB quantized) | Removes the Ollama round trip and contention (retrieval p95 3.7 s, outliers 14–20 s) | Vectors differ slightly, so the 0.75 guardrail must be recalibrated |
+| 7 | **Warm-up on startup:** prefill the system prompt when the container starts | The first question after a restart no longer takes ~95 s | Trivial |
+
+Ruled out: TurboRAG / CacheBlend / LMCache (GPU serving stacks; TurboRAG also needs a fine-tuned model) and llama-server `--cache-reuse` (strict prefix only).
+
+**Being tried first:** ideas 1 + 5 as one bounded experiment (see `docs/CAG_EXPERIMENT_2026-10-01.md`).
+
 ## Not planned (researched, poor fit for this machine)
 
 | Idea | Why not |
