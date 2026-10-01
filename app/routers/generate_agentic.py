@@ -88,11 +88,13 @@ from app.search.id_resolution import (
     passes_filters,
     unknown_id_message,
 )
-from app.generation.context import fetch_structured_fields, fetch_references
+from app.generation.context import fetch_structured_fields, fetch_references, fetch_reference_targets
 from app.generation.prompt import build_messages, format_doc_context
-from app.generation.llm import stream_chat, GenerationError
+from app.generation.llm import stream_chat, GenerationError, ollama_timings
 from app.generation.guardrail import is_in_domain
 from app.generation.deterministic import is_countable_question, answer_countable_question
+from app.generation.field_lookup import requested_fields, answer_field_question
+from app.generation.error_code_lookup import error_code_question, answer_error_code_question
 from app.generation.cache import (
     get_redis_client,
     get_current_index_name,
@@ -133,7 +135,9 @@ class AgenticState(TypedDict, total=False):
     doc_type: str | None
     module: str | None
     status: str | None
-    decision: str  # "reject" | "deterministic" | "semantic"
+    decision: str  # "reject" | "deterministic" | "field_lookup" | "error_code" | "semantic"
+    field_lookup: dict
+    error_code: str
     hits: list[dict]
     top_hits: list[dict]
     guardrail_vector_score: float | None
@@ -142,6 +146,42 @@ class AgenticState(TypedDict, total=False):
     retrieval_span: dict
     generation_span: dict
     error: str | None
+
+
+# Referenced documents added after a named ID's pinned document (see
+# _expand_references). Bounded so a heavily-cross-referenced bug (BUG-2042
+# has 9 duplicate_of rows) can't push every retrieved hit out of context.
+MAX_REFERENCE_EXPANSION = 3
+
+
+def _expand_references(os_client, hits, pinned_ids, doc_type, module, status):
+    """Insert documents referenced by the pinned (named) documents directly
+    after them. Returns (hits, added_external_ids)."""
+    room = min(MAX_REFERENCE_EXPANSION, settings.context_top_n - len(pinned_ids))
+    if room <= 0:
+        return hits, []
+    pg_conn = _get_pg_connection()
+    try:
+        targets = fetch_reference_targets(pg_conn, pinned_ids, limit=room)
+    finally:
+        pg_conn.close()
+    if not targets:
+        return hits, []
+    resolved = resolve_document_ids(os_client, settings.opensearch_index_alias, targets)
+    ref_hits = []
+    for t in targets:
+        h = resolved.get(t.lower())
+        if h is not None and passes_filters(h, doc_type, module, status):
+            # Reuse the fused hit when retrieval already found it (keeps its
+            # real scores), same as pin_resolved_hits().
+            h = next((x for x in hits if x["chunk_id"] == h["chunk_id"]), h)
+            ref_hits.append(h)
+    if not ref_hits:
+        return hits, []
+    n = len(pinned_ids)
+    ref_chunks = {h["chunk_id"] for h in ref_hits}
+    rest = [h for h in hits[n:] if h["chunk_id"] not in ref_chunks]
+    return hits[:n] + ref_hits + rest, [h["external_id"] for h in ref_hits]
 
 
 def guardrail_and_route(state: AgenticState) -> dict:
@@ -164,7 +204,29 @@ def guardrail_and_route(state: AgenticState) -> dict:
         }
         id_class = classify_id_question(question_ids, existing, pinnable)
 
-        if id_class == "unknown":
+        # Field-lookup route: one resolved ID + a plain field ask ("steps to
+        # reproduce BUG-1003") -> answered from Postgres in
+        # run_field_lookup(), so skip hybrid_search()'s embedding call too.
+        # See app/generation/field_lookup.py for the narrow trigger rules.
+        lookup_fields = None
+        if (
+            settings.deterministic_field_lookup
+            and id_class == "resolved"
+            and len(question_ids) == 1
+            and len(pinnable) == 1
+        ):
+            lookup_hit = next(iter(pinnable.values()))
+            lookup_fields = requested_fields(state["question"], lookup_hit.get("doc_type"))
+
+        # Error-code route: no document ID, exactly one ERR_* code and a
+        # "which bugs ..." ask -> answered from document_error_codes in
+        # run_error_code_lookup(). See app/generation/error_code_lookup.py.
+        err_code = None
+        if settings.deterministic_error_code_lookup and not question_ids:
+            err_code = error_code_question(state["question"])
+
+        referenced_ids: list[str] = []
+        if id_class == "unknown" or lookup_fields or err_code:
             # Named IDs exist nowhere: no retrieval, no embedding call.
             hits = []
             top_vector_score = None
@@ -185,6 +247,13 @@ def guardrail_and_route(state: AgenticState) -> dict:
             top_vector_score = next((h["vector_score"] for h in hits if h["vector_score"] is not None), None)
             if id_class == "resolved":
                 hits = pin_resolved_hits(hits, pinnable, question_ids)
+                if settings.reference_expansion:
+                    pinned_ids = [i.upper() for i in question_ids if i in pinnable]
+                    hits, referenced_ids = _expand_references(
+                        os_client, hits, pinned_ids, doc_type, module, status
+                    )
+        if lookup_fields:
+            hits = [lookup_hit]
 
     top_hits = hits[: settings.context_top_n]
 
@@ -195,6 +264,8 @@ def guardrail_and_route(state: AgenticState) -> dict:
         retrieval_span["question_ids"] = question_ids
         retrieval_span["resolved_ids"] = [i for i in question_ids if i in existing]
         retrieval_span["id_route"] = id_class
+    if referenced_ids:
+        retrieval_span["referenced_ids"] = referenced_ids
 
     base = {
         "hits": hits,
@@ -210,6 +281,26 @@ def guardrail_and_route(state: AgenticState) -> dict:
             "retrieval_span": retrieval_span,
             "answer": unknown_id_message(question_ids),
             "sources": [],
+        }
+
+    if lookup_fields:
+        retrieval_span["path"] = "field_lookup"
+        retrieval_span["fields"] = lookup_fields
+        return {
+            **base,
+            "decision": "field_lookup",
+            "retrieval_span": retrieval_span,
+            "field_lookup": {"hit": lookup_hit, "fields": lookup_fields},
+        }
+
+    if err_code:
+        retrieval_span["path"] = "error_code"
+        retrieval_span["error_code"] = err_code
+        return {
+            **base,
+            "decision": "error_code",
+            "retrieval_span": retrieval_span,
+            "error_code": err_code,
         }
 
     if id_class == "resolved":
@@ -263,6 +354,54 @@ def run_deterministic(state: AgenticState) -> dict:
     }
 
 
+def run_field_lookup(state: AgenticState) -> dict:
+    """No LLM call: returns the requested stored field(s) verbatim. If the
+    Postgres row is somehow missing (index/DB drift), falls back to the
+    semantic path in-node rather than inventing an answer."""
+    hit = state["field_lookup"]["hit"]
+    fields = state["field_lookup"]["fields"]
+    pg_conn = _get_pg_connection()
+    try:
+        result = answer_field_question(pg_conn, hit["parent_document_id"], fields)
+    finally:
+        pg_conn.close()
+    if result is None:
+        return run_semantic_generate(state)
+    answer, _ = result
+    return {
+        "answer": answer,
+        "sources": [{
+            "external_id": hit["external_id"],
+            "title": hit["title"],
+            "doc_type": hit["doc_type"],
+            "rrf_score": None,
+            "vector_score": None,
+            "parent_document_id": hit["parent_document_id"],
+        }],
+        "generation_span": {"path": "field_lookup", "llm_calls": 0, "fields": fields},
+    }
+
+
+def run_error_code_lookup(state: AgenticState) -> dict:
+    """No LLM call. See app/generation/error_code_lookup.py."""
+    pg_conn = _get_pg_connection()
+    try:
+        answer, sources = answer_error_code_question(
+            pg_conn,
+            state["error_code"],
+            doc_type=state.get("doc_type"),
+            module=state.get("module"),
+            status=state.get("status"),
+        )
+    finally:
+        pg_conn.close()
+    return {
+        "answer": answer,
+        "sources": sources,
+        "generation_span": {"path": "error_code", "llm_calls": 0},
+    }
+
+
 def run_semantic_generate(state: AgenticState) -> dict:
     """Same context-assembly and generation logic as /generate --
     fetch_structured_fields, fetch_references, build_messages,
@@ -303,8 +442,9 @@ def run_semantic_generate(state: AgenticState) -> dict:
     accumulated: list[str] = []
     gen_start = time.time()
     generation_failed = False
+    done_chunk = None
     try:
-        for content, _ in stream_chat(
+        for content, maybe_done_chunk in stream_chat(
             messages,
             settings.ollama_host,
             settings.ollama_port,
@@ -316,6 +456,8 @@ def run_semantic_generate(state: AgenticState) -> dict:
             wall_clock_timeout=settings.ollama_chat_wall_clock_timeout,
         ):
             accumulated.append(content)
+            if maybe_done_chunk is not None:
+                done_chunk = maybe_done_chunk
     except GenerationError as e:
         generation_failed = True
         print(f"[generation] ERROR: Ollama chat request failed: {e}")
@@ -330,6 +472,9 @@ def run_semantic_generate(state: AgenticState) -> dict:
         "token_count": len("".join(accumulated).split()),
         "model": settings.ollama_chat_model,
         "path": "semantic",
+        # Load / prefill / decode split from Ollama itself -- see
+        # ollama_timings() in app/generation/llm.py.
+        **ollama_timings(done_chunk),
     }
 
     return {
@@ -348,14 +493,24 @@ _graph = StateGraph(AgenticState)
 _graph.add_node("guardrail_and_route", guardrail_and_route)
 _graph.add_node("deterministic", run_deterministic)
 _graph.add_node("semantic_generate", run_semantic_generate)
+_graph.add_node("field_lookup", run_field_lookup)
+_graph.add_node("error_code", run_error_code_lookup)
 _graph.set_entry_point("guardrail_and_route")
 _graph.add_conditional_edges(
     "guardrail_and_route",
     _route,
-    {"reject": END, "deterministic": "deterministic", "semantic": "semantic_generate"},
+    {
+        "reject": END,
+        "deterministic": "deterministic",
+        "field_lookup": "field_lookup",
+        "error_code": "error_code",
+        "semantic": "semantic_generate",
+    },
 )
 _graph.add_edge("deterministic", END)
 _graph.add_edge("semantic_generate", END)
+_graph.add_edge("field_lookup", END)
+_graph.add_edge("error_code", END)
 compiled_agentic_graph = _graph.compile()
 
 

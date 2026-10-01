@@ -1,0 +1,20 @@
+[
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
+    "requires_docs": [
+      "BUG-1001",
+      "TC-0142"
+    ],
+    "type": "cross_reference_bug_to_test_case",
+    "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
+    "requires_docs": [
+      "BUG-1002",
+      "TC-0142"
+    ],
+    "type": "cross_reference_bug_to_test_case",
+    "notes": "Fails if system answers from the bug report alone without pulling the cited test case's expected_result."
+  }
+]

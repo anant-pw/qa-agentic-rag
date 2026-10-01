@@ -295,57 +295,77 @@ def run(base_url: str, seed_path: str, endpoint_path: str = "/generate"):
                 f"{q['question']}",
                 flush=True,
             )
-            qtype = q["type"]
-            checker = CHECKERS.get(qtype)
-            if checker is None:
-                # Phase 6 fix: this branch used to `continue` before ever
-                # calling /generate, so results.json had no "answer" key
-                # for MANUAL_REQUIRED rows -- the manual grading tier was
-                # unusable for its actual purpose, since there was nothing
-                # to read. Now fetches the real answer/sources like every
-                # other question type; only the deterministic check is
-                # skipped, not the generation call itself.
-                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
+            # A single request failure (e.g. a 500 from an upstream timeout) is
+            # recorded as ERROR for that question instead of aborting the whole
+            # run -- on this 16GB machine one aborted question used to throw away
+            # hours of already-completed answers. ERROR is not PASS or FAIL: it
+            # says nothing about answer quality, only that no answer came back.
+            try:
+                qtype = q["type"]
+                checker = CHECKERS.get(qtype)
+                if checker is None:
+                    # Phase 6 fix: this branch used to `continue` before ever
+                    # calling /generate, so results.json had no "answer" key
+                    # for MANUAL_REQUIRED rows -- the manual grading tier was
+                    # unusable for its actual purpose, since there was nothing
+                    # to read. Now fetches the real answer/sources like every
+                    # other question type; only the deterministic check is
+                    # skipped, not the generation call itself.
+                    answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
+                    results.append({
+                        "question": q["question"], "type": qtype,
+                        "result": "MANUAL_REQUIRED",
+                        "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+                        "answer": answer,
+                        "sources": sources,
+                    })
+                    print(
+                        f"[{question_number}/{total_questions}] DONE "
+                        f"MANUAL_REQUIRED in {time.perf_counter() - question_started:.1f}s",
+                        flush=True,
+                    )
+                    continue
+                if qtype == "structured_filter":
+                    module, status = _parse_module_status(q["question"])
+                    answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"], module=module, status=status)
+                else:
+                    answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
+                passed, detail = checker(q, answer, conn)
                 results.append({
                     "question": q["question"], "type": qtype,
-                    "result": "MANUAL_REQUIRED",
-                    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+                    "result": "PASS" if passed else "FAIL",
+                    "detail": detail,
                     "answer": answer,
                     "sources": sources,
                 })
                 print(
                     f"[{question_number}/{total_questions}] DONE "
-                    f"MANUAL_REQUIRED in {time.perf_counter() - question_started:.1f}s",
+                    f"{'PASS' if passed else 'FAIL'} in "
+                    f"{time.perf_counter() - question_started:.1f}s",
                     flush=True,
                 )
-                continue
-            if qtype == "structured_filter":
-                module, status = _parse_module_status(q["question"])
-                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"], module=module, status=status)
-            else:
-                answer, sources = call_generate(base_url, endpoint_path, q["question"], q["requires_docs"])
-            passed, detail = checker(q, answer, conn)
-            results.append({
-                "question": q["question"], "type": qtype,
-                "result": "PASS" if passed else "FAIL",
-                "detail": detail,
-                "answer": answer,
-                "sources": sources,
-            })
-            print(
-                f"[{question_number}/{total_questions}] DONE "
-                f"{'PASS' if passed else 'FAIL'} in "
-                f"{time.perf_counter() - question_started:.1f}s",
-                flush=True,
-            )
+            except httpx.HTTPError as e:
+                results.append({
+                    "question": q["question"], "type": q["type"],
+                    "result": "ERROR",
+                    "detail": f"request failed: {type(e).__name__}: {e}",
+                    "answer": None,
+                    "sources": [],
+                })
+                print(
+                    f"[{question_number}/{total_questions}] DONE "
+                    f"ERROR in {time.perf_counter() - question_started:.1f}s ({type(e).__name__})",
+                    flush=True,
+                )
     finally:
         conn.close()
 
     passed_n = sum(1 for r in results if r["result"] == "PASS")
     failed_n = sum(1 for r in results if r["result"] == "FAIL")
     manual_n = sum(1 for r in results if r["result"] == "MANUAL_REQUIRED")
+    error_n = sum(1 for r in results if r["result"] == "ERROR")
 
-    print(f"\n{'='*60}\nTIER A DETERMINISTIC RESULTS: {passed_n} PASS / {failed_n} FAIL / {manual_n} MANUAL_REQUIRED (of {len(results)})\n{'='*60}")
+    print(f"\n{'='*60}\nTIER A DETERMINISTIC RESULTS: {passed_n} PASS / {failed_n} FAIL / {manual_n} MANUAL_REQUIRED / {error_n} ERROR (of {len(results)})\n{'='*60}")
     for r in results:
         print(f"[{r['result']:14}] ({r['type']}) {r['question'][:70]}")
         print(f"                 -> {r['detail']}")

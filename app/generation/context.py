@@ -138,3 +138,47 @@ def fetch_references(conn, parent_document_ids: list[int]) -> dict[int, list[str
         if target_id is not None and target_id in by_doc and target_id != source_id:
             by_doc[target_id].append(line)
     return by_doc
+
+
+# Order in which referenced documents are pulled into context for a named
+# ID (see fetch_reference_targets): a cited test case is usually what the
+# question is about ("expected result of the test case referenced in
+# BUG-1001"), then duplicates, then looser relations.
+REFERENCE_EXPANSION_PRIORITY = ("test_case_citation", "duplicate_of", "related_to")
+
+REFERENCE_TARGETS_SQL = """
+    SELECT ds.external_id, dt.external_id, r.reference_type
+    FROM document_references r
+    JOIN documents ds ON ds.id = r.source_document_id
+    JOIN documents dt ON dt.id = r.target_document_id
+    WHERE upper(ds.external_id) = ANY(%s)
+"""
+
+
+def fetch_reference_targets(conn, external_ids: list[str], limit: int) -> list[str]:
+    """External IDs of documents that the named documents reference, most
+    useful first, de-duplicated, at most `limit`.
+
+    Added 2026-10-01 (docs/PERF_RUN_2026-10-01.md): for "What is the expected
+    result of the test case referenced in BUG-1001?" the 173-doc corpus's
+    hybrid top 5 did not contain TC-0142, so both phi4:14b and llama3.1:8b
+    saw only the line "BUG-1001 cites TC-0142" and answered from BUG-1001's
+    own prose. Forward references only (source -> target); dangling targets
+    (target_document_id NULL) are skipped since there is no document to add
+    -- fetch_references() still surfaces them as "(not found in corpus)"."""
+    if not external_ids or limit <= 0:
+        return []
+    upper = [i.upper() for i in external_ids]
+    with conn.cursor() as cur:
+        cur.execute(REFERENCE_TARGETS_SQL, (upper,))
+        rows = cur.fetchall()
+    rank = {t: i for i, t in enumerate(REFERENCE_EXPANSION_PRIORITY)}
+    rows.sort(key=lambda r: (upper.index(r[0].upper()), rank.get(r[2], len(rank)), r[1]))
+    targets: list[str] = []
+    for _, target, _ in rows:
+        if target.upper() in upper or target in targets:
+            continue
+        targets.append(target)
+        if len(targets) >= limit:
+            break
+    return targets

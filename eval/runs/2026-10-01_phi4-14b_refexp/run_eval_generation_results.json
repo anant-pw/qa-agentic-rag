@@ -1,0 +1,100 @@
+[
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "The expected result of the test case referenced in bug report BUG-1001 is as follows:\n\n1. After 3 failed login attempts, the account should be locked, and an immediate login attempt with the correct password should fail, returning a clear lockout message (not a generic auth error).\n2. After a defined cooldown period of 5 minutes, a login attempt with the correct password should succeed.\n\nThis is based on the description of TC-0142, which is cited by BUG-1001. (Source: TC-0142)",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.81412244,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.029910714285714284,
+        "vector_score": 0.7787763,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.7913883,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79337204,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-2030",
+        "title": "Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030536130536130537,
+        "vector_score": 0.7588558,
+        "parent_document_id": 56
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "The expected result of the test case referenced in bug report BUG-1002, which cites TC-0142, is as follows:\n\n1. After 3 failed login attempts, the account is locked, and any immediate attempt to log in with the correct password must fail, returning a clear lockout message (not a generic authentication error).\n2. After a 5-minute cooldown period, an attempt to log in with the correct password must succeed.\n\n(Source: TC-0142)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.86895317,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79397905,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7879022,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02967032967032967,
+        "vector_score": 0.74903286,
+        "parent_document_id": 11
+      }
+    ]
+  }
+]

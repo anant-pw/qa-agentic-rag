@@ -1,0 +1,50 @@
+[1/11] START (error_code_aggregation): Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?
+[1/11] DONE PASS in 0.2s
+[2/11] START (error_code_aggregation): Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?
+[2/11] DONE PASS in 0.1s
+[3/11] START (structured_filter): How many bugs are currently Open in the Login module?
+[3/11] DONE PASS in 0.3s
+[4/11] START (structured_filter): How many bugs are currently Open in the Payments module?
+[4/11] DONE PASS in 0.2s
+[5/11] START (single_doc_factual): What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?
+[5/11] DONE MANUAL_REQUIRED in 0.1s
+[6/11] START (single_doc_factual): What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?
+[6/11] DONE MANUAL_REQUIRED in 0.1s
+[7/11] START (single_doc_factual): What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?
+[7/11] DONE MANUAL_REQUIRED in 0.1s
+[8/11] START (single_doc_factual): What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?
+[8/11] DONE MANUAL_REQUIRED in 0.1s
+[9/11] START (out_of_domain): What's the weather like today?
+[9/11] DONE PASS in 0.3s
+[10/11] START (out_of_domain): What is the capital of France?
+[10/11] DONE PASS in 0.1s
+[11/11] START (out_of_domain): How do I bake a chocolate cake?
+[11/11] DONE PASS in 0.1s
+
+============================================================
+TIER A DETERMINISTIC RESULTS: 7 PASS / 0 FAIL / 4 MANUAL_REQUIRED / 0 ERROR (of 11)
+============================================================
+[PASS          ] (error_code_aggregation) Which bug reports are associated with ERR_401_UNAUTH, and do any of th
+                 -> contains all IDs in the error-code group
+[PASS          ] (error_code_aggregation) Which bug reports are associated with ERR_403_FORBIDDEN, and do any of
+                 -> contains all IDs in the error-code group
+[PASS          ] (structured_filter) How many bugs are currently Open in the Login module?
+                 -> answer contains the correct live count (8)
+[PASS          ] (structured_filter) How many bugs are currently Open in the Payments module?
+                 -> answer contains the correct live count (5)
+[MANUAL_REQUIRED] (single_doc_factual) What are the steps to reproduce BUG-1003 (Checkout page times out on s
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the steps to reproduce BUG-1023 (Payment retry after decline 
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the preconditions for TC-0301 (Search tokenization consistenc
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[MANUAL_REQUIRED] (single_doc_factual) What are the preconditions for TC-0302 (Exact SKU match ranks first in
+                 -> no deterministic ground truth for this question type -- use eval/manual_eval_log.py
+[PASS          ] (out_of_domain) What's the weather like today?
+                 -> correctly rejected, no document ID cited
+[PASS          ] (out_of_domain) What is the capital of France?
+                 -> correctly rejected, no document ID cited
+[PASS          ] (out_of_domain) How do I bake a chocolate cake?
+                 -> correctly rejected, no document ID cited
+
+Full results (including raw answers/sources) written to eval/runs/2026-10-01_after-datafix\run_eval_generation_results.json

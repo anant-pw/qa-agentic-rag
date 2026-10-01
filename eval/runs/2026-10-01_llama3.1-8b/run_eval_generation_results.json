@@ -1,0 +1,686 @@
+[
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "FAIL",
+    "detail": "missing one or more required doc IDs ['BUG-1001', 'TC-0142'] in answer",
+    "answer": "The expected result of the test case referenced in bug report BUG-1001 is that the account should unlock after cooldown. (Source: BUG-1001)",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.81412244,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.7913883,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79337204,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-2030",
+        "title": "Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030536130536130537,
+        "vector_score": 0.7588558,
+        "parent_document_id": 56
+      },
+      {
+        "external_id": "BUG-2095",
+        "title": "Login: User cannot sign in on Firefox 130 despite entering the correct password; session times out after 19 seconds",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030090497737556562,
+        "vector_score": 0.760495,
+        "parent_document_id": 121
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?",
+    "type": "cross_reference_bug_to_test_case",
+    "result": "PASS",
+    "detail": "contains required source and target IDs",
+    "answer": "The test case referenced in bug report BUG-1002 is TC-0142, \"Account lockout and cooldown after failed login attempts\". According to the description of TC-0142, the expected result is that after 3 failed attempts, the account is locked and the login attempt with the correct password must fail, returning a clear lockout message. After the 5-minute cooldown, the login attempt with the correct password must succeed. (Source: BUG-1002)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.86895317,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.79397905,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7879022,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02967032967032967,
+        "vector_score": 0.74903286,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-2030",
+        "title": "Login: User cannot sign in on Chrome 128 despite entering the correct password; session times out after 7 seconds",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02871794871794872,
+        "vector_score": 0.73213077,
+        "parent_document_id": 56
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1002 (Account lockout not clearing after correct password entry) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "According to the recorded cross-references, BUG-1002 is a duplicate of BUG-1001, which is also an open ticket in the Login module. (Source: BUG-1002)",
+    "sources": [
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8344288,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "TC-0142",
+        "title": "Account lockout and cooldown after failed login attempts",
+        "doc_type": "test_case",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.767913,
+        "parent_document_id": 146
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7985173,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "vector_score": 0.7841454,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030309988518943745,
+        "vector_score": 0.76787406,
+        "parent_document_id": 1
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1011 (Duplicate notification bug) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "Yes, BUG-1011 is a duplicate of another open ticket, and it is a duplicate of BUG-1006, which is also in the Notifications module. (Source: BUG-1011, BUG-1006)",
+    "sources": [
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8518858,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03200204813108039,
+        "vector_score": 0.76025003,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1006",
+        "title": "Push notifications sent twice for same order update",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030621785881252923,
+        "vector_score": 0.76476,
+        "parent_document_id": 6
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.02886002886002886,
+        "vector_score": 0.7392467,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.027526395173453996,
+        "vector_score": 0.73115826,
+        "parent_document_id": 2
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "According to the recorded cross-references, BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these are open tickets related to the Login module. (Source: BUG-1024)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.80058646,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.72968817,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238776,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.7506984,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031009615384615385,
+        "vector_score": 0.7454315,
+        "parent_document_id": 17
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1024 (Login - see BUG-1001, still unresolved) a duplicate of another open ticket, and if so which one and what module does it affect?",
+    "type": "duplicate_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs and 'duplicate' language",
+    "answer": "According to the recorded cross-references, BUG-1024 is a duplicate of both BUG-1001 and BUG-1002. Both of these tickets are open and related to the Login module. (Source: BUG-1024)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.80058646,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.72968817,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03252247488101534,
+        "vector_score": 0.8238776,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.7506984,
+        "parent_document_id": 2
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031009615384615385,
+        "vector_score": 0.7454315,
+        "parent_document_id": 17
+      }
+    ]
+  },
+  {
+    "question": "Is bug report BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007) connected to another ticket -- and if so, is it a duplicate or something else, like a follow-up or resolution?",
+    "type": "related_resolution",
+    "result": "PASS",
+    "detail": "contains required IDs, no unqualified duplicate claim",
+    "answer": "According to the \"Recorded cross-references\" section of the retrieved documents, BUG-1017 is related to (NOT a duplicate of) BUG-1007. This indicates that the two bug reports are connected, but not as duplicates. The relationship is described as \"related to\", which suggests that BUG-1017 is a follow-up or resolution to BUG-1007, rather than a duplicate. (Source: BUG-1017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8473571,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "vector_score": 0.78281873,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.81892747,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030330882352941176,
+        "vector_score": 0.769634,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-2023",
+        "title": "Admin: Bulk export times out for reports over 39 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.015625,
+        "vector_score": 0.77182287,
+        "parent_document_id": 49
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "PASS",
+    "detail": "contains all IDs in the error-code group",
+    "answer": "Based on the retrieved documents, the following bug reports are associated with ERR_401_UNAUTH:\n\n1. BUG-1001: Login fails after 3 attempts even with correct password (Source: BUG-1001)\n2. BUG-1024: Login - still unresolved (Source: BUG-1024)\n3. BUG-1015: Login session expires mid-checkout without warning (Source: BUG-1015)\n\nAs for whether any of them look related to each other, we can see that BUG-1001 and BUG-1024 are duplicates of each other, and both are related to the same issue of login failure with ERR_401_UNAUTH. Additionally, BUG-1015 is a separate issue, but it also involves ERR_401_UNAUTH.\n\nTherefore, the relationship between these bug reports is that BUG-1001 and BUG-1024 are duplicates, and all three are related to ERR_401_UNAUTH. (Source: BUG-1001, BUG-1024, BUG-1015)",
+    "sources": [
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.81328493,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.76491684,
+        "parent_document_id": 1
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031746031746031744,
+        "vector_score": 0.76039815,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "BUG-1011",
+        "title": "Duplicate notification bug",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "vector_score": 0.7589568,
+        "parent_document_id": 11
+      },
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03076923076923077,
+        "vector_score": 0.7451928,
+        "parent_document_id": 17
+      }
+    ]
+  },
+  {
+    "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
+    "type": "error_code_aggregation",
+    "result": "FAIL",
+    "detail": "missing doc IDs ['BUG-1012', 'BUG-1019'] in answer",
+    "answer": "The bug reports associated with ERR_403_FORBIDDEN are:\n\n* BUG-2042\n* BUG-2085\n* BUG-2099\n\nThese three bug reports all describe the same issue: API returns a ERR_403_FORBIDDEN for a valid request on certain browser-originated calls when a trailing slash is present.\n\nThe recorded cross-references also indicate that these three bug reports are related to each other. Specifically, BUG-2042 is a duplicate of BUG-2085, and BUG-2085 is a duplicate of BUG-2099. This suggests that the issue is the same across all three bug reports.\n\n(Source: BUG-2042, BUG-2085, BUG-2099)",
+    "sources": [
+      {
+        "external_id": "BUG-2042",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Firefox 130-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": 0.032018442622950824,
+        "vector_score": 0.77917665,
+        "parent_document_id": 68
+      },
+      {
+        "external_id": "BUG-1012",
+        "title": "Admin export ERR_403_FORBIDDEN for sub-admin roles",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031754032258064516,
+        "vector_score": 0.7754378,
+        "parent_document_id": 12
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031544957774465976,
+        "vector_score": 0.7686927,
+        "parent_document_id": 19
+      },
+      {
+        "external_id": "BUG-2085",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": 0.0315136476426799,
+        "vector_score": 0.7784372,
+        "parent_document_id": 111
+      },
+      {
+        "external_id": "BUG-2099",
+        "title": "API: API returns a ERR_403_FORBIDDEN for a valid request on Safari 17-originated calls when a trailing slash is present",
+        "doc_type": "bug_report",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.7784372,
+        "parent_document_id": 125
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Login module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (4)",
+    "answer": "4 document(s) match: BUG-1001, BUG-1002, BUG-1008, BUG-1019.",
+    "sources": [
+      {
+        "external_id": "BUG-1001",
+        "title": "Login fails after 3 attempts even with correct password",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1002",
+        "title": "Account lockout not clearing after correct password entry",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1008",
+        "title": "Password reset email delayed by up to 20 minutes",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1019",
+        "title": "ERR_403_FORBIDDEN on password change for SSO-linked accounts",
+        "doc_type": "bug_report"
+      }
+    ]
+  },
+  {
+    "question": "How many bugs are currently Open in the Payments module?",
+    "type": "structured_filter",
+    "result": "PASS",
+    "detail": "answer contains the correct live count (3)",
+    "answer": "3 document(s) match: BUG-1004, BUG-1013, BUG-1023.",
+    "sources": [
+      {
+        "external_id": "BUG-1004",
+        "title": "Payment declined shows generic error instead of decline reason",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report"
+      },
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report"
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "BUG-1003 (Checkout page times out on slow connections)\nSteps to reproduce: 1. Throttle network to Slow 3G 2. Add item to cart 3. Proceed to checkout 4. Submit payment form 5. Wait 30s -> ERR_504_TIMEOUT\n(Source: BUG-1003)",
+    "sources": [
+      {
+        "external_id": "BUG-1003",
+        "title": "Checkout page times out on slow connections",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 3
+      }
+    ]
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "BUG-1023 (Payment retry after decline charges card twice)\nSteps to reproduce: 1. Use a card that gets declined then approved on retry (test processor supports this) 2. Submit payment (declines) 3. Click Retry immediately 4. Check processor dashboard for duplicate charge\n(Source: BUG-1023)",
+    "sources": [
+      {
+        "external_id": "BUG-1023",
+        "title": "Payment retry after decline charges card twice",
+        "doc_type": "bug_report",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 23
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "TC-0301 (Search tokenization consistency for hyphenated terms)\nPreconditions: Product catalog contains items with both 'wifi' and 'wi-fi' spellings in titles or descriptions.\n(Source: TC-0301)",
+    "sources": [
+      {
+        "external_id": "TC-0301",
+        "title": "Search tokenization consistency for hyphenated terms",
+        "doc_type": "test_case",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 147
+      }
+    ]
+  },
+  {
+    "question": "What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?",
+    "type": "single_doc_factual",
+    "result": "MANUAL_REQUIRED",
+    "detail": "no deterministic ground truth for this question type -- use eval/manual_eval_log.py",
+    "answer": "TC-0302 (Exact SKU match ranks first in search results)\nPreconditions: A product with a known unique SKU exists in the catalog, along with other products with similar text descriptions.\n(Source: TC-0302)",
+    "sources": [
+      {
+        "external_id": "TC-0302",
+        "title": "Exact SKU match ranks first in search results",
+        "doc_type": "test_case",
+        "rrf_score": null,
+        "vector_score": null,
+        "parent_document_id": 148
+      }
+    ]
+  },
+  {
+    "question": "What is the expected result of the test case referenced in bug report BUG-1013 (Payment form accepts expired card without client-side warning)?",
+    "type": "dangling_reference_citation",
+    "result": "PASS",
+    "detail": "mentions TC-0209 and states it is not in the corpus",
+    "answer": "BUG-1013 cites TC-0209, but TC-0209 is not present in the retrieved corpus.",
+    "sources": [
+      {
+        "external_id": "BUG-1013",
+        "title": "Payment form accepts expired card without client-side warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8199965,
+        "parent_document_id": 13
+      },
+      {
+        "external_id": "BUG-1015",
+        "title": "Login session expires mid-checkout without warning",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03128054740957967,
+        "vector_score": 0.76493657,
+        "parent_document_id": 15
+      },
+      {
+        "external_id": "TC-2018",
+        "title": "Payments verification case 19",
+        "doc_type": "test_case",
+        "rrf_score": 0.03125763125763126,
+        "vector_score": 0.7630665,
+        "parent_document_id": 167
+      },
+      {
+        "external_id": "TC-2013",
+        "title": "Payments verification case 14",
+        "doc_type": "test_case",
+        "rrf_score": 0.03125,
+        "vector_score": 0.7615678,
+        "parent_document_id": 162
+      },
+      {
+        "external_id": "TC-2007",
+        "title": "Payments verification case 8",
+        "doc_type": "test_case",
+        "rrf_score": 0.031024531024531024,
+        "vector_score": 0.75825083,
+        "parent_document_id": 156
+      }
+    ]
+  },
+  {
+    "question": "What was the resolution or fix for BUG-1017 (Admin bulk export - resolved, follow-up to BUG-1007)?",
+    "type": "resolution_in_narrative",
+    "result": "PASS",
+    "detail": "no wrongful abstention, 6 shared content words with real description",
+    "answer": "The fix was to deploy cursor-based pagination in the export query to address the memory issue. (Source: BUG-1017)",
+    "sources": [
+      {
+        "external_id": "BUG-1017",
+        "title": "Admin bulk export - resolved, follow-up to BUG-1007",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03278688524590164,
+        "vector_score": 0.8521698,
+        "parent_document_id": 17
+      },
+      {
+        "external_id": "BUG-1007",
+        "title": "Admin panel bulk export crashes on >5000 rows",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03225806451612903,
+        "vector_score": 0.76551723,
+        "parent_document_id": 7
+      },
+      {
+        "external_id": "BUG-1024",
+        "title": "Login - see BUG-1001, still unresolved",
+        "doc_type": "bug_report",
+        "rrf_score": 0.030776515151515152,
+        "vector_score": 0.75189257,
+        "parent_document_id": 24
+      },
+      {
+        "external_id": "BUG-2023",
+        "title": "Admin: Bulk export times out for reports over 39 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.03036576949620428,
+        "vector_score": 0.75532544,
+        "parent_document_id": 49
+      },
+      {
+        "external_id": "BUG-2028",
+        "title": "Admin: Bulk export times out for reports over 17 rows when run from Chrome 128",
+        "doc_type": "bug_report",
+        "rrf_score": 0.029910714285714284,
+        "vector_score": 0.7545394,
+        "parent_document_id": 54
+      }
+    ]
+  },
+  {
+    "question": "What's the weather like today?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  },
+  {
+    "question": "What is the capital of France?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  },
+  {
+    "question": "How do I bake a chocolate cake?",
+    "type": "out_of_domain",
+    "result": "PASS",
+    "detail": "correctly rejected, no document ID cited",
+    "answer": "This question doesn't appear to be about the QA corpus (bug reports and test cases) this system covers, so no answer was generated.",
+    "sources": []
+  }
+]

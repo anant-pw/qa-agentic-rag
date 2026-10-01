@@ -38,6 +38,10 @@ services:
     environment:
       - discovery.type=single-node
       - plugins.security.disabled=true
+      # Tried 256m on 2026-10-01 to free RAM for phi4:14b; reverted. Heap was
+      # only ~44% used, but with ~0.3GB host RAM free, 9MB young GCs took
+      # 1-6.6s (JVM pages swapped out) and an ID lookup hit the client's 10s
+      # read timeout -> 500 on /generate/agentic. Not worth ~256MB.
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
       - bootstrap.memory_lock=true
       # Required on 2.12+ or the security plugin's demo installer refuses to
@@ -116,6 +120,9 @@ services:
       POSTGRES_CONNECT_TIMEOUT: ${POSTGRES_CONNECT_TIMEOUT}
       DETERMINISTIC_COUNT_ROUTING: ${DETERMINISTIC_COUNT_ROUTING:-false}
       VECTOR_SCORE_GUARDRAIL_THRESHOLD: ${VECTOR_SCORE_GUARDRAIL_THRESHOLD:-0.75}
+      DETERMINISTIC_FIELD_LOOKUP: ${DETERMINISTIC_FIELD_LOOKUP:-true}
+      DETERMINISTIC_ERROR_CODE_LOOKUP: ${DETERMINISTIC_ERROR_CODE_LOOKUP:-true}
+      REFERENCE_EXPANSION: ${REFERENCE_EXPANSION:-true}
       REDIS_HOST: redis
       REDIS_PORT: 6379
     extra_hosts:

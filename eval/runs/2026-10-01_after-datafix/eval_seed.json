@@ -1,0 +1,83 @@
+[
+  {
+    "question": "Which bug reports are associated with ERR_401_UNAUTH, and do any of them look related to each other?",
+    "requires_docs": [
+      "BUG-1001",
+      "BUG-1015",
+      "BUG-1024"
+    ],
+    "type": "error_code_aggregation",
+    "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
+  },
+  {
+    "question": "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?",
+    "requires_docs": [
+      "BUG-1012",
+      "BUG-1019"
+    ],
+    "type": "error_code_aggregation",
+    "notes": "Multi-document retrieval keyed on a normalized field, not free-text similarity. Same error code does not necessarily mean same root cause."
+  },
+  {
+    "question": "How many bugs are currently Open in the Login module?",
+    "requires_docs": "filter:module+status",
+    "type": "structured_filter",
+    "notes": "Tests metadata-filtered retrieval rather than semantic search. NOTE: this question is tied with at least one other module/status pair at equal count -- see phase-02-handoff.md Section 8. Not fixed here deliberately, so eval history against this exact question stays valid; see the second structured_filter question below for a tie-free case."
+  },
+  {
+    "question": "How many bugs are currently Open in the Payments module?",
+    "requires_docs": "filter:module+status",
+    "type": "structured_filter",
+    "notes": "Phase 6 addition: a second structured_filter question chosen specifically to NOT be tied for its count (3, unambiguous against the real corpus), so it reproduces deterministically on regeneration even though the first structured_filter question above still isn't fixed."
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?",
+    "requires_docs": [
+      "BUG-1003"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Deliberately picked a bug report with no cross-references, to isolate plain single-document retrieval from relational retrieval."
+  },
+  {
+    "question": "What are the steps to reproduce BUG-1023 (Payment retry after decline charges card twice)?",
+    "requires_docs": [
+      "BUG-1023"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Phase 6 addition: a second standalone-bug single_doc_factual question, picked to include a report with editorializing severity language in its own text ('HIGH severity -- real money impact'), testing whether the system reports content as-is without amplifying it."
+  },
+  {
+    "question": "What are the preconditions for TC-0301 (Search tokenization consistency for hyphenated terms)?",
+    "requires_docs": [
+      "TC-0301"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Picked a test case not explicitly cited by any bug report ID -- worth separately checking whether the system links it to a thematically similar bug anyway, since that would be inference beyond what the reference graph supports."
+  },
+  {
+    "question": "What are the preconditions for TC-0302 (Exact SKU match ranks first in search results)?",
+    "requires_docs": [
+      "TC-0302"
+    ],
+    "type": "single_doc_factual",
+    "notes": "Phase 6 addition: the second (and, in the current corpus, last) standalone test case."
+  },
+  {
+    "question": "What's the weather like today?",
+    "requires_docs": [],
+    "type": "out_of_domain",
+    "notes": "Guardrail regression check. Should be rejected without citing any real document ID. Expected to FAIL against plain /generate (no guardrail exists there) -- that's expected, not a bug. Should PASS against /generate/agentic."
+  },
+  {
+    "question": "What is the capital of France?",
+    "requires_docs": [],
+    "type": "out_of_domain",
+    "notes": "Same as above."
+  },
+  {
+    "question": "How do I bake a chocolate cake?",
+    "requires_docs": [],
+    "type": "out_of_domain",
+    "notes": "Same as above."
+  }
+]

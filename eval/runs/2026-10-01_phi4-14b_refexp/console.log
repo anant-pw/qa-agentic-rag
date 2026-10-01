@@ -1,0 +1,14 @@
+[1/2] START (cross_reference_bug_to_test_case): What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?
+[1/2] DONE PASS in 243.0s
+[2/2] START (cross_reference_bug_to_test_case): What is the expected result of the test case referenced in bug report BUG-1002 (Account lockout not clearing after correct password entry)?
+[2/2] DONE PASS in 440.0s
+
+============================================================
+TIER A DETERMINISTIC RESULTS: 2 PASS / 0 FAIL / 0 MANUAL_REQUIRED / 0 ERROR (of 2)
+============================================================
+[PASS          ] (cross_reference_bug_to_test_case) What is the expected result of the test case referenced in bug report 
+                 -> contains required source and target IDs
+[PASS          ] (cross_reference_bug_to_test_case) What is the expected result of the test case referenced in bug report 
+                 -> contains required source and target IDs
+
+Full results (including raw answers/sources) written to eval/runs/2026-10-01_phi4-14b_refexp\run_eval_generation_results.json

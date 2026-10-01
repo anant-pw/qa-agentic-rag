@@ -50,6 +50,16 @@ class Settings(BaseSettings):
     groq_api_key: str | None = None
     deterministic_count_routing: bool = True
     vector_score_guardrail_threshold: float = 0.75
+    # /generate/agentic: answer single-ID field questions ("steps to reproduce
+    # BUG-1003") from Postgres with no LLM call. See app/generation/field_lookup.py.
+    deterministic_field_lookup: bool = True
+    # /generate/agentic: "which bugs have ERR_X" answered from
+    # document_error_codes. See app/generation/error_code_lookup.py.
+    deterministic_error_code_lookup: bool = True
+    # /generate/agentic: when a question names an existing ID, add the
+    # documents it references (cited test case first) to the context.
+    # See fetch_reference_targets() in app/generation/context.py.
+    reference_expansion: bool = True
     
     # Phase 6: Redis response cache for /generate. Containerized (unlike
     # Ollama) since there's no GPU/acceleration reason to run it natively,

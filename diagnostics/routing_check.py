@@ -36,22 +36,29 @@ import httpx
 from app.config import settings
 from app.routers.generate_agentic import guardrail_and_route
 
+# Single-ID plain field asks ("steps to reproduce BUG-1023") route to the
+# no-LLM field lookup when settings.deterministic_field_lookup is on (see
+# app/generation/field_lookup.py); otherwise to the semantic path as before.
+FL = "field_lookup" if settings.deterministic_field_lookup else "semantic"
+# Single-ERR_* "which bugs ..." asks -> no-LLM error-code route when on.
+EC = "error_code" if settings.deterministic_error_code_lookup else "semantic"
+
 # (label, question, filters, expected)   expected keys: decision, path,
 # first (external_id that must be top_hits[0]), absent (must NOT be in
 # top_hits), no_docs (top_hits must be empty)
 CASES = [
     ("ID-phrased", "What are the steps to reproduce BUG-1023?", {},
-     {"decision": "semantic", "path": "semantic", "first": "BUG-1023"}),
+     {"decision": FL, "path": FL, "first": "BUG-1023"}),
     ("ID-buried-on-A", "What are the steps to reproduce BUG-2015?", {},
-     {"decision": "semantic", "path": "semantic", "first": "BUG-2015"}),
+     {"decision": FL, "path": FL, "first": "BUG-2015"}),
     ("ID-testcase", "What are the preconditions for TC-0301?", {},
-     {"decision": "semantic", "path": "semantic", "first": "TC-0301"}),
+     {"decision": FL, "path": FL, "first": "TC-0301"}),
     ("ID-bare-lower", "bug-1011", {},
      {"decision": "semantic", "path": "semantic", "first": "BUG-1011"}),
     ("ID-known-fail", "where is the bug steps in bug-1011", {},
-     {"decision": "semantic", "path": "semantic", "first": "BUG-1011"}),
+     {"decision": FL, "path": FL, "first": "BUG-1011"}),
     ("ID-typo-dash", "What are the steps to reproduce BUG\u20111003?", {},
-     {"decision": "semantic", "path": "semantic", "first": "BUG-1003"}),
+     {"decision": FL, "path": FL, "first": "BUG-1003"}),
     ("ID-unknown", "What are the steps to reproduce BUG-9999?", {},
      {"decision": "reject", "path": "reject_unknown_id", "no_docs": True}),
     ("ID-unknown-bare", "BUG-9999", {},
@@ -74,9 +81,16 @@ CASES = [
      {"module": "Login", "status": "Open"},
      {"decision": "deterministic", "path": "deterministic"}),
     ("CTRL-title", "What are the steps to reproduce BUG-1003 (Checkout page times out on slow connections)?", {},
-     {"decision": "semantic", "first": "BUG-1003"}),
-    ("CTRL-errcode", "Which bug reports mention ERR_401_UNAUTH?", {},
+     {"decision": FL, "first": "BUG-1003"}),
+    ("ERR-agg", "Which bug reports mention ERR_401_UNAUTH?", {},
+     {"decision": EC, "path": EC}),
+    ("ERR-agg-seed", "Which bug reports are associated with ERR_403_FORBIDDEN, and do any of them look related to each other?", {},
+     {"decision": EC, "path": EC}),
+    ("CTRL-errcode-why", "Why does ERR_500_INTERNAL happen?", {},
      {"decision": "semantic", "path": "semantic"}),
+    ("REF-expand", "What is the expected result of the test case referenced in bug report BUG-1001 (Login fails after 3 attempts even with correct password)?", {},
+     {"decision": "semantic", "path": "semantic", "first": "BUG-1001",
+      **({"contains": "TC-0142"} if settings.reference_expansion else {})}),
     ("LIMITATION", "test cases", {},
      {"decision": "reject", "path": "reject"}),
 ]
@@ -92,6 +106,8 @@ def evaluate(out: dict, exp: dict) -> list[str]:
         problems.append(f"path={span.get('path')!r} (want {exp['path']!r})")
     if "first" in exp and (not ids or ids[0] != exp["first"]):
         problems.append(f"top_hits[0]={ids[0] if ids else None!r} (want {exp['first']!r})")
+    if "contains" in exp and exp["contains"] not in ids:
+        problems.append(f"{exp['contains']} missing from top_hits {ids}")
     if "absent" in exp and exp["absent"] in ids:
         problems.append(f"{exp['absent']} present in top_hits {ids}")
     if exp.get("no_docs") and ids:
@@ -105,7 +121,7 @@ def main() -> int:
     except Exception as e:
         ver = f"unavailable ({e})"
     print(f"ollama {ver}  threshold={settings.vector_score_guardrail_threshold}  "
-          f"routing={settings.deterministic_count_routing}  context_top_n={settings.context_top_n}\n")
+          f"routing={settings.deterministic_count_routing}  field_lookup={settings.deterministic_field_lookup}  error_code={settings.deterministic_error_code_lookup}  ref_expansion={settings.reference_expansion}  context_top_n={settings.context_top_n}\n")
 
     failed = 0
     for label, question, filters, exp in CASES:
@@ -126,7 +142,7 @@ def main() -> int:
         print(f"{status}  [{label}] {question!r} {filters or ''}\n"
               f"      -> decision={out['decision']} path={span.get('path')} "
               f"id_route={span.get('id_route', '-')} guardrail_vec={span.get('guardrail_vector_score')} "
-              f"top={ids[:5]}  {ms} ms")
+              f"top={ids[:5]} refs={span.get('referenced_ids', '-')}  {ms} ms")
         for p in problems:
             print(f"      !! {p}")
     print(f"\n{len(CASES) - failed}/{len(CASES)} rows passed")

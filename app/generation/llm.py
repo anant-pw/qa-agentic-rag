@@ -47,6 +47,36 @@ class GenerationError(Exception):
     for how a mid-stream failure affects whether the sources block is sent."""
 
 
+def ollama_timings(done_chunk: dict | None) -> dict:
+    """Ollama's own timing breakdown from the final (done) /api/chat chunk,
+    converted from nanoseconds to seconds.
+
+    Added for the latency investigation: the generation span's latency_s is
+    one wall-clock number, and token_count is a word-count estimate --
+    neither says whether the time went into loading the model, reading the
+    prompt (prefill), or writing the answer (decode). These fields do, and
+    they're real token counts from Ollama, not estimates.
+
+    prompt_eval_count can be lower than the full prompt's token count when
+    Ollama reuses its KV cache for a shared prompt prefix -- that's a real
+    signal worth seeing, not an error. Returns {} if there's no done chunk
+    (e.g. the stream failed), so callers can merge it unconditionally."""
+    if not done_chunk:
+        return {}
+
+    def _s(ns):
+        return round(ns / 1e9, 3) if isinstance(ns, (int, float)) else None
+
+    return {
+        "ollama_load_s": _s(done_chunk.get("load_duration")),
+        "ollama_prompt_tokens": done_chunk.get("prompt_eval_count"),
+        "ollama_prompt_eval_s": _s(done_chunk.get("prompt_eval_duration")),
+        "ollama_output_tokens": done_chunk.get("eval_count"),
+        "ollama_eval_s": _s(done_chunk.get("eval_duration")),
+        "ollama_total_s": _s(done_chunk.get("total_duration")),
+    }
+
+
 def stream_chat(
     messages: list[dict],
     host: str,

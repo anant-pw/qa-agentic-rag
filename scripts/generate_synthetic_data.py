@@ -132,13 +132,20 @@ def append_bugs_to_csv(rows: list[dict]) -> None:
         raise SystemExit(f"{BUG_CSV} not found -- run this from the project root, after Phase 2's original data is already in place.")
 
     with open(BUG_CSV, "r", newline="", encoding="utf-8") as f:
-        existing_ids = {r["id"] for r in csv.DictReader(f)}
+        reader = csv.DictReader(f)
+        existing_ids = {r["id"] for r in reader}
+        # Append under the EXISTING header's column order. A hardcoded
+        # fieldnames list ("module", "status") against the real header
+        # ("status", "module") silently swapped those two values for every
+        # appended row -- found 2026-10-01: all 120 synthetic bugs had
+        # module=Open/Closed/... and status=Login/API/...
+        existing_header = reader.fieldnames
     collisions = [r["id"] for r in rows if r["id"] in existing_ids]
     if collisions:
         raise SystemExit(f"ID collision, refusing to write: {collisions[:5]}... -- already present in {BUG_CSV}. Raise --start-bug-id.")
 
     with open(BUG_CSV, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["id", "title", "description", "steps_to_reproduce", "module", "status", "date_created"])
+        writer = csv.DictWriter(f, fieldnames=existing_header)
         writer.writerows(rows)
     print(f"Appended {len(rows)} bug reports to {BUG_CSV} (IDs {rows[0]['id']}..{rows[-1]['id']})")
 
