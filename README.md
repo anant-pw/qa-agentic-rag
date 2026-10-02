@@ -69,7 +69,15 @@ docker exec rag-fastapi python -m diagnostics.routing_check     # expect 22/22
 # browse to http://127.0.0.1:8000/ui
 ```
 
-**Verification status of these steps.** Steps 1–3, 5 and the `build_index` part of step 4 were run on 2026-10-01 against the running stack. `ingest.py --reset` was added that day. Its guard path was run (a plain rerun on a loaded DB stops with a clear message), but a full reset was not run in that session, because it drops the live database. A complete clean-clone run has not been done.
+**Verification status of these steps.** Verified end to end from a fresh `git clone` on 2026-10-03:
+- 52 tests pass in a new venv.
+- The Docker image builds from the clone.
+- `ingest.py --reset` reloads a database identical to the previous one (same counts, same content hash over all 173 documents).
+- `build_index` takes ~6.5 min (embedding 173 docs).
+- `routing_check` 22/22; frozen-20 eval 16/0/4/0.
+- GitHub Actions `unit-tests` passes.
+
+Step 1 (installing Ollama and pulling the models) was done earlier on this machine, not repeated.
 
 **Windows notes** (each one has caused a real failure on this project):
 - Use `127.0.0.1`, not `localhost`. On Windows, `localhost` can resolve to IPv6 and reach a different Postgres.

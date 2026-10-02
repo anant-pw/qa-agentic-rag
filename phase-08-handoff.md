@@ -78,7 +78,19 @@ Frozen and unchanged: `/search`, `/search/hybrid`, `/generate`, `SYSTEM_PROMPT`,
 - Data fix: 0 swapped rows; Postgres and OpenSearch `_count` agree (8 Open Login bugs).
 - `pytest`: 52 passed on Python 3.14 (host) and in a clean `python:3.12-slim` container.
 - FastAPI container healthcheck reports healthy.
-- **Not verified:** a full clean-clone bootstrap; `ingest.py --reset` end to end, which was not run because it drops the live DB; the GitHub Actions run itself (nothing has been pushed yet, so CI has not run).
+- **Clean-clone bootstrap (2026-10-03).** A fresh `git clone` from GitHub went through:
+  - a new venv: 52 tests pass;
+  - `docker build` from the clone: the app imports;
+  - `ingest.py --reset` against the live DB: identical to the pre-reset baseline (173 docs, 704 references, 19 error-code links, 8 Open Login bugs, same md5 over every document's ID/module/status/title);
+  - `build_index`: 6 min 27 s, alias swapped;
+  - `routing_check`: 22/22;
+  - frozen 20: 16/0/4/0 (`eval/runs/2026-10-03_after-clean-reset/`).
+- **GitHub Actions** `unit-tests` on `c2132ae`: success.
+- **Bootstrap notes found while doing this:**
+  - The README's `cp .env.example .env` step is required before `build_index`: `app.config` needs the model settings.
+  - One `.pyc` with a space in its path had stayed tracked; it is now removed.
+  - Windows Application Control intermittently blocked `psycopg2`'s DLL once; it succeeded on retry with no change.
+- **Not repeated:** installing Ollama and pulling the models (already present on this machine).
 
 ## 7. Known Limitations (measured, not hidden)
 
