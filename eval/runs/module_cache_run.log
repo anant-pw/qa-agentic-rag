@@ -1,0 +1,47 @@
+[holdout 1/36] A01 FAIL module=Reports (top hybrid hit) ttft=4.18s total=28.19s restore=0.21s prefill=25 ["missing 'BUG-2039'"]
+[holdout 2/36] A02 PASS module=Login (top hybrid hit) ttft=3.28s total=93.24s restore=0.31s prefill=20 
+[holdout 3/36] U02 FAIL module=Checkout (named ID) ttft=4.62s total=11.74s restore=1.04s prefill=15 ["none of ['open', 'not been fixed', 'no fix', 'not fixed']"]
+[holdout 4/36] F01 FAIL module=Checkout (named ID) ttft=3.96s total=9.21s restore=0.44s prefill=17 ['none of ["won\'t fix", \'won’t fix\', \'not fixed\', \'was not fixed\', "wasn\'t fixed"]']
+[holdout 5/36] F04 PASS module=Login (named ID) ttft=3.22s total=17.44s restore=0.34s prefill=22 
+[holdout 6/36] S04 PASS module=Admin (top hybrid hit) ttft=3.02s total=29.38s restore=0.39s prefill=15 
+[holdout 7/36] U01 PASS module=Payments (named ID) ttft=2.23s total=4.87s restore=0.3s prefill=16 
+[holdout 8/36] U03 PASS module=Payments (named ID) ttft=2.41s total=7.52s restore=0.22s prefill=18 
+[holdout 9/36] U04 PASS module=Payments (named ID) ttft=2.33s total=4.94s restore=0.23s prefill=16 
+[holdout 10/36] U05 PASS module=Checkout (named ID) ttft=5.08s total=8.9s restore=0.44s prefill=19 
+[holdout 11/36] N01 PASS module=Cart (top hybrid hit) ttft=4.53s total=13.48s restore=0.3s prefill=31 
+[holdout 12/36] N02 PASS module=Profile (top hybrid hit) ttft=4.06s total=9.02s restore=0.25s prefill=34 
+[holdout 13/36] N03 PASS module=Checkout (top hybrid hit) ttft=7.49s total=21.43s restore=0.46s prefill=31 
+[holdout 14/36] N04 PASS module=Notifications (top hybrid hit) ttft=3.89s total=11.57s restore=0.32s prefill=26 
+[holdout 15/36] N05 PASS module=Admin (top hybrid hit) ttft=5.84s total=16.28s restore=0.39s prefill=35 
+[holdout 16/36] N06 PASS module=Login (named ID) ttft=5.21s total=12.96s restore=0.31s prefill=38 
+[holdout 17/36] N07 PASS module=Payments (top hybrid hit) ttft=4.34s total=12.95s restore=0.28s prefill=32 
+[holdout 18/36] M01 FAIL module=Login (named ID) ttft=3.95s total=14.36s restore=0.21s prefill=28 ["missing 'Login'"]
+[holdout 19/36] M02 PASS module=Login (named ID) ttft=3.79s total=13.73s restore=0.2s prefill=27 
+[holdout 20/36] M03 PASS module=Admin (named ID) ttft=5.04s total=18.25s restore=0.37s prefill=31 
+[holdout 21/36] M04 PASS module=Payments (named ID) ttft=3.28s total=11.01s restore=0.32s prefill=24 
+[holdout 22/36] A03 FAIL module=Admin (top hybrid hit) ttft=4.48s total=100.84s restore=0.31s prefill=26 ["missing 'BUG-1017'", "none of ['cursor', 'pagination', 'resolved', 'fix']"]
+[holdout 23/36] A04 PASS module=Checkout (named ID) ttft=7.14s total=24.15s restore=0.47s prefill=33 
+[holdout 24/36] A05 PASS module=Notifications (named ID) ttft=3.5s total=26.46s restore=0.35s prefill=24 
+[holdout 25/36] P01 PASS module=Payments (top hybrid hit) ttft=3.43s total=17.94s restore=0.27s prefill=22 
+[holdout 26/36] P02 PASS module=Search (top hybrid hit) ttft=6.66s total=29.03s restore=0.46s prefill=28 
+[holdout 27/36] P03 FAIL module=Admin (top hybrid hit) ttft=4.73s total=19.75s restore=0.38s prefill=23 ["missing 'BUG-1022'"]
+[holdout 28/36] P04 PASS module=Checkout (top hybrid hit) ttft=5.0s total=30.83s restore=0.44s prefill=21 
+[holdout 29/36] P05 FAIL module=Login (top hybrid hit) ttft=3.1s total=5.82s restore=0.32s prefill=20 ["missing 'BUG-1008'", "none of ['15', '20 min', '18 min', 'email provider']"]
+[holdout 30/36] P06 PASS module=Checkout (top hybrid hit) ttft=6.77s total=25.21s restore=0.42s prefill=28 
+[holdout 31/36] P07 PASS module=Checkout (top hybrid hit) ttft=6.48s total=31.78s restore=0.35s prefill=28 
+[holdout 32/36] P08 PASS module=Search (top hybrid hit) ttft=6.38s total=34.12s restore=0.46s prefill=28 
+[holdout 33/36] G01 PASS module=Checkout (explicit filter) ttft=3.62s total=24.63s restore=0.56s prefill=10 
+[holdout 34/36] G02 PASS module=Profile (explicit filter) ttft=2.61s total=31.2s restore=0.26s prefill=20 
+[holdout 35/36] G03 PASS module=Payments (explicit filter) ttft=3.05s total=30.46s restore=0.31s prefill=22 
+[holdout 36/36] F03 PASS module=Admin (named ID) ttft=5.42s total=25.05s restore=0.43s prefill=31 
+[seed 1/9] cross_reference_bug_to_test_case PASS module=Login ttft=4.89s total=31.43s
+[seed 2/9] cross_reference_bug_to_test_case PASS module=Login ttft=5.16s total=26.0s
+[seed 3/9] duplicate_resolution PASS module=Login ttft=6.22s total=21.66s
+[seed 4/9] duplicate_resolution PASS module=Notifications ttft=5.4s total=21.46s
+[seed 5/9] duplicate_resolution PASS module=Login ttft=7.86s total=27.12s
+[seed 6/9] duplicate_resolution PASS module=Login ttft=6.27s total=24.19s
+[seed 7/9] related_resolution PASS module=Admin ttft=8.52s total=32.82s
+[seed 8/9] dangling_reference_citation PASS module=Payments ttft=6.06s total=18.41s
+[seed 9/9] resolution_in_narrative PASS module=Admin ttft=5.82s total=23.95s
+
+holdout PASS 29/36 (not covered: 0) | near-dup 7 | seed PASS 9/9 | median e2e first token 4.62s | median e2e total 21.46s | max total 100.84s

@@ -115,6 +115,16 @@ Ruled out: TurboRAG / CacheBlend / LMCache (GPU serving stacks; TurboRAG also ne
 
 **Ideas 1 + 5 tried 2026-10-01: rejected on this hardware** (`docs/CAG_EXPERIMENT_2026-10-01.md`). Priming 19.4k tokens took 1 h 51 min. Answers took 64–303 s, because writing runs at ~1 tok/s with the long context. The first token improved only to 18–24 s. A01 regressed, though A02 improved. Save/restore of the 1.5 GB cache works (2.4 s / 1.0 s). Next best candidates: 2 (phi4 answer bank), 4 (prefill while typing), and 5 applied to RAG contexts.
 
+## Step 10: Pre-encoded context groups (2026-10-04): passed as a diagnostic, not integrated
+
+See `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md`.
+
+- **Method:** one saved llama-server KV state per small document group (module × original/synthetic, 16 groups); restore takes 0.3 s; only the question is prefilled.
+- **Result with qwen3:4b-instruct:** holdout 31/36 (equal to RAG, on a different mix), seed 9/9, near-duplicate 7/7; median first token 3.2 s (was ~27 s); median total 14.8 s (was ~48 s); identical on a repeat run.
+- **Coarser grouping:** one group per module failed (29/36).
+- **phi4:14b:** gains first-token time only; decode stays ~0.7 tok/s.
+- **Next:** integrate behind a flag, with fallback to RAG for filtered and multi-group questions.
+
 ## Not planned (researched, poor fit for this machine)
 
 | Idea | Why not |

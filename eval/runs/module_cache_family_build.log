@@ -1,0 +1,17 @@
+{'module': 'API/synthetic', 'context_tokens': 1275, 'prime_s': 50.15, 'prefilled': 1286, 'reused': 1415, 'save_s': 1.14, 'file_mb': 398.5}
+{'module': 'Admin/original', 'context_tokens': 560, 'prime_s': 21.62, 'prefilled': 572, 'reused': 1415, 'save_s': 1.39, 'file_mb': 293.2}
+{'module': 'Admin/synthetic', 'context_tokens': 1569, 'prime_s': 66.19, 'prefilled': 1580, 'reused': 1415, 'save_s': 1.0, 'file_mb': 441.8}
+{'module': 'Cart/synthetic', 'context_tokens': 1502, 'prime_s': 63.45, 'prefilled': 1511, 'reused': 1417, 'save_s': 1.29, 'file_mb': 431.9}
+{'module': 'Checkout/original', 'context_tokens': 607, 'prime_s': 24.64, 'prefilled': 619, 'reused': 1415, 'save_s': 0.43, 'file_mb': 300.1}
+{'module': 'Checkout/synthetic', 'context_tokens': 2656, 'prime_s': 128.88, 'prefilled': 2667, 'reused': 1415, 'save_s': 8.36, 'file_mb': 602.1}
+{'module': 'Login/original', 'context_tokens': 876, 'prime_s': 11.63, 'prefilled': 191, 'reused': 2111, 'save_s': 1.05, 'file_mb': 339.6}
+{'module': 'Login/synthetic', 'context_tokens': 887, 'prime_s': 40.87, 'prefilled': 898, 'reused': 1415, 'save_s': 1.08, 'file_mb': 341.3}
+{'module': 'Notifications/original', 'context_tokens': 435, 'prime_s': 19.93, 'prefilled': 447, 'reused': 1415, 'save_s': 0.31, 'file_mb': 274.7}
+{'module': 'Notifications/synthetic', 'context_tokens': 1320, 'prime_s': 65.17, 'prefilled': 1331, 'reused': 1415, 'save_s': 0.62, 'file_mb': 405.1}
+{'module': 'Payments/original', 'context_tokens': 408, 'prime_s': 19.02, 'prefilled': 420, 'reused': 1415, 'save_s': 0.32, 'file_mb': 270.8}
+{'module': 'Payments/synthetic', 'context_tokens': 1137, 'prime_s': 61.12, 'prefilled': 1148, 'reused': 1415, 'save_s': 0.54, 'file_mb': 378.1}
+{'module': 'Profile/synthetic', 'context_tokens': 1047, 'prime_s': 54.0, 'prefilled': 1056, 'reused': 1417, 'save_s': 1.08, 'file_mb': 364.8}
+{'module': 'Reports/synthetic', 'context_tokens': 1008, 'prime_s': 43.72, 'prefilled': 1017, 'reused': 1417, 'save_s': 0.41, 'file_mb': 359.1}
+{'module': 'Search/original', 'context_tokens': 750, 'prime_s': 33.94, 'prefilled': 761, 'reused': 1415, 'save_s': 0.29, 'file_mb': 321.0}
+{'module': 'Search/synthetic', 'context_tokens': 1978, 'prime_s': 103.21, 'prefilled': 1989, 'reused': 1415, 'save_s': 0.82, 'file_mb': 502.1}
+total prime 808s, disk 6024 MB

@@ -1,0 +1,92 @@
+[
+  {
+    "module": "API",
+    "context_tokens": 1275,
+    "prime_s": 22.62,
+    "prefilled": 1,
+    "reused": 2700,
+    "save_s": 2.04,
+    "file_mb": 398.5
+  },
+  {
+    "module": "Admin",
+    "context_tokens": 2130,
+    "prime_s": 86.6,
+    "prefilled": 1,
+    "reused": 3555,
+    "save_s": 0.78,
+    "file_mb": 524.6
+  },
+  {
+    "module": "Cart",
+    "context_tokens": 1502,
+    "prime_s": 60.97,
+    "prefilled": 1510,
+    "reused": 1418,
+    "save_s": 0.96,
+    "file_mb": 431.9
+  },
+  {
+    "module": "Checkout",
+    "context_tokens": 3264,
+    "prime_s": 156.53,
+    "prefilled": 3275,
+    "reused": 1415,
+    "save_s": 1.25,
+    "file_mb": 691.8
+  },
+  {
+    "module": "Login",
+    "context_tokens": 1763,
+    "prime_s": 78.07,
+    "prefilled": 1771,
+    "reused": 1418,
+    "save_s": 1.21,
+    "file_mb": 470.4
+  },
+  {
+    "module": "Notifications",
+    "context_tokens": 1756,
+    "prime_s": 81.97,
+    "prefilled": 1764,
+    "reused": 1418,
+    "save_s": 0.94,
+    "file_mb": 469.4
+  },
+  {
+    "module": "Payments",
+    "context_tokens": 1546,
+    "prime_s": 66.97,
+    "prefilled": 1554,
+    "reused": 1418,
+    "save_s": 0.93,
+    "file_mb": 438.4
+  },
+  {
+    "module": "Profile",
+    "context_tokens": 1047,
+    "prime_s": 50.11,
+    "prefilled": 1055,
+    "reused": 1418,
+    "save_s": 1.17,
+    "file_mb": 364.8
+  },
+  {
+    "module": "Reports",
+    "context_tokens": 1008,
+    "prime_s": 44.84,
+    "prefilled": 1017,
+    "reused": 1417,
+    "save_s": 1.1,
+    "file_mb": 359.1
+  },
+  {
+    "module": "Search",
+    "context_tokens": 2728,
+    "prime_s": 140.59,
+    "prefilled": 2739,
+    "reused": 1415,
+    "save_s": 1.04,
+    "file_mb": 612.7
+  }
+]
