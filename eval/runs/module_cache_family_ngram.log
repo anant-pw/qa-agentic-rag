@@ -1,0 +1,87 @@
+[holdout 1/36] A01 FAIL module=Reports/synthetic (top hybrid hit) ttft=3.9s total=42.84s restore=0.29s prefill=25 ["missing 'BUG-2039'"]
+[holdout 2/36] A02 PASS module=Login/synthetic (top hybrid hit) ttft=1.97s total=87.24s restore=0.29s prefill=20 
+[holdout 3/36] U02 FAIL module=Checkout/original (named ID) ttft=1.27s total=13.75s restore=0.27s prefill=15 ["none of ['open', 'not been fixed', 'no fix', 'not fixed']"]
+[holdout 4/36] F01 FAIL module=Checkout/original (named ID) ttft=1.27s total=11.13s restore=0.16s prefill=17 ['none of ["won\'t fix", \'won’t fix\', \'not fixed\', \'was not fixed\', "wasn\'t fixed"]']
+[holdout 5/36] F04 PASS module=Login/original (named ID) ttft=1.93s total=30.86s restore=0.31s prefill=22 
+[holdout 6/36] S04 PASS module=Admin/original (top hybrid hit) ttft=1.47s total=25.81s restore=0.29s prefill=15 
+[holdout 7/36] U01 PASS module=Payments/original (named ID) ttft=1.2s total=11.22s restore=0.24s prefill=16 
+[holdout 8/36] U03 PASS module=Payments/synthetic (named ID) ttft=1.88s total=8.26s restore=0.34s prefill=18 
+[holdout 9/36] U04 PASS module=Payments/original (named ID) ttft=1.15s total=11.02s restore=0.24s prefill=16 
+[holdout 10/36] U05 PASS module=Checkout/original (named ID) ttft=1.67s total=13.43s restore=0.27s prefill=19 
+[holdout 11/36] N01 PASS module=Cart/synthetic (top hybrid hit) ttft=3.82s total=24.54s restore=0.36s prefill=31 
+[holdout 12/36] N02 PASS module=Profile/synthetic (top hybrid hit) ttft=3.34s total=22.54s restore=0.3s prefill=34 
+[holdout 13/36] N03 PASS module=Checkout/synthetic (top hybrid hit) ttft=6.57s total=53.36s restore=0.56s prefill=31 
+[holdout 14/36] N04 PASS module=Notifications/synthetic (top hybrid hit) ttft=3.41s total=24.51s restore=0.36s prefill=26 
+[holdout 15/36] N05 PASS module=Admin/synthetic (top hybrid hit) ttft=4.6s total=33.38s restore=0.39s prefill=35 
+[holdout 16/36] N06 PASS module=Login/synthetic (named ID) ttft=3.62s total=53.48s restore=0.32s prefill=38 
+Traceback (most recent call last):
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 127, in __iter__
+    for part in self._httpcore_stream:
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 407, in __iter__
+    raise exc from None
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 403, in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 342, in __iter__
+    raise exc
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 334, in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 203, in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+        self.READ_NUM_BYTES, timeout=timeout
+    )
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_backends\sync.py", line 126, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\anant\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadTimeout: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\qa-agentic-rag\diagnostics\module_cache_probe.py", line 243, in <module>
+    main()
+    ~~~~^^
+  File "D:\qa-agentic-rag\diagnostics\module_cache_probe.py", line 200, in main
+    res = answer(item["question"], item.get("filters"))
+  File "D:\qa-agentic-rag\diagnostics\module_cache_probe.py", line 181, in answer
+    res = ask(client, messages_for(contexts[module], question, filter_note(filters)))
+  File "D:\qa-agentic-rag\diagnostics\cag_probe.py", line 138, in ask
+    for line in r.iter_lines():
+                ~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 929, in iter_lines
+    for text in self.iter_text():
+                ~~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 916, in iter_text
+    for byte_content in self.iter_bytes():
+                        ~~~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 897, in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ~~~~~~~~~~~~~^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_models.py", line 951, in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_client.py", line 153, in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 126, in __iter__
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\anant\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\qa-agentic-rag\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadTimeout: timed out

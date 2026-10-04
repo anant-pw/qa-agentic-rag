@@ -89,3 +89,27 @@ The cache removes the reading time but cannot fix decode speed, which is bound b
 - 45 questions, one corpus, two identical runs. Small sample.
 - Group design used knowledge of this corpus (module field, synthetic-ID pattern). A different corpus needs its own grouping, and group size matters (Run A vs Run B).
 - Measured through a diagnostic script, not through `/generate/agentic`.
+
+## Follow-up: n-gram speculative decoding on top of the cache (rejected)
+
+**Question:** with reading time removed, writing (~5.4 tok/s) is what remains. Can llama.cpp's draft-free speculative decoding speed it up, given that answers copy IDs and field text from the context?
+
+**Setup:** the same server and the same 16 saved states, plus `--spec-type ngram-simple --spec-ngram-simple-size-n 4 --spec-ngram-simple-size-m 24`.
+
+**Result** (16 of 36 holdout questions completed before a request hung and the run was stopped):
+- **Draft acceptance: 4–19%** per answer (e.g. 13 accepted of 192 drafted).
+- **Decode speed: 1.5–3.9 tok/s**, down from 5.4.
+- **Totals worse on every completed question** (A01 42.8 s vs 27.6 s; U01 11.2 s vs 5.1 s; N02 22.5 s vs 8.8 s).
+
+**Why:** the model paraphrases and reorders more than it copies long spans, so most drafts are rejected, and each rejected draft costs a wasted batch.
+
+**Decision:** rejected. Only one configuration was tried (n=4, m=24). The default (n=12) triggers less often, so it would waste less, but would also rarely fire on 40–110-token answers.
+
+Raw output: `eval/runs/module_cache_2026-10-04_ngram_spec/`.
+
+**Conclusion on speed levers for this machine:**
+- Retrieval is ~10 ms.
+- Reading is removed by the saved states.
+- Writing at ~5 tok/s is bound by the CPU.
+
+What is left is avoiding generation (more deterministic routes) or different hardware (this laptop's unused Arc iGPU / NPU).
