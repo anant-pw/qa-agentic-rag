@@ -2,6 +2,10 @@
 
 A local-first question-answering system over QA artefacts (bug reports and test cases). It runs entirely on a 16 GB laptop, with no cloud APIs. It combines hybrid search, deterministic routing, and a small local LLM that only answers from retrieved documents and cites them.
 
+**What "agentic" means here.** It is a router, not an autonomous agent. A LangGraph graph inspects each question once and sends it down exactly one of five paths: reject, count, field lookup, error-code lookup, or search-then-LLM. There are no tool calls chosen by the model, no loops and no multi-step planning. The name comes from the project's Phase 7 ("agentic layer"); "routed RAG" would describe it more precisely.
+
+**How it was built.** This is a personal project built with AI coding assistance (Claude), which is visible in the commit history. The design decisions, the accept criteria for each experiment, and the review of results were directed by me; much of the code and documentation was written with the assistant.
+
 ```
 question ─► guardrail + router (LangGraph) ─┬─ unknown ID ............ reject (no search, no LLM)
                                             ├─ off-topic ............. reject (cosine < 0.75)
@@ -25,7 +29,7 @@ All figures are on the 173-document corpus with `qwen3:4b-instruct` on a Core Ul
 | Deterministic routes | 11 of the 20 seed questions answered in ≤ 0.3 s with no LLM call |
 | Unit tests | 52 (`pytest`, run in CI) |
 
-Details: `docs/PERF_RUN_2026-10-01.md`, `docs/HOLDOUT_EVAL_2026-10-01.md`, `docs/NEXT_STEPS_PLAN.md`, and the phase handoffs `phase-0*-handoff.md`.
+Details: `docs/PERF_RUN_2026-10-01.md`, `docs/HOLDOUT_EVAL_2026-10-01.md`, `docs/NEXT_STEPS_PLAN.md`, and the per-phase handoffs in `docs/history/` (start with `phase-08-handoff.md`).
 
 ## Stack
 
@@ -150,5 +154,6 @@ eval/               eval_seed.json + run_eval*.py (frozen), holdout.json + run_h
 diagnostics/        routing_check, threshold and model probes
 tests/              unit tests (CI)
 docs/               project log, perf report, holdout report, next-steps plan
-phase-0*-handoff.md per-phase design decisions, bugs found, real numbers
+docs/history/       per-phase handoffs (design decisions, bugs found, real numbers), old verify
+                    scripts and notes from Phases 1-8
 ```
