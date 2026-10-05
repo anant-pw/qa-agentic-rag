@@ -106,6 +106,12 @@ Frozen and unchanged: `/search`, `/search/hybrid`, `/generate`, `SYSTEM_PROMPT`,
 
 ## 8. Deliberately Deferred (future work, ranked by measured value)
 
+0. **Post-close experiments (2026-10-04), diagnostic only; the app is unchanged.**
+   - Pre-read document groups with saved llama-server state passed their criteria: first token ~3 s (was ~27 s), median total ~15 s (was ~48 s), holdout 31/36 (equal), on two identical runs.
+   - It was deliberately not integrated: a second model server, 6 GB of saved state, and new fallback rules were judged not worth it for a single-user system.
+   - n-gram speculative decoding was rejected.
+   - Report: `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md`.
+   - If work resumes, the simplest high-value step is a deterministic route for duplicate/related questions (a lookup in `document_references`).
 1. Query rewrite for short/messy questions (addresses limitations 1 and 3).
 2. Status-word → filter routing, plus top-8 context for list questions (addresses 2).
 3. Fine-tuning a small model with RAFT + Unsloth on Colab (addresses 4). Only if 1–2 don't close the gap.

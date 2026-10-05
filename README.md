@@ -118,6 +118,17 @@ MSYS_NO_PATHCONV=1 python -m eval.run_eval_generation --endpoint-path /generate/
     --seed-path eval/runs/<run>/eval_seed.json               # frozen 20; copy the seed first so results land in that folder
 ```
 
+## Measured experiments (not part of the app)
+
+Speed ideas tested with pass criteria set in advance. The app's behaviour is unchanged by all of them.
+
+| Idea | Outcome | Report |
+|---|---|---|
+| Pre-read document groups: save the model's state per small group and restore it per question | **Passed as a diagnostic**: first token ~3 s (was ~27 s), median answer ~15 s (was ~48 s), same accuracy (31/36), repeatable. Not integrated: it needs a second model server and 6 GB of saved state | `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md` |
+| Whole corpus in the model's cache | Rejected: 1 h 51 min to prepare, 64–303 s per answer | `docs/CAG_EXPERIMENT_2026-10-01.md` |
+| Copy-based speculative decoding | Rejected: 4–19% of guesses accepted, writing slowed from 5.4 to 1.5–3.9 tokens/s | `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md` |
+| Prompt rule for false premises | Rejected: no effect, one regression | `docs/HOLDOUT_EVAL_2026-10-01.md` |
+
 ## Known limitations
 
 Each limitation below was measured and is documented. None of them was hidden.
