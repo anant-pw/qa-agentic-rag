@@ -146,6 +146,8 @@ See `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md`.
 
 \* The phi4 run predates the error-code route, reference expansion and data fix, so it sent 2 more questions to the LLM. It was not re-run: ~1.5 h of swapping, and its RAM footprint, not its accuracy, is the problem.
 
+| `2026-10-06_spark-x2.5-4b` (Spark-X2.5-4B, community Q4_K_M, `think=false`) | 16 / 0 / 4 / 0 | — | 17–88 s | Holdout LLM-path 30/36 hand-reviewed vs qwen 31/36; median 51.3 s vs 47.8 s. Gains F04 (corrects the false premise), loses A01 and F03. Not adopted. `eval/runs/holdout_2026-10-06_spark-x2.5-4b/` |
+
 **Recommendation: `qwen3:4b-instruct` as the default `OLLAMA_CHAT_MODEL`.**
 - **Same Tier A as every other model**, and the best hand-checked answers.
 - **About 9× faster than phi4:14b on LLM questions** (median 44 s vs 382 s) and **14× faster per full run** (6.9 vs 96.7 min).
@@ -154,4 +156,4 @@ See `docs/MODULE_KV_CACHE_EXPERIMENT_2026-10-04.md`.
 **Caveats:**
 - The 20-question seed is small and corpus-derived (W1). Confirm on the Step 4 holdout before treating this as settled.
 - To switch, the owner changes `.env` (`OLLAMA_CHAT_MODEL=qwen3:4b-instruct`) and runs `docker compose up -d fastapi`.
-- **Disk cleanup once the choice is settled** (`ollama rm`): the reasoning build `qwen3:4b` (2.5 GB) is no longer needed; `llama3.1:8b` (4.9 GB) is the fallback.
+- **Disk cleanup done 2026-10-06:** `qwen3:4b`, `llama3.1:8b`, `phi4:14b` and the Spark test model were removed from this machine (about 19 GB). All are public; `ollama pull <name>` restores them to reproduce the comparison runs.
