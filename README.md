@@ -157,3 +157,7 @@ docs/               project log, perf report, holdout report, next-steps plan
 docs/history/       per-phase handoffs (design decisions, bugs found, real numbers), old verify
                     scripts and notes from Phases 1-8
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
